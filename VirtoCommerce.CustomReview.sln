@@ -4,10 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.CustomReview.Web", "VirtoCommerce.CustomReview.Web\VirtoCommerce.CustomReview.Web.csproj", "{E8DFB307-82F6-44FE-B633-0D8B69190C73}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93577C0E-8259-4584-B5C5-9718E06A2A37} = {93577C0E-8259-4584-B5C5-9718E06A2A37}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.CustomReview.Data", "VirtoCommerce.CustomReview.Data\VirtoCommerce.CustomReview.Data.csproj", "{93577C0E-8259-4584-B5C5-9718E06A2A37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.CustomReview.Test", "VirtoCommerce.CustomReview.Test\VirtoCommerce.CustomReview.Test.csproj", "{17407E8C-A7ED-490E-A7CB-67EC02A0AD2D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93577C0E-8259-4584-B5C5-9718E06A2A37} = {93577C0E-8259-4584-B5C5-9718E06A2A37}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
