@@ -1,0 +1,10 @@
+[*]
+indent_style = space
+indent_size = space
+tab_size = 4
+
+#JSON code style settings
+[*.json]
+indent_style = space
+indent_size = space
+tab_size = 4
