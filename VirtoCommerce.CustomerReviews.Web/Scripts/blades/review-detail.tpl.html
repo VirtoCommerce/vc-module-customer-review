@@ -1,0 +1,55 @@
+<div class="blade-content blade-content __large-wide">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <form class="form" name="formScope">
+                <div ng-init="setForm(formScope)">
+                    <label class="form-label">{{'customerReviews.blades.review-detail.labels.productName' | translate}}</label>
+                    <div class="form-input">
+                        <input class="__small" ng-model="blade.currentEntity.productName" focus-on="" required rows="1" disabled="disabled">
+                    </div>
+                </div>
+
+                <div ng-init="setForm(formScope)">
+                    <label class="form-label">{{'customerReviews.blades.review-detail.labels.storeName' | translate}}</label>
+                    <div class="form-input">
+                        <input class="__small" ng-model="blade.currentEntity.storeName" focus-on="" required rows="1" disabled="disabled">
+                    </div>
+                </div>
+
+                <div ng-init="setForm(formScope)">
+                    <label class="form-label">{{'customerReviews.blades.review-detail.labels.createdDate' | translate}}</label>
+                    <div class="__calendar form-input">
+                        <input ng-model="blade.currentEntity.createdDate"
+                               datepicker-popup="medium"
+                               disabled="disabled">
+                        <button type="button" class="btn" disabled="disabled">
+                            <i class="btn-ico fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div ng-init="setForm(formScope)">
+                    <label class="form-label">{{'customerReviews.blades.review-detail.labels.title' | translate}}</label>
+                    <div class="form-input">
+                        <textarea class="__small" ng-model="blade.currentEntity.title" focus-on="" required rows="1" disabled="disabled"> </textarea>
+                    </div>
+                </div>
+
+                <div ng-init="setForm(formScope)">
+                    <label class="form-label">{{'customerReviews.blades.review-detail.labels.rating' | translate}}</label>
+                    <div class="form-input">
+                        <input ng-model="blade.currentEntity.rating" focus-on="" required ui-validate=" 'blade.ratingValidator($value)' " disabled="disabled">
+                    </div>
+                </div>
+
+                <div ng-init="setForm(formScope)">
+                    <label class="form-label">{{'customerReviews.blades.review-detail.labels.review' | translate}}</label>
+                    <div class="form-input">
+                        <textarea class="__small" ng-model="blade.currentEntity.review" focus-on="" required rows="5" disabled="disabled"></textarea>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
