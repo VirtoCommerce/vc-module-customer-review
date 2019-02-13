@@ -23,6 +23,19 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             _customerReviewService = customerReviewService;
         }
 
+        public async Task<string[]> GetProductIdsOfModifiedReviews(ChangedReviewsQuery query)
+        {
+            using (var repository = _repositoryFactory())
+            {
+                var ids = await repository.CustomerReviews
+                    .Where(r => r.ModifiedDate >= query.ModifiedDate)
+                    .GroupBy(r => r.ProductId)
+                    .Select(x => x.Key)
+                    .ToArrayAsync();
+                return ids;
+            }
+        }
+
         public async Task<GenericSearchResult<CustomerReview>> SearchCustomerReviewsAsync(CustomerReviewSearchCriteria criteria)
         {
             var retVal = new GenericSearchResult<CustomerReview>();
@@ -50,6 +63,11 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 if (!criteria.StoreId.IsNullOrEmpty())
                 {
                     query = query.Where(x => x.StoreId == criteria.StoreId);
+                }
+
+                if (criteria.ModifiedDate.HasValue)
+                {
+                    query = query.Where(x => x.ModifiedDate >= criteria.ModifiedDate.Value);
                 }
 
                 var sortInfos = criteria.SortInfos;

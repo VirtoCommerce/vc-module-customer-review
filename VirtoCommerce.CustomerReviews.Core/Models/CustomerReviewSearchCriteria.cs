@@ -1,4 +1,5 @@
-﻿using VirtoCommerce.Domain.Commerce.Model.Search;
+﻿using System;
+using VirtoCommerce.Domain.Commerce.Model.Search;
 
 namespace VirtoCommerce.CustomerReviews.Core.Models
 {
@@ -7,5 +8,6 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
         public string[] ProductIds { get; set; }
         public CustomerReviewStatus? ReviewStatus { get; set; }
         public string StoreId { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

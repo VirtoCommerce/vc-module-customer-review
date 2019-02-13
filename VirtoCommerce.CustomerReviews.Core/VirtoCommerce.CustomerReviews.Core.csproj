@@ -57,6 +57,7 @@
     <Compile Include="Models\CustomerReview.cs" />
     <Compile Include="Models\CustomerReviewSearchCriteria.cs" />
     <Compile Include="Models\CustomerReviewStatus.cs" />
+    <Compile Include="Models\ProductsOfChangedReviewsQuery.cs" />
     <Compile Include="Models\RatingProductDto.cs" />
     <Compile Include="Models\RatingStoreDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

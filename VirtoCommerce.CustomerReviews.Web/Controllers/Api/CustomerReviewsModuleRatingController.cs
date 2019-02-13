@@ -39,6 +39,22 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         }
 
         [HttpPost]
+        [Route("productRatingInStore")]
+        [ResponseType(typeof(RatingProductDto[]))]
+        [CheckPermission(Permission = PredefinedPermissions.RatingRead)]
+        public async Task<IHttpActionResult> GetProductRating([FromUri]string storeId, [FromUri]string[] productIds)
+        {
+            var result = new RatingProductDto[0];
+
+            if (!string.IsNullOrWhiteSpace(storeId) && productIds.Length > 0)
+            {
+                result = await _ratingService.GetForStoreAsync(storeId, productIds);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost]
         [Route("calculateStore")]
         [ResponseType(typeof(void))]
         [CheckPermission(Permission = PredefinedPermissions.RatingRecalc)]

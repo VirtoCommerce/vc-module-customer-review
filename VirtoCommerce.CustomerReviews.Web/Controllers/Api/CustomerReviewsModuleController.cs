@@ -37,13 +37,13 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Return product Customer review search results
+        /// Return list of reviews with product and store name
         /// </summary>
         [HttpPost]
-        [Route("search")]
+        [Route("reviewList")]
         [ResponseType(typeof(GenericSearchResult<CustomerReviewListItem>))]
         [CheckPermission(Permission = PredefinedPermissions.CustomerReviewRead)]
-        public async Task<IHttpActionResult> SearchCustomerReviews(CustomerReviewSearchCriteria criteria)
+        public async Task<IHttpActionResult> GetCustomerReviewsList(CustomerReviewSearchCriteria criteria)
         {
             var reviews = await _customerReviewSearchService.SearchCustomerReviewsAsync(criteria);
 
@@ -76,6 +76,31 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
             var retVal = new GenericSearchResult<CustomerReviewListItem>() { Results = results, TotalCount = reviews.TotalCount };
 
             return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Return product Customer review search results
+        /// </summary>
+        [HttpPost]
+        [Route("search")]
+        [ResponseType(typeof(GenericSearchResult<CustomerReview>))]
+        [CheckPermission(Permission = PredefinedPermissions.CustomerReviewRead)]
+        public async Task<IHttpActionResult> SearchCustomerReviews(CustomerReviewSearchCriteria criteria)
+        {
+            var reviews = await _customerReviewSearchService.SearchCustomerReviewsAsync(criteria);
+            return Ok(reviews);
+        }
+
+        /// <summary>
+        /// Return productIds from changed reviews
+        /// </summary>
+        [HttpPost]
+        [Route("changes")]
+        [ResponseType(typeof(string[]))]
+        public async Task<IHttpActionResult> GetProductIdsOfModifiedReviews(ChangedReviewsQuery query)
+        {
+            var productIds = await _customerReviewSearchService.GetProductIdsOfModifiedReviews(query);
+            return Ok(productIds);
         }
 
         /// <summary>
