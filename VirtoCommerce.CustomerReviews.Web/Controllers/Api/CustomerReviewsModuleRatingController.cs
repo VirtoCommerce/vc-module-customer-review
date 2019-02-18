@@ -3,6 +3,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.CustomerReviews.Web.Model;
 using VirtoCommerce.CustomerReviews.Web.Security;
 using VirtoCommerce.Platform.Core.Web.Security;
 
@@ -22,17 +23,17 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
             _ratingService = ratingService;
         }
 
-        [HttpGet]
-        [Route("")]
+        [HttpPost]
+        [Route("productRatingInCatalog")]
         [ResponseType(typeof(RatingStoreDto[]))]
         [CheckPermission(Permission = PredefinedPermissions.RatingRead)]
-        public async Task<IHttpActionResult> GetForCatalog([FromUri]string catalogId, [FromUri]string[] productIds)
+        public async Task<IHttpActionResult> GetForCatalog(ProductCatalogRatingQuery query)
         {
             var result = new RatingStoreDto[0];
 
-            if (!string.IsNullOrWhiteSpace(catalogId) && productIds.Length > 0)
+            if (!string.IsNullOrWhiteSpace(query.CatalogId) && query.ProductIds.Length > 0)
             {
-                result = await _ratingService.GetForCatalogAsync(catalogId, productIds);
+                result = await _ratingService.GetForCatalogAsync(query.CatalogId, query.ProductIds);
             }
 
             return Ok(result);
@@ -42,13 +43,13 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [Route("productRatingInStore")]
         [ResponseType(typeof(RatingProductDto[]))]
         [CheckPermission(Permission = PredefinedPermissions.RatingRead)]
-        public async Task<IHttpActionResult> GetProductRating([FromUri]string storeId, [FromUri]string[] productIds)
+        public async Task<IHttpActionResult> GetProductRating(ProductStoreRatingQuery query)
         {
             var result = new RatingProductDto[0];
 
-            if (!string.IsNullOrWhiteSpace(storeId) && productIds.Length > 0)
+            if (!string.IsNullOrWhiteSpace(query.StoreId) && query.ProductIds.Length > 0)
             {
-                result = await _ratingService.GetForStoreAsync(storeId, productIds);
+                result = await _ratingService.GetForStoreAsync(query.StoreId, query.ProductIds);
             }
 
             return Ok(result);

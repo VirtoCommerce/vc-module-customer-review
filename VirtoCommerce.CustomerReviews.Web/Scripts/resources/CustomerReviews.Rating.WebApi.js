@@ -3,6 +3,6 @@
     return $resource('api/rating', {},
         {
             calculateStore: { method: 'POST', url: 'api/rating/calculateStore' },
-            get: { method: 'GET', isArray: true }
+            get: { method: 'POST', url: 'api/rating/productRatingInCatalog', isArray: true }
         });
 }]);
