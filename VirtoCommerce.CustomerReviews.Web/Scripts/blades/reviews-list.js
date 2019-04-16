@@ -11,9 +11,14 @@ angular.module('VirtoCommerce.CustomerReviews')
 
             blade.refresh = function () {
                 blade.isLoading = true;
+                var reviewStatus = filter.reviewStatusObj ? filter.reviewStatusObj.value : null;
+                var statuses = null;
+                if (reviewStatus != null) {
+                    statuses = [reviewStatus];
+                }
                 reviewsApi.search(angular.extend(filter, {
                     searchPhrase: filter.keyword ? filter.keyword : undefined,
-                    reviewStatus: filter.reviewStatusObj ? filter.reviewStatusObj.value : null,
+                    reviewStatus: statuses,
                     sort: uiGridHelper.getSortExpression($scope),
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                     take: $scope.pageSettings.itemsPerPageCount

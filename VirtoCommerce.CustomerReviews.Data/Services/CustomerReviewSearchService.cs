@@ -23,12 +23,12 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             _customerReviewService = customerReviewService;
         }
 
-        public async Task<string[]> GetProductIdsOfModifiedReviews(ChangedReviewsQuery query)
+        public async Task<string[]> GetProductIdsOfModifiedReviews(ChangedReviewsQuery criteria)
         {
             using (var repository = _repositoryFactory())
             {
                 var ids = await repository.CustomerReviews
-                    .Where(r => r.ModifiedDate >= query.ModifiedDate)
+                    .Where(r => r.ModifiedDate >= criteria.ModifiedDate)
                     .GroupBy(r => r.ProductId)
                     .Select(x => x.Key)
                     .ToArrayAsync();
@@ -49,10 +49,12 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                     query = query.Where(x => criteria.ProductIds.Contains(x.ProductId));
                 }
 
-                if (criteria.ReviewStatus.HasValue)
+                if (!criteria.ReviewStatus.IsNullOrEmpty())
                 {
-                    var convertedStatus = (byte)criteria.ReviewStatus.Value;
-                    query = query.Where(x => x.ReviewStatus == convertedStatus);
+                    foreach(var statusId in criteria.ReviewStatus)
+                    {
+                        query = query.Where(r => r.ReviewStatus == (byte)statusId);
+                    }
                 }
 
                 if (!criteria.SearchPhrase.IsNullOrEmpty())
@@ -63,6 +65,11 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 if (!criteria.StoreId.IsNullOrEmpty())
                 {
                     query = query.Where(x => x.StoreId == criteria.StoreId);
+                }
+
+                if (!criteria.UserId.IsNullOrEmpty())
+                {
+                    query = query.Where(x => x.UserId == criteria.UserId);
                 }
 
                 if (criteria.ModifiedDate.HasValue)

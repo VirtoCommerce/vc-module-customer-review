@@ -43,6 +43,13 @@
           <title>Allow anonymous to submit customer reviews</title>
           <description></description>
         </setting>
+        <setting>
+          <name>CustomerReviews.CanSubmitReviewWhenHasOrder</name>
+          <valueType>boolean</valueType>
+          <defaultValue>true</defaultValue>
+          <title>Only customer who bought product can create new review</title>
+          <description></description>
+        </setting>
       </group>
     </settings>
 
