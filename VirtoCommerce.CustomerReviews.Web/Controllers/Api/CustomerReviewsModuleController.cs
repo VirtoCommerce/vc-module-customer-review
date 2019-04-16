@@ -10,7 +10,6 @@ using VirtoCommerce.CustomerReviews.Web.Model;
 using VirtoCommerce.CustomerReviews.Web.Security;
 using VirtoCommerce.Domain.Catalog.Services;
 using VirtoCommerce.Domain.Commerce.Model.Search;
-using VirtoCommerce.Domain.Customer.Services;
 using VirtoCommerce.Domain.Store.Services;
 using VirtoCommerce.Platform.Core.Web.Security;
 
@@ -23,20 +22,17 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         private readonly ICustomerReviewService _customerReviewService;
         private readonly IStoreService _storeService;
         private readonly IItemService _itemService;
-        private readonly IMemberService _memberService;
-
 
         public CustomerReviewsModuleController()
         {
         }
 
-        public CustomerReviewsModuleController(ICustomerReviewSearchService customerReviewSearchService, ICustomerReviewService customerReviewService, IStoreService storeService, IItemService itemService, IMemberService memberService)
+        public CustomerReviewsModuleController(ICustomerReviewSearchService customerReviewSearchService, ICustomerReviewService customerReviewService, IStoreService storeService, IItemService itemService)
         {
             _customerReviewSearchService = customerReviewSearchService;
             _customerReviewService = customerReviewService;
             _storeService = storeService;
             _itemService = itemService;
-            _memberService = memberService;
         }
 
         /// <summary>
@@ -63,7 +59,6 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
                 .ToArray();
 
             var products = _itemService.GetByIds(productIds, Domain.Catalog.Model.ItemResponseGroup.None);
-            var users = _memberService.GetByIds(reviews.Results.Select(r => r.UserId).Distinct().ToArray());
 
             List<CustomerReviewListItem> results = new List<CustomerReviewListItem>();
             foreach (var review in reviews.Results)
@@ -71,8 +66,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
                 var listItem = new CustomerReviewListItem(review)
                 {
                     StoreName = stores.FirstOrDefault(s => s.Id == review.StoreId)?.Name,
-                    ProductName = products.FirstOrDefault(p => p.Id == review.ProductId)?.Name,
-                    UserName = users.FirstOrDefault(u => u.Id == review.UserId)?.Name ?? review.UserName
+                    ProductName = products.FirstOrDefault(p => p.Id == review.ProductId)?.Name
                 };
 
                 results.Add(listItem);
