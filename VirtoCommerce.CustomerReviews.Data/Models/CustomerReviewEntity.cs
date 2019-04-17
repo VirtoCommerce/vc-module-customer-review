@@ -28,7 +28,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
         public string StoreId { get; set; }
 
         [Required]
-        public byte ReviewStatus { get; set; }
+        public int ReviewStatus { get; set; }
 
 
         public virtual CustomerReview ToModel(CustomerReview customerReview)

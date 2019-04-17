@@ -51,10 +51,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
                 if (!criteria.ReviewStatus.IsNullOrEmpty())
                 {
-                    foreach(var statusId in criteria.ReviewStatus)
-                    {
-                        query = query.Where(r => r.ReviewStatus == (byte)statusId);
-                    }
+                    query = query.Where(r => criteria.ReviewStatus.Contains(r.ReviewStatus));
                 }
 
                 if (!criteria.SearchPhrase.IsNullOrEmpty())

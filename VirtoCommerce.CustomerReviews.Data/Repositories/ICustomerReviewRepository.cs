@@ -14,7 +14,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         Task<CustomerReviewEntity[]> GetByIdsAsync(IEnumerable<string> ids);
         Task DeleteCustomerReviewsAsync(IEnumerable<string> ids);
 
-        Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> productIds, IEnumerable<byte> reviewStatuses);
+        Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> productIds, IEnumerable<int> reviewStatuses);
 
         #endregion
 

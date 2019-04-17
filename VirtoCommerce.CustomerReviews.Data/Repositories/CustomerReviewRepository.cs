@@ -38,7 +38,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             }
         }
 
-        public Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> productIds, IEnumerable<byte> reviewStatuses)
+        public Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> productIds, IEnumerable<int> reviewStatuses)
         {
             var q = CustomerReviews
                    .Where(r => r.StoreId == storeId && reviewStatuses.Contains(r.ReviewStatus));

@@ -78,6 +78,10 @@
     <Compile Include="Migrations\201902070844495_AddCustomerReview.Designer.cs">
       <DependentUpon>201902070844495_AddCustomerReview.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904170516202_ChangeFieldType.cs" />
+    <Compile Include="Migrations\201904170516202_ChangeFieldType.Designer.cs">
+      <DependentUpon>201904170516202_ChangeFieldType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CustomerReviewEntity.cs" />
     <Compile Include="Models\RatingEntity.cs" />
@@ -102,6 +106,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201902070844495_AddCustomerReview.resx">
       <DependentUpon>201902070844495_AddCustomerReview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904170516202_ChangeFieldType.resx">
+      <DependentUpon>201904170516202_ChangeFieldType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

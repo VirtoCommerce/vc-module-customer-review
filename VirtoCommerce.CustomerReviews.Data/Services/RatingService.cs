@@ -53,7 +53,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         private async Task Calculate(string storeId, string[] productIds)
         {
             IEnumerable<ReviewRatingCalculateDto> reviews;
-            var statuses = new byte[] { (byte)CustomerReviewStatus.Approved };
+            var statuses = new int[] { (int)CustomerReviewStatus.Approved };
             using (var repository = _repositoryFactory())
             {
                 reviews = await repository.GetCustomerReviewsByStoreProductAsync(storeId, productIds, statuses);
