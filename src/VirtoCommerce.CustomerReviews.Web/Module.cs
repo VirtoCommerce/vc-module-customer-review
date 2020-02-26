@@ -17,11 +17,16 @@ using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
+using VirtoCommerce.StoreModule.Core.Model;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
     public class Module : IModule
     {
+        private IApplicationBuilder _applicationBuilder;
+        private const string ConfigStoreGroupName = "CustomerReviews";
+        private const string ConfigStoreModuleId = "VirtoCommerce.Store";
+        private const string ConfigCalculatorSettingsName = "CustomerReviews.Calculation.Method";
         public ManifestModuleInfo ModuleInfo { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
@@ -44,8 +49,13 @@ namespace VirtoCommerce.CustomerReviews.Web
 
         public void PostInitialize(IApplicationBuilder appBuilder)
         {
+            _applicationBuilder = appBuilder;
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
+
+            var storeSettings = settingsRegistrar.GetSettingsForType(typeof(Store).Name).ToList();
+            storeSettings.Add(GetCalculatorStoreSetting());
+            settingsRegistrar.RegisterSettings(storeSettings, ConfigStoreModuleId);
 
             var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
@@ -67,45 +77,21 @@ namespace VirtoCommerce.CustomerReviews.Web
         {
         }
 
-        private const string ConfigStoreGroupName = "CustomerReviews";
-        private const string ConfigModuleId = "VirtoCommerce.CustomerReviews";
-        private const string ConfigStoreModuleId = "VirtoCommerce.Store";
-        private const string ConfigCalculatorSettingsName = "CustomerReviews.Calculation.Method";
-        private const string ConfigCalculatorSettingsTitle = "Rating calculation method";
-
-
-        
-        //TODO
-        //public override void PostInitialize()
-        //{
-        //    base.PostInitialize();
-
-        //    //Registering settings to store module allows to use individual values in each store
-        //    var settingManager = _container.Resolve<ISettingsManager>();
-
-        //    var storeSettings = settingManager
-        //        .GetModuleSettings(ConfigModuleId)
-        //        .ToList();
-        //    storeSettings.Add(GetCalculatorStoreSettings());
-        //    settingManager.RegisterModuleSettings(ConfigStoreModuleId, storeSettings.ToArray());
-        //}
-
-        //private SettingEntry GetCalculatorStoreSettings()
-        //{
-        //    var defaultCalculator = new AverageRatingCalculator();
-        //    var calculatorsNames = _container.ResolveAll<IRatingCalculator>()
-        //                                     .Select(x => x.Name)
-        //                                     .ToArray();
-        //    return new SettingEntry
-        //    {
-        //        GroupName = ConfigStoreGroupName,
-        //        Name = ConfigCalculatorSettingsName,
-        //        Title = ConfigCalculatorSettingsTitle,
-        //        ValueType = SettingValueType.ShortText,
-        //        Value = defaultCalculator.Name,
-        //        DefaultValue = defaultCalculator.Name,
-        //        AllowedValues = calculatorsNames
-        //    };
-        //}
+        private SettingDescriptor GetCalculatorStoreSetting()
+        {
+            var defaultCalculator = new AverageRatingCalculator();
+            var calculatorsNames = _applicationBuilder.ApplicationServices.GetServices<IRatingCalculator>()
+                                             .Select(x => x.Name)
+                                             .ToArray();
+            return new SettingDescriptor
+            {
+                GroupName = ConfigStoreGroupName,
+                Name = ConfigCalculatorSettingsName,
+                //Title = ConfigCalculatorSettingsTitle,
+                ValueType = SettingValueType.ShortText,
+                DefaultValue = defaultCalculator.Name,
+                AllowedValues = calculatorsNames
+            };
+        }
     }
 }

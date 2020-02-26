@@ -15,6 +15,7 @@ using VirtoCommerce.StoreModule.Core.Services;
 namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 {
     [Route("api/customerReviews")]
+    [ApiController]
     public class CustomerReviewsModuleController : Controller
     {
         private readonly ICustomerReviewSearchService _customerReviewSearchService;
@@ -105,7 +106,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("approve")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
-        public async Task<ActionResult> ApproveReview([FromQuery]string[] customerReviewsIds)
+        public async Task<ActionResult> ApproveReview(string[] customerReviewsIds)
         {
             await _customerReviewService.ApproveReviewAsync(customerReviewsIds);
             return NoContent();
@@ -119,7 +120,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("reject")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
-        public async Task<ActionResult> RejectReview([FromQuery]string[] customerReviewsIds)
+        public async Task<ActionResult> RejectReview(string[] customerReviewsIds)
         {
             await _customerReviewService.RejectReviewAsync(customerReviewsIds);
             return NoContent();
@@ -133,7 +134,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("reset")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
-        public async Task<ActionResult> ResetReviewStatus([FromQuery]string[] customerReviewsIds)
+        public async Task<ActionResult> ResetReviewStatus(string[] customerReviewsIds)
         {
             await _customerReviewService.ResetReviewStatusAsync(customerReviewsIds);
             return NoContent();
