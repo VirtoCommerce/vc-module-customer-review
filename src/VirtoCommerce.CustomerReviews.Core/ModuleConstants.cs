@@ -9,12 +9,13 @@ namespace VirtoCommerce.CustomerReviews.Core
         {
             public static class Permissions
             {
-                public const string Read = "customerReviews:read";
-                public const string Update = "customerReviews:update";
-                public const string RatingRead = "customerReviews:ratingRead";
-                public const string RatingRecalc = "customerReviews:ratingRecalc";
+                public const string CustomerReviewRead = "customerReviews:read";
+                public const string CustomerReviewUpdate = "customerReviews:update";
+                public const string CustomerReviewDelete = "customerReviews:delete";
+                public const string CustomerReviewRatingRead = "customerReviews:ratingRead";
+                public const string CustomerReviewRatingRecalc = "customerReviews:ratingRecalc";
 
-                public static string[] AllPermissions = { Read, Update, RatingRead, RatingRecalc };
+                public static string[] AllPermissions = { CustomerReviewRead, CustomerReviewUpdate, CustomerReviewDelete, CustomerReviewRatingRead, CustomerReviewRatingRecalc };
             }
         }
 

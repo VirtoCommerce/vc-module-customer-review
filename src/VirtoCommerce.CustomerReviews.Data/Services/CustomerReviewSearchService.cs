@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
@@ -66,9 +67,10 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                         var customerReviewIds = await query.OrderBySortInfos(sortInfos).Skip(criteria.Skip)
                             .Take(criteria.Take)
                             .Select(x => x.Id)
-                            .ToListAsync();
+                            .ToArrayAsync();
 
                         var priorResults = await _customerReviewService.GetByIdsAsync(customerReviewIds);
+                        //TODO warning EF1001: Microsoft.EntityFrameworkCore.Internal.EnumerableExtensions is an internal API that supports the Entity Framework Core infrastructure and not subject to the same compatibility standards as public APIs.
                         result.Results = priorResults.OrderBy(x => customerReviewIds.IndexOf(x.Id)).ToList();
                     }
                         

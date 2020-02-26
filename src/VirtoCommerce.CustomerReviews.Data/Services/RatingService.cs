@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.CustomerReviews.Core.Events;
 using VirtoCommerce.CustomerReviews.Core.Models;
-using VirtoCommerce.CustomerReviews.Core.RatingCalculators;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
-using VirtoCommerce.Domain.Store.Model;
-using VirtoCommerce.Domain.Store.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Settings;
-using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.StoreModule.Core.Model.Search;
+using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.Data.Services
 {
@@ -21,15 +18,17 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         private readonly Func<ICustomerReviewRepository> _repositoryFactory;
         private readonly IEnumerable<IRatingCalculator> _ratingCalculators;
         private readonly IStoreService _storeService;
+        private readonly IStoreSearchService _storeSearchService;
 
 
         public RatingService(Func<ICustomerReviewRepository> repositoryFactory,
             IEnumerable<IRatingCalculator> ratingCalculators,
-            IStoreService storeService)
+            IStoreService storeService, IStoreSearchService storeSearchService)
         {
             _repositoryFactory = repositoryFactory;
             _ratingCalculators = ratingCalculators;
             _storeService = storeService;
+            _storeSearchService = storeSearchService;
         }
 
         public Task CalculateAsync(string storeId)
@@ -37,7 +36,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             return Calculate(storeId, null);
         }
 
-        public async Task CalculateAsync(IEnumerable<ReviewStatusChangeData> data)
+        public async Task CalculateAsync(ReviewStatusChangeData[] data)
         {
             if (!data.Any())
             {
@@ -53,13 +52,13 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         private async Task Calculate(string storeId, string[] productIds)
         {
             IEnumerable<ReviewRatingCalculateDto> reviews;
-            var statuses = new int[] { (int)CustomerReviewStatus.Approved };
+            var statuses = new [] { (int)CustomerReviewStatus.Approved };
             using (var repository = _repositoryFactory())
             {
                 reviews = await repository.GetCustomerReviewsByStoreProductAsync(storeId, productIds, statuses);
             }
 
-            var calculator = GetCalculator(storeId);
+            var calculator = await GetCalculatorAsync(storeId);
 
             List<RatingEntity> entities = new List<RatingEntity>();
             foreach (var productStore in reviews.GroupBy(r => new { r.ProductId, r.StoreId }))
@@ -71,40 +70,36 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var pkMap = new PrimaryKeyResolvingMap();
-                using (var changeTracker = GetChangeTracker(repository))
+                var alreadyExistEntities = await repository.GetAsync(storeId, productIds);
+                foreach (var rating in entities)
                 {
-                    var alreadyExistEntities = await repository.GetAsync(storeId, productIds);
-                    foreach (var rating in entities)
+                    var target = alreadyExistEntities
+                        .FirstOrDefault(x => x.ProductId == rating.ProductId && x.StoreId == rating.StoreId);
+
+                    if (target == null)
                     {
-                        var target = alreadyExistEntities
-                            .FirstOrDefault(x => x.ProductId == rating.ProductId && x.StoreId == rating.StoreId);
-
-                        if (target == null)
-                        {
-                            repository.Add(rating);
-                        }
-                        else
-                        {
-                            changeTracker.Attach(target);
-                            rating.Patch(target);
-                        }
+                        repository.Add(rating);
                     }
-
-                    foreach (var existing in alreadyExistEntities)
+                    else
                     {
-                        if (!entities.Any(e => e.ProductId == existing.ProductId && e.StoreId == existing.StoreId))
-                            repository.Delete(existing);
+                        rating.Patch(target);
                     }
-
-                    CommitChanges(repository);
-                    pkMap.ResolvePrimaryKeys();
                 }
+
+                foreach (var existing in alreadyExistEntities)
+                {
+                    if (!entities.Any(e => e.ProductId == existing.ProductId && e.StoreId == existing.StoreId))
+                        repository.Delete(existing);
+                }
+
+                await repository.UnitOfWork.CommitAsync();
+                pkMap.ResolvePrimaryKeys();
 
             }
 
         }
 
-        public async Task<RatingProductDto[]> GetForStoreAsync(string storeId, IEnumerable<string> productIds)
+        public async Task<RatingProductDto[]> GetForStoreAsync(string storeId, string[] productIds)
         {
             using (var repository = _repositoryFactory())
             {
@@ -119,14 +114,16 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             }
         }
 
-        public async Task<RatingStoreDto[]> GetForCatalogAsync(string catalogId, IEnumerable<string> productIds)
+        public async Task<RatingStoreDto[]> GetForCatalogAsync(string catalogId, string[] productIds)
         {
-            var stores = _storeService.SearchStores(new SearchCriteria { Skip = 0, Take = int.MaxValue }).Stores;
+            var storeSearchCriteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
+            storeSearchCriteria.Take = int.MaxValue;
+            var storeSearchResult = await _storeSearchService.SearchStoresAsync(storeSearchCriteria);
             var result = new List<RatingStoreDto>();
 
             using (var repository = _repositoryFactory())
             {
-                foreach (var store in stores.Where(s => s.Catalog == catalogId))
+                foreach (var store in storeSearchResult.Results.Where(s => s.Catalog == catalogId))
                 {
                     var ratings = await repository.GetAsync(store.Id, productIds);
                     if (ratings.Any())
@@ -145,9 +142,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         }
 
 
-        private IRatingCalculator GetCalculator(string storeId)
+        private async Task<IRatingCalculator> GetCalculatorAsync(string storeId)
         {
-            var store = _storeService.GetById(storeId);
+            var store = await _storeService.GetByIdAsync(storeId);
             if (store == null)
             {
                 throw new KeyNotFoundException($"Store not found, storeId: {storeId}");

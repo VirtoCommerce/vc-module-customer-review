@@ -9,7 +9,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 {
     public class CustomerReviewRepository : DbContextRepositoryBase<CustomerReviewsDbContext>, ICustomerReviewRepository
     {
-        protected CustomerReviewRepository(CustomerReviewsDbContext dbContext) : base(dbContext)
+        public CustomerReviewRepository(CustomerReviewsDbContext dbContext) : base(dbContext)
         {
         }
 

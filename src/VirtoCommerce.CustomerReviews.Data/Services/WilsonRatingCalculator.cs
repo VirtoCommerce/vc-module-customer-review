@@ -2,7 +2,7 @@
 using System.Linq;
 using VirtoCommerce.CustomerReviews.Core.Services;
 
-namespace VirtoCommerce.CustomerReviews.Core.RatingCalculators
+namespace VirtoCommerce.CustomerReviews.Data.Services
 {
     /// <summary>
     /// Calculate rating by Edvin Wilson formula

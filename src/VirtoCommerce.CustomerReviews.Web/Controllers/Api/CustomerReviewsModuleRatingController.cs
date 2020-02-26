@@ -1,23 +1,18 @@
 ﻿using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Web.Model;
-using VirtoCommerce.CustomerReviews.Web.Security;
-using VirtoCommerce.Platform.Core.Web.Security;
 
 namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 {
-    [RoutePrefix("api/rating")]
-    public class CustomerReviewsModuleRatingController : ApiController
+    [Route("api/rating")]
+    public class CustomerReviewsModuleRatingController : Controller
     {
         private readonly IRatingService _ratingService;
-
-        public CustomerReviewsModuleRatingController()
-        {
-        }
-
+        
         public CustomerReviewsModuleRatingController(IRatingService ratingService)
         {
             _ratingService = ratingService;
@@ -25,15 +20,14 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 
         [HttpPost]
         [Route("productRatingInCatalog")]
-        [ResponseType(typeof(RatingStoreDto[]))]
-        [CheckPermission(Permission = PredefinedPermissions.RatingRead)]
-        public async Task<IHttpActionResult> GetForCatalog(ProductCatalogRatingQuery query)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRead)]
+        public async Task<ActionResult<RatingStoreDto[]>> GetForCatalog([FromBody]ProductCatalogRatingRequest request)
         {
             var result = new RatingStoreDto[0];
 
-            if (!string.IsNullOrWhiteSpace(query.CatalogId) && query.ProductIds.Length > 0)
+            if (!string.IsNullOrWhiteSpace(request.CatalogId) && request.ProductIds.Length > 0)
             {
-                result = await _ratingService.GetForCatalogAsync(query.CatalogId, query.ProductIds);
+                result = await _ratingService.GetForCatalogAsync(request.CatalogId, request.ProductIds);
             }
 
             return Ok(result);
@@ -41,15 +35,14 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 
         [HttpPost]
         [Route("productRatingInStore")]
-        [ResponseType(typeof(RatingProductDto[]))]
-        [CheckPermission(Permission = PredefinedPermissions.RatingRead)]
-        public async Task<IHttpActionResult> GetProductRating(ProductStoreRatingQuery query)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRead)]
+        public async Task<ActionResult<RatingStoreDto[]>> GetProductRating([FromBody]ProductStoreRatingRequest request)
         {
             var result = new RatingProductDto[0];
 
-            if (!string.IsNullOrWhiteSpace(query.StoreId) && query.ProductIds.Length > 0)
+            if (!string.IsNullOrWhiteSpace(request.StoreId) && request.ProductIds.Length > 0)
             {
-                result = await _ratingService.GetForStoreAsync(query.StoreId, query.ProductIds);
+                result = await _ratingService.GetForStoreAsync(request.StoreId, request.ProductIds);
             }
 
             return Ok(result);
@@ -57,9 +50,8 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 
         [HttpPost]
         [Route("calculateStore")]
-        [ResponseType(typeof(void))]
-        [CheckPermission(Permission = PredefinedPermissions.RatingRecalc)]
-        public async Task<IHttpActionResult> CalculateStore([FromUri]string storeId)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRecalc)]
+        public async Task<ActionResult> CalculateStore([FromQuery]string storeId)
         {
             if (!string.IsNullOrWhiteSpace(storeId))
             {

@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using VirtoCommerce.CustomerReviews.Core.Events;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.Platform.Core.Events;
 
-namespace VirtoCommerce.CustomerReviews.Core.EventHandlers
+namespace VirtoCommerce.CustomerReviews.Data.Handlers
 {
     public class ReviewStatusChangedEventHandler : IEventHandler<ReviewStatusChangedEvent>
     {
@@ -16,7 +17,7 @@ namespace VirtoCommerce.CustomerReviews.Core.EventHandlers
 
         public Task Handle(ReviewStatusChangedEvent message)
         {
-            return _ratingService.CalculateAsync(message.Data);
+            return _ratingService.CalculateAsync(message.ChangedEntries.Select(x => x.NewEntry).ToArray());
         }
     }
 }

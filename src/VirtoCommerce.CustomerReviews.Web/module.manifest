@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <module>
     <id>VirtoCommerce.CustomerReviews</id>
-    <version>1.1.1</version>
-    <platformVersion>2.13.40</platformVersion>
+    <version>3.0.0</version>
+    <version-tag>rc.3-001</version-tag>
+    <platformVersion>3.0.0</platformVersion>
 
     <title>VirtoCommerce.CustomerReviews</title>
     <description>Customer reviews and product rating</description>
@@ -13,53 +14,11 @@
     </authors>
 
   <dependencies>
-    <dependency id="VirtoCommerce.Catalog" version="2.23.13" />
-    <dependency id="VirtoCommerce.Store" version="2.13.7" />
+    <dependency id="VirtoCommerce.Catalog" version="3.0.0" />
+    <dependency id="VirtoCommerce.Store" version="3.0.0" />
   </dependencies>
 
     <assemblyFile>VirtoCommerce.CustomerReviews.Web.dll</assemblyFile>
     <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>
-
-    <!--<styles>
-        <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
-    </styles>-->
-    <scripts>
-        <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
-    </scripts>
-
-    <settings>
-      <group name="Store|CustomerReviews">
-        <setting>
-          <name>CustomerReviews.CustomerReviewsEnabled</name>
-          <valueType>boolean</valueType>
-          <defaultValue>false</defaultValue>
-          <title>Customer Reviews enabled</title>
-          <description></description>
-        </setting>
-        <setting>
-          <name>CustomerReviews.CustomerReviewsEnabledForAnonymous</name>
-          <valueType>boolean</valueType>
-          <defaultValue>false</defaultValue>
-          <title>Allow anonymous to submit customer reviews</title>
-          <description></description>
-        </setting>
-        <setting>
-          <name>CustomerReviews.CanSubmitReviewWhenHasOrder</name>
-          <valueType>boolean</valueType>
-          <defaultValue>true</defaultValue>
-          <title>Only customer who bought product can create new review</title>
-          <description></description>
-        </setting>
-      </group>
-    </settings>
-
-    <permissions>
-      <group name="Customer reviews">
-        <permission id="customerReviews:read" name="Open customers reviews" description=""/>
-        <permission id="customerReviews:update" name="Update customer review" description="Approve, reject and reset review status"/>
-        <permission id="customerReviews:ratingRead" name="Read rating" description=""/>
-        <permission id="customerReviews:ratingRecalc" name="Recalculate rating" description=""/>
-      </group>
-    </permissions>
   
 </module>

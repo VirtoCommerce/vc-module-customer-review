@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.CustomerReviews.Web.Model
 {
-    public class ProductCatalogRatingQuery
+    public class ProductCatalogRatingRequest
     {
         public string CatalogId { get; set; }
         public string[] ProductIds { get; set; }

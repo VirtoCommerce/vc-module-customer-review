@@ -6,10 +6,10 @@ namespace VirtoCommerce.CustomerReviews.Core.Services
 {
     public interface IRatingService
     {
-        Task CalculateAsync(IEnumerable<ReviewStatusChangeData> data);
+        Task CalculateAsync(ReviewStatusChangeData[] data);
         Task CalculateAsync(string storeId);
-        Task<RatingProductDto[]> GetForStoreAsync(string storeId, IEnumerable<string> productIds);
-        Task<RatingStoreDto[]> GetForCatalogAsync(string catalogId, IEnumerable<string> productIds);
+        Task<RatingProductDto[]> GetForStoreAsync(string storeId, string[] productIds);
+        Task<RatingStoreDto[]> GetForCatalogAsync(string catalogId, string[] productIds);
 
     }
 }

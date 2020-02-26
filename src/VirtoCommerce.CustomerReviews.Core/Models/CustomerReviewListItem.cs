@@ -1,7 +1,6 @@
 ﻿using System;
-using VirtoCommerce.CustomerReviews.Core.Models;
 
-namespace VirtoCommerce.CustomerReviews.Web.Model
+namespace VirtoCommerce.CustomerReviews.Core.Models
 {
     public class CustomerReviewListItem
     {

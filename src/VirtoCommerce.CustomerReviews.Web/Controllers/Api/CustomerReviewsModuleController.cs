@@ -1,33 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using VirtoCommerce.CatalogModule.Core.Model;
+using VirtoCommerce.CatalogModule.Core.Services;
+using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Web.Model;
-using VirtoCommerce.CustomerReviews.Web.Security;
-using VirtoCommerce.Domain.Catalog.Services;
-using VirtoCommerce.Domain.Commerce.Model.Search;
-using VirtoCommerce.Domain.Store.Services;
-using VirtoCommerce.Platform.Core.Web.Security;
+using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 {
-    [RoutePrefix("api/customerReviews")]
-    public class CustomerReviewsModuleController : ApiController
+    [Route("api/customerReviews")]
+    public class CustomerReviewsModuleController : Controller
     {
         private readonly ICustomerReviewSearchService _customerReviewSearchService;
         private readonly ICustomerReviewService _customerReviewService;
         private readonly IStoreService _storeService;
         private readonly IItemService _itemService;
 
-        public CustomerReviewsModuleController()
-        {
-        }
-
-        public CustomerReviewsModuleController(ICustomerReviewSearchService customerReviewSearchService, ICustomerReviewService customerReviewService, IStoreService storeService, IItemService itemService)
+        public CustomerReviewsModuleController(ICustomerReviewSearchService customerReviewSearchService, 
+            ICustomerReviewService customerReviewService, 
+            IStoreService storeService, 
+            IItemService itemService)
         {
             _customerReviewSearchService = customerReviewSearchService;
             _customerReviewService = customerReviewService;
@@ -40,9 +38,8 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("reviewList")]
-        [ResponseType(typeof(GenericSearchResult<CustomerReviewListItem>))]
-        [CheckPermission(Permission = PredefinedPermissions.CustomerReviewRead)]
-        public async Task<IHttpActionResult> GetCustomerReviewsList(CustomerReviewSearchCriteria criteria)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRead)]
+        public async Task<ActionResult<CustomerReviewListItemSearchResult>> GetCustomerReviewsList([FromBody]CustomerReviewSearchCriteria criteria)
         {
             var reviews = await _customerReviewSearchService.SearchCustomerReviewsAsync(criteria);
 
@@ -51,14 +48,14 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
                 .Distinct()
                 .ToArray();
 
-            var stores = _storeService.GetByIds(storeIds);
+            var stores = await _storeService.GetByIdsAsync(storeIds);
 
             var productIds = reviews.Results
                 .Select(r => r.ProductId)
                 .Distinct()
                 .ToArray();
 
-            var products = _itemService.GetByIds(productIds, Domain.Catalog.Model.ItemResponseGroup.None);
+            var products = await _itemService.GetByIdsAsync(productIds, ItemResponseGroup.None.ToString());
 
             List<CustomerReviewListItem> results = new List<CustomerReviewListItem>();
             foreach (var review in reviews.Results)
@@ -72,7 +69,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
                 results.Add(listItem);
             }
 
-            var retVal = new GenericSearchResult<CustomerReviewListItem>() { Results = results, TotalCount = reviews.TotalCount };
+            var retVal = new CustomerReviewListItemSearchResult { Results = results, TotalCount = reviews.TotalCount };
 
             return Ok(retVal);
         }
@@ -82,9 +79,8 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("search")]
-        [ResponseType(typeof(GenericSearchResult<CustomerReview>))]
-        [CheckPermission(Permission = PredefinedPermissions.CustomerReviewRead)]
-        public async Task<IHttpActionResult> SearchCustomerReviews(CustomerReviewSearchCriteria criteria)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRead)]
+        public async Task<ActionResult<CustomerReviewSearchResult>> SearchCustomerReviews([FromBody]CustomerReviewSearchCriteria criteria)
         {
             var reviews = await _customerReviewSearchService.SearchCustomerReviewsAsync(criteria);
             return Ok(reviews);
@@ -95,56 +91,52 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("changes")]
-        [ResponseType(typeof(string[]))]
-        public async Task<IHttpActionResult> GetProductIdsOfModifiedReviews(ChangedReviewsQuery query)
+        public async Task<ActionResult<string[]>> GetProductIdsOfModifiedReviews([FromBody]ChangedReviewsQuery query)
         {
-            var productIds = await _customerReviewSearchService.GetProductIdsOfModifiedReviews(query);
+            var productIds = await _customerReviewSearchService.GetProductIdsOfModifiedReviewsAsync(query);
             return Ok(productIds);
         }
 
         /// <summary>
         ///  Accept existing customer review
         /// </summary>
-        /// <param name="customerReviews">Customer reviews</param>
+        /// <param name="customerReviewsIds">Customer reviews</param>
         /// <returns></returns>
         [HttpPost]
         [Route("approve")]
-        [ResponseType(typeof(void))]
-        [CheckPermission(Permission = PredefinedPermissions.CustomerReviewUpdate)]
-        public async Task<IHttpActionResult> ApproveReview(string[] customerReviewsIds)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
+        public async Task<ActionResult> ApproveReview([FromQuery]string[] customerReviewsIds)
         {
             await _customerReviewService.ApproveReviewAsync(customerReviewsIds);
-            return StatusCode(HttpStatusCode.NoContent);
+            return NoContent();
         }
 
         /// <summary>
         ///  Reject existing customer review
         /// </summary>
-        /// <param name="customerReviews">Customer reviews</param>
+        /// <param name="customerReviewsIds">Customer reviews</param>
         /// <returns></returns>
         [HttpPost]
         [Route("reject")]
-        [ResponseType(typeof(void))]
-        [CheckPermission(Permission = PredefinedPermissions.CustomerReviewUpdate)]
-        public async Task<IHttpActionResult> RejectReview(string[] customerReviewsIds)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
+        public async Task<ActionResult> RejectReview([FromQuery]string[] customerReviewsIds)
         {
             await _customerReviewService.RejectReviewAsync(customerReviewsIds);
-            return StatusCode(HttpStatusCode.NoContent);
+            return NoContent();
         }
 
         /// <summary>
         ///  Set New existing customer review
         /// </summary>
-        /// <param name="customerReviews">Customer reviews</param>
+        /// <param name="customerReviewsIds">Customer reviews</param>
         /// <returns></returns>
         [HttpPost]
         [Route("reset")]
-        [ResponseType(typeof(void))]
-        [CheckPermission(Permission = PredefinedPermissions.CustomerReviewUpdate)]
-        public async Task<IHttpActionResult> ResetReviewStatus(string[] customerReviewsIds)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
+        public async Task<ActionResult> ResetReviewStatus([FromQuery]string[] customerReviewsIds)
         {
             await _customerReviewService.ResetReviewStatusAsync(customerReviewsIds);
-            return StatusCode(HttpStatusCode.NoContent);
+            return NoContent();
         }
 
         /// <summary>
@@ -154,12 +146,11 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        [ResponseType(typeof(void))]
-        [CheckPermission(Permission = PredefinedPermissions.CustomerReviewUpdate)]
-        public async Task<IHttpActionResult> Update(CustomerReview[] customerReviews)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
+        public async Task<ActionResult> Update([FromBody]CustomerReview[] customerReviews)
         {
             await _customerReviewService.SaveCustomerReviewsAsync(customerReviews);
-            return StatusCode(HttpStatusCode.NoContent);
+            return NoContent();
         }
 
         /// <summary>
@@ -169,12 +160,11 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         /// <returns></returns>
         [HttpDelete]
         [Route("")]
-        [ResponseType(typeof(void))]
-        [CheckPermission(Permission = PredefinedPermissions.CustomerReviewDelete)]
-        public async Task<IHttpActionResult> Delete([FromUri] string[] ids)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewDelete)]
+        public async Task<ActionResult> Delete([FromQuery] string[] ids)
         {
             await _customerReviewService.DeleteCustomerReviewsAsync(ids);
-            return StatusCode(HttpStatusCode.NoContent);
+            return NoContent();
         }
     }
 }

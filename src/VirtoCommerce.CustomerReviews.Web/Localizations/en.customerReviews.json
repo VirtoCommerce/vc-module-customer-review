@@ -27,7 +27,7 @@
           "productName": "Product",
           "storeName": "Store",
           "createdDate": "From",
-          "review":  "Review"
+          "review": "Review"
 
         },
         "commands": {
@@ -49,6 +49,29 @@
       "customerReview-save": {
         "title": "Save changes",
         "message": "The review has been modified. Do you want to save changes?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Open customers reviews",
+    "customerReviews:update": "Approve, reject and reset review status",
+    "customerReviews:delete": "Delete customer review related data",
+    "customerReviews:ratingRead": "Read rating",
+    "customerReviews:ratingRecalc": "Recalculate rating"
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Customer Reviews enabled",
+        "description": ""
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Allow anonymous to submit customer reviews",
+        "description": ""
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Only customer who bought product can create new review",
+        "description": ""
       }
     }
   }
