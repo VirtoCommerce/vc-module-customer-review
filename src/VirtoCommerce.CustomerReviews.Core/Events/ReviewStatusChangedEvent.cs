@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
+using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.Platform.Core.Events;
 
 namespace VirtoCommerce.CustomerReviews.Core.Events
 {
-    public class ReviewStatusChangedEvent : DomainEvent
+    public class ReviewStatusChangedEvent : GenericChangedEntryEvent<ReviewStatusChangeData>
     {
-        public ReviewStatusChangedEvent(IEnumerable<ReviewStatusChangeData> data)
+        public ReviewStatusChangedEvent(IEnumerable<GenericChangedEntry<ReviewStatusChangeData>> changedEntries) : base(changedEntries)
         {
-            Data = data;
         }
-
-        public IEnumerable<ReviewStatusChangeData> Data { get; private set; }
     }
 }

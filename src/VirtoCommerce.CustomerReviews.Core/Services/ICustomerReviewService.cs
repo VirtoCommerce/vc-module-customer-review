@@ -6,14 +6,14 @@ namespace VirtoCommerce.CustomerReviews.Core.Services
 {
     public interface ICustomerReviewService
     {
-        Task<IEnumerable<CustomerReview>> GetByIdsAsync(IEnumerable<string> customerReviewsIds);
-        Task SaveCustomerReviewsAsync(IEnumerable<CustomerReview> items);
+        Task<CustomerReview[]> GetByIdsAsync(string[] customerReviewsIds);
+        Task SaveCustomerReviewsAsync(CustomerReview[] items);
 
-        Task ApproveReviewAsync(IEnumerable<string> customerReviewsIds);
-        Task RejectReviewAsync(IEnumerable<string> customerReviewsIds);
-        Task ResetReviewStatusAsync(IEnumerable<string> customerReviewsIds);
+        Task ApproveReviewAsync(string[] customerReviewsIds);
+        Task RejectReviewAsync(string[] customerReviewsIds);
+        Task ResetReviewStatusAsync(string[] customerReviewsIds);
 
-        Task DeleteCustomerReviewsAsync(IEnumerable<string> ids);
+        Task DeleteCustomerReviewsAsync(string[] ids);
 
     }
 }

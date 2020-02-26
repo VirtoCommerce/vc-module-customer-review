@@ -1,6 +1,4 @@
-﻿using VirtoCommerce.CustomerReviews.Core.Models;
-
-namespace VirtoCommerce.CustomerReviews.Core.Events
+﻿namespace VirtoCommerce.CustomerReviews.Core.Models
 {
     public class ReviewStatusChangeData
     {

@@ -16,7 +16,7 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.CustomerReviews.Data.Services
 {
-    public class RatingService : ServiceBase, IRatingService
+    public class RatingService : IRatingService
     {
         private readonly Func<ICustomerReviewRepository> _repositoryFactory;
         private readonly IEnumerable<IRatingCalculator> _ratingCalculators;

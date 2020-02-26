@@ -1,29 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.Platform.Data.Infrastructure;
-using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 
 namespace VirtoCommerce.CustomerReviews.Data.Repositories
 {
-    public class CustomerReviewRepository : EFRepositoryBase, ICustomerReviewRepository
+    public class CustomerReviewRepository : DbContextRepositoryBase<CustomerReviewsDbContext>, ICustomerReviewRepository
     {
-        public CustomerReviewRepository()
+        protected CustomerReviewRepository(CustomerReviewsDbContext dbContext) : base(dbContext)
         {
-        }
-
-        public CustomerReviewRepository(string nameOrConnectionString, params IInterceptor[] interceptors)
-            : base(nameOrConnectionString, null, interceptors)
-        {
-            Configuration.LazyLoadingEnabled = false;
         }
 
         #region CustomerReviews
-        public IQueryable<CustomerReviewEntity> CustomerReviews => GetAsQueryable<CustomerReviewEntity>();
-
-
+        public IQueryable<CustomerReviewEntity> CustomerReviews => DbContext.Set<CustomerReviewEntity>();
+        
         public Task<CustomerReviewEntity[]> GetByIdsAsync(IEnumerable<string> ids)
         {
             return CustomerReviews.Where(x => ids.Contains(x.Id)).ToArrayAsync();
@@ -62,7 +54,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
         #region Rating
 
-        public IQueryable<RatingEntity> Ratings => GetAsQueryable<RatingEntity>();
+        public IQueryable<RatingEntity> Ratings => DbContext.Set<RatingEntity>();
 
         public async Task<RatingEntity[]> GetAsync(string storeId, IEnumerable<string> productIds)
         {
@@ -82,37 +74,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         }
 
         #endregion
-
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            #region CustomerReview
-
-            modelBuilder.Entity<CustomerReviewEntity>()
-                .ToTable("CustomerReview")
-                .HasKey(x => x.Id)
-                .Property(x => x.Id);
-            modelBuilder.Entity<CustomerReviewEntity>()
-                .HasIndex(x => new { x.StoreId, x.ProductId, x.ReviewStatus })
-                .IsUnique(false);
-
-            #endregion
-
-            #region Rating
-
-            modelBuilder.Entity<RatingEntity>()
-                .ToTable("Ratings")
-                .HasKey(x => x.Id)
-                .Property(x => x.Id);
-
-            modelBuilder.Entity<RatingEntity>()
-                .HasIndex(x => new { x.StoreId, x.ProductId })
-                .IsUnique();
-
-            #endregion
-
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }
 

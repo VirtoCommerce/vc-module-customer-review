@@ -2,122 +2,150 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.CustomerReviews.Core.Events;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.CustomerReviews.Data.Caching;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.CustomerReviews.Data.Services
 {
-    public class CustomerReviewService : ServiceBase, ICustomerReviewService
+    public class CustomerReviewService : ICustomerReviewService
     {
         private readonly Func<ICustomerReviewRepository> _repositoryFactory;
         private readonly IEventPublisher _eventPublisher;
+        private readonly IPlatformMemoryCache _platformMemoryCache;
 
-        public CustomerReviewService(Func<ICustomerReviewRepository> repositoryFactory, IEventPublisher eventPublisher)
+        public CustomerReviewService(Func<ICustomerReviewRepository> repositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache)
         {
             _repositoryFactory = repositoryFactory;
             _eventPublisher = eventPublisher;
+            _platformMemoryCache = platformMemoryCache;
         }
 
-        public async Task<IEnumerable<CustomerReview>> GetByIdsAsync(IEnumerable<string> customerReviewsIds)
+        public async Task<CustomerReview[]> GetByIdsAsync(string[] customerReviewsIds)
         {
-            using (var repository = _repositoryFactory())
+            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", customerReviewsIds));
+            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                var reviews = await repository.GetByIdsAsync(customerReviewsIds);
+                cacheEntry.AddExpirationToken(CustomerReviewCacheRegion.CreateChangeToken());
+                using (var repository = _repositoryFactory())
+                {
+                    repository.DisableChangesTracking();
 
-                return reviews.Select(x => x.ToModel(AbstractTypeFactory<CustomerReview>.TryCreateInstance())).ToArray();
-            }
+                    var reviews = await repository.GetByIdsAsync(customerReviewsIds);
+
+                    return reviews.Select(x => x.ToModel(AbstractTypeFactory<CustomerReview>.TryCreateInstance())).ToArray();
+                }
+            });
         }
 
-        public async Task SaveCustomerReviewsAsync(IEnumerable<CustomerReview> items)
+        public async Task SaveCustomerReviewsAsync(CustomerReview[] customerReviews)
         {
             var pkMap = new PrimaryKeyResolvingMap();
+            var changedEntries = new List<GenericChangedEntry<CustomerReview>>();
+
             using (var repository = _repositoryFactory())
             {
-                using (var changeTracker = GetChangeTracker(repository))
+                
+                var alreadyExistEntities = await repository.GetByIdsAsync(customerReviews.Where(m => !m.IsTransient()).Select(x => x.Id));
+                foreach (var customerReview in customerReviews)
                 {
-                    var alreadyExistEntities = await repository.GetByIdsAsync(items.Where(m => !m.IsTransient()).Select(x => x.Id));
-                    foreach (var derivativeContract in items)
+                    var sourceEntity = AbstractTypeFactory<CustomerReviewEntity>.TryCreateInstance().FromModel(customerReview, pkMap);
+                    var targetEntity = alreadyExistEntities.FirstOrDefault(x => x.Id == sourceEntity.Id);
+                    if (targetEntity != null)
                     {
-                        var sourceEntity = AbstractTypeFactory<CustomerReviewEntity>.TryCreateInstance().FromModel(derivativeContract, pkMap);
-                        var targetEntity = alreadyExistEntities.FirstOrDefault(x => x.Id == sourceEntity.Id);
-                        if (targetEntity != null)
-                        {
-                            changeTracker.Attach(targetEntity);
-                            sourceEntity.Patch(targetEntity);
-                        }
-                        else
-                        {
-                            repository.Add(sourceEntity);
-                        }
+                        changedEntries.Add(new GenericChangedEntry<CustomerReview>(customerReview, targetEntity.ToModel(AbstractTypeFactory<CustomerReview>.TryCreateInstance()), EntryState.Modified));
+                        sourceEntity.Patch(targetEntity);
                     }
-
-                    CommitChanges(repository);
-                    pkMap.ResolvePrimaryKeys();
+                    else
+                    {
+                        repository.Add(sourceEntity);
+                        changedEntries.Add(new GenericChangedEntry<CustomerReview>(customerReview, EntryState.Added));
+                    }
                 }
+
+
+                await repository.UnitOfWork.CommitAsync();
+                pkMap.ResolvePrimaryKeys();
+
+                await _eventPublisher.Publish(new CustomerReviewChangedEvent(changedEntries));
             }
+
+            ClearCache(customerReviews);
         }
 
-        public async Task DeleteCustomerReviewsAsync(IEnumerable<string> ids)
+        public async Task DeleteCustomerReviewsAsync(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {
+                var customerReviews = await GetByIdsAsync(ids);
+
+                var changedEntries = customerReviews.Select(x => new GenericChangedEntry<CustomerReview>(x, EntryState.Deleted)).ToArray();
+
                 await repository.DeleteCustomerReviewsAsync(ids);
-                CommitChanges(repository);
+                await repository.UnitOfWork.CommitAsync();
+                await _eventPublisher.Publish(new CustomerReviewChangedEvent(changedEntries));
+
+                ClearCache(customerReviews);
             }
         }
 
-        public Task ApproveReviewAsync(IEnumerable<string> customerReviewsIds)
+        public Task ApproveReviewAsync(string[] customerReviewsIds)
         {
             return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.Approved);
-
         }
 
-        private async Task ChangeReviewStatusAsync(IEnumerable<string> ids, CustomerReviewStatus status)
+        public Task RejectReviewAsync(string[] customerReviewsIds)
+        {
+            return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.Rejected);
+        }
+
+        public Task ResetReviewStatusAsync(string[] customerReviewsIds)
+        {
+            return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.New);
+        }
+
+
+        private async Task ChangeReviewStatusAsync(string[] ids, CustomerReviewStatus status)
         {
             if (!ids.Any())
             {
                 return;
             }
 
-            List<ReviewStatusChangeData> reviews = new List<ReviewStatusChangeData>();
             using (var repository = _repositoryFactory())
             {
-                using (var changeTracker = GetChangeTracker(repository))
+                var reviewsDb = await repository.GetByIdsAsync(ids);
+                var reviews = reviewsDb.Select(x =>
                 {
-                    var reviewsDb = await repository.GetByIdsAsync(ids);
-                    foreach (var entity in reviewsDb)
+                    var result = new GenericChangedEntry<ReviewStatusChangeData>(new ReviewStatusChangeData()
                     {
-                        reviews.Add(new ReviewStatusChangeData()
-                        {
-                            ProductId = entity.ProductId,
-                            StoreId = entity.StoreId,
-                            OldStatus = (CustomerReviewStatus)entity.ReviewStatus,
-                            NewStatus = status
-                        });
-                        entity.ReviewStatus = (byte)status;
-                    }
-                }
-                CommitChanges(repository);
+                        ProductId = x.ProductId,
+                        StoreId = x.StoreId,
+                        OldStatus = (CustomerReviewStatus)x.ReviewStatus,
+                        NewStatus = status
+                    }, EntryState.Modified);
+                    x.ReviewStatus = (byte)status;
+
+                    return result;
+                });
+
+                await repository.UnitOfWork.CommitAsync();
+                await _eventPublisher.Publish(new ReviewStatusChangedEvent(reviews));
             }
-
-            await _eventPublisher.Publish(new ReviewStatusChangedEvent(reviews));
-
         }
+        
 
-        public Task RejectReviewAsync(IEnumerable<string> customerReviewsIds)
+        protected virtual void ClearCache(IEnumerable<CustomerReview> members)
         {
-            return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.Rejected);
-        }
-
-        public Task ResetReviewStatusAsync(IEnumerable<string> customerReviewsIds)
-        {
-            return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.New);
+            CustomerReviewCacheRegion.ExpireRegion();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace VirtoCommerce.CustomerReviews.Core.RatingCalculators
+﻿namespace VirtoCommerce.CustomerReviews.Core.Services
 {
     public interface IRatingCalculator
     {
