@@ -1,5 +1,5 @@
 ﻿using System;
-using VirtoCommerce.Domain.Commerce.Model.Search;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CustomerReviews.Core.Models
 {

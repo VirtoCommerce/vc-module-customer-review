@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <noWarn>1591</noWarn>
+        <IsPackable>True</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Hangfire" Version="1.7.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
+        <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc2-0138" />
+        <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.0.0-rc2-0138" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Core\VirtoCommerce.CustomerReviews.Core.csproj" />
+    </ItemGroup>
+
+</Project>
