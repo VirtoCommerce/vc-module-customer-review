@@ -47,6 +47,14 @@ namespace VirtoCommerce.CustomerReviews.Core
                     DefaultValue = true,
                 };
 
+                public static SettingDescriptor CalculationMethod = new SettingDescriptor
+                {
+                    Name = "CustomerReviews.Calculation.Method",
+                    GroupName = "CustomerReviews",
+                    ValueType = SettingValueType.ShortText,
+                    DefaultValue = "Average",
+                };
+
                 public static IEnumerable<SettingDescriptor> AllSettings
                 {
                     get

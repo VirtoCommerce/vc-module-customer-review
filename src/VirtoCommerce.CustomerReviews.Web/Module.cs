@@ -24,9 +24,7 @@ namespace VirtoCommerce.CustomerReviews.Web
     public class Module : IModule
     {
         private IApplicationBuilder _applicationBuilder;
-        private const string ConfigStoreGroupName = "CustomerReviews";
         private const string ConfigStoreModuleId = "VirtoCommerce.Store";
-        private const string ConfigCalculatorSettingsName = "CustomerReviews.Calculation.Method";
         public ManifestModuleInfo ModuleInfo { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
@@ -53,8 +51,8 @@ namespace VirtoCommerce.CustomerReviews.Web
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
-            var storeSettings = settingsRegistrar.GetSettingsForType(typeof(Store).Name).ToList();
-            storeSettings.Add(GetCalculatorStoreSetting());
+            var storeSettings = new[] { GetCalculatorStoreSetting() };
+            settingsRegistrar.RegisterSettingsForType(storeSettings, nameof(Store));
             settingsRegistrar.RegisterSettings(storeSettings, ConfigStoreModuleId);
 
             var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
@@ -79,19 +77,12 @@ namespace VirtoCommerce.CustomerReviews.Web
 
         private SettingDescriptor GetCalculatorStoreSetting()
         {
-            var defaultCalculator = new AverageRatingCalculator();
             var calculatorsNames = _applicationBuilder.ApplicationServices.GetServices<IRatingCalculator>()
                                              .Select(x => x.Name)
                                              .ToArray();
-            return new SettingDescriptor
-            {
-                GroupName = ConfigStoreGroupName,
-                Name = ConfigCalculatorSettingsName,
-                //Title = ConfigCalculatorSettingsTitle,
-                ValueType = SettingValueType.ShortText,
-                DefaultValue = defaultCalculator.Name,
-                AllowedValues = calculatorsNames
-            };
+            var result = ModuleConstants.Settings.General.CalculationMethod;
+            result.AllowedValues = calculatorsNames;
+            return result;
         }
     }
 }

@@ -72,6 +72,10 @@
       "CanSubmitReviewWhenHasOrder": {
         "title": "Only customer who bought product can create new review",
         "description": ""
+      },
+	  "Calculation.Method": {
+        "title": "Rating calculation method",
+        "description": ""
       }
     }
   }

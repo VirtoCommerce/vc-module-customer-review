@@ -1,4 +1,4 @@
-body
+/*body
 {
     margin: 0;
     padding: 0;
@@ -8,12 +8,12 @@ body
     font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     line-height: 1.45;
     word-wrap: break-word;
-}
+}*/
 
 /* General & 'Reset' Stuff */
 
 
-.container
+/*.container
 {
     width: 980px;
     margin: 0 auto;
@@ -28,7 +28,7 @@ section
 h1, h2, h3, h4, h5, h6
 {
     margin: 0;
-}
+}*/
 
 /* Header, <header>
    header   - container
@@ -36,7 +36,7 @@ h1, h2, h3, h4, h5, h6
    h2       - project description
 */
 
-#header
+/*#header
 {
     color: #FFF;
     background: #434343;
@@ -159,3 +159,4 @@ ul
     {
         width: 300px;
     }
+*/

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Model.Search;
 using VirtoCommerce.StoreModule.Core.Services;
 
@@ -144,16 +146,19 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
         private async Task<IRatingCalculator> GetCalculatorAsync(string storeId)
         {
-            var store = await _storeService.GetByIdAsync(storeId);
+            var store = await _storeService.GetByIdAsync(storeId, StoreResponseGroup.Full.ToString());
             if (store == null)
             {
                 throw new KeyNotFoundException($"Store not found, storeId: {storeId}");
             }
 
-            var calculatorName = store.Settings.GetSettingValue<string>("CustomerReviews.Calculation.Method", null);
+            var calculatorName = store.Settings.GetSettingValue(
+                ModuleConstants.Settings.General.CalculationMethod.Name,
+                ModuleConstants.Settings.General.CalculationMethod.DefaultValue.ToString());
+
             if (string.IsNullOrWhiteSpace(calculatorName))
             {
-                throw new KeyNotFoundException("Store settings not found: CustomerReviews.Calculation.Method");
+                throw new KeyNotFoundException($"Store settings not found: {ModuleConstants.Settings.General.CalculationMethod.Name}");
             }
 
             var ratingCalculator = _ratingCalculators.FirstOrDefault(c => c.Name == calculatorName);
