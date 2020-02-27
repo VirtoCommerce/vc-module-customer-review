@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -120,25 +120,27 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 return;
             }
 
+            var reviewStatusChanges = new List<ReviewStatusChangeData>();
+
             using (var repository = _repositoryFactory())
             {
-                var reviewsDb = await repository.GetByIdsAsync(ids);
-                var reviews = reviewsDb.Select(x =>
-                {
-                    var result = new GenericChangedEntry<ReviewStatusChangeData>(new ReviewStatusChangeData()
-                    {
-                        ProductId = x.ProductId,
-                        StoreId = x.StoreId,
-                        OldStatus = (CustomerReviewStatus)x.ReviewStatus,
-                        NewStatus = status
-                    }, EntryState.Modified);
-                    x.ReviewStatus = (byte)status;
+                var reviews = await repository.GetByIdsAsync(ids);
 
-                    return result;
-                });
+                foreach (var customerReviewEntity in reviews)
+                {
+                    customerReviewEntity.ReviewStatus = (byte)status;
+                    reviewStatusChanges.Add(new ReviewStatusChangeData
+                    {
+                        ProductId = customerReviewEntity.ProductId,
+                        StoreId = customerReviewEntity.StoreId,
+                        OldStatus = (CustomerReviewStatus)customerReviewEntity.ReviewStatus,
+                        NewStatus = status
+                    });
+                }
 
                 await repository.UnitOfWork.CommitAsync();
-                await _eventPublisher.Publish(new ReviewStatusChangedEvent(reviews));
+                await _eventPublisher.Publish(new ReviewStatusChangedEvent(reviewStatusChanges.Select(x =>
+                    new GenericChangedEntry<ReviewStatusChangeData>(x, EntryState.Modified))));
             }
         }
         

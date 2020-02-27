@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
@@ -51,7 +51,8 @@ namespace VirtoCommerce.CustomerReviews.Web
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
-            var storeSettings = new[] { GetCalculatorStoreSetting() };
+            var storeSettings = settingsRegistrar.AllRegisteredSettings.Where(x => x.ModuleId.EqualsInvariant(ModuleInfo.Id)).ToList();
+            storeSettings.Add(GetCalculatorStoreSetting());
             settingsRegistrar.RegisterSettingsForType(storeSettings, nameof(Store));
             settingsRegistrar.RegisterSettings(storeSettings, ConfigStoreModuleId);
 
