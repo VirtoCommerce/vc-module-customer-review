@@ -1,0 +1,82 @@
+﻿{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "Customer Reviews",
+        "labels": {
+          "title": "Title",
+          "rating": "Rating",
+          "review": "Review",
+          "modifiedDate": "Last updated",
+          "no-review": "No Customer Reviews found"
+        },
+        "placeholders": {
+          "select-review-Status": "Select review status"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Calculate product rating"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "Title",
+          "content": "Content",
+          "rating": "Rating",
+          "productName": "Product",
+          "storeName": "Store",
+          "createdDate": "From",
+          "review": "Review"
+
+        },
+        "commands": {
+          "approve": "Approve Review",
+          "reject": "Reject Review",
+          "resetReviewStatus": "Reset review status"
+        }
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Customer reviews"
+      },
+      "product-rating": {
+        "title": "Rating"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Save changes",
+        "message": "The review has been modified. Do you want to save changes?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Open customers reviews",
+    "customerReviews:update": "Approve, reject and reset review status",
+    "customerReviews:delete": "Delete customer review related data",
+    "customerReviews:ratingRead": "Read rating",
+    "customerReviews:ratingRecalc": "Recalculate rating"
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Customer Reviews enabled",
+        "description": ""
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Allow anonymous to submit customer reviews",
+        "description": ""
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Only customer who bought product can create new review",
+        "description": ""
+      },
+	  "Calculation.Method": {
+        "title": "Rating calculation method",
+        "description": ""
+      }
+    }
+  }
+}
