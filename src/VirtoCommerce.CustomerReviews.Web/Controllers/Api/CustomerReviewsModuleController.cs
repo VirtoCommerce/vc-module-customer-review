@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CatalogModule.Core.Services;
@@ -39,7 +40,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("reviewList")]
-        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRead)]
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRead)]        
         public async Task<ActionResult<CustomerReviewListItemSearchResult>> GetCustomerReviewsList([FromBody]CustomerReviewSearchCriteria criteria)
         {
             var reviews = await _customerReviewSearchService.SearchCustomerReviewsAsync(criteria);
@@ -106,6 +107,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("approve")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ApproveReview(string[] customerReviewsIds)
         {
             await _customerReviewService.ApproveReviewAsync(customerReviewsIds);
@@ -120,6 +122,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("reject")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> RejectReview(string[] customerReviewsIds)
         {
             await _customerReviewService.RejectReviewAsync(customerReviewsIds);
@@ -134,6 +137,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("reset")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ResetReviewStatus(string[] customerReviewsIds)
         {
             await _customerReviewService.ResetReviewStatusAsync(customerReviewsIds);
@@ -148,6 +152,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Update([FromBody]CustomerReview[] customerReviews)
         {
             await _customerReviewService.SaveCustomerReviewsAsync(customerReviews);
@@ -162,6 +167,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpDelete]
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewDelete)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete([FromQuery] string[] ids)
         {
             await _customerReviewService.DeleteCustomerReviewsAsync(ids);
