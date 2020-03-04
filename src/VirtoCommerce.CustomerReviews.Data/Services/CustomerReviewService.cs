@@ -128,7 +128,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
                 foreach (var customerReviewEntity in reviews)
                 {
-                    customerReviewEntity.ReviewStatus = (byte)status;
                     reviewStatusChanges.Add(new ReviewStatusChangeData
                     {
                         ProductId = customerReviewEntity.ProductId,
@@ -136,6 +135,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                         OldStatus = (CustomerReviewStatus)customerReviewEntity.ReviewStatus,
                         NewStatus = status
                     });
+                    customerReviewEntity.ReviewStatus = (byte)status;
                 }
 
                 await repository.UnitOfWork.CommitAsync();
