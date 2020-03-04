@@ -5,7 +5,7 @@
     <version-tag>rc.3-001</version-tag>
     <platformVersion>3.0.0</platformVersion>
 
-    <title>VirtoCommerce.CustomerReviews</title>
+    <title>Customer Reviews</title>
     <description>Customer reviews and product rating</description>
     <authors>
       <author>Egidijus Mazeika</author>
