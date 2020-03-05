@@ -78,7 +78,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 await _eventPublisher.Publish(new CustomerReviewChangedEvent(changedEntries));
             }
 
-            ClearCache(customerReviews);
+            ClearCache();
         }
 
         public async Task DeleteCustomerReviewsAsync(string[] ids)
@@ -93,7 +93,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 await repository.UnitOfWork.CommitAsync();
                 await _eventPublisher.Publish(new CustomerReviewChangedEvent(changedEntries));
 
-                ClearCache(customerReviews);
+                ClearCache();
             }
         }
 
@@ -141,11 +141,13 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 await repository.UnitOfWork.CommitAsync();
                 await _eventPublisher.Publish(new ReviewStatusChangedEvent(reviewStatusChanges.Select(x =>
                     new GenericChangedEntry<ReviewStatusChangeData>(x, EntryState.Modified))));
+
+                ClearCache();
             }
         }
         
 
-        protected virtual void ClearCache(IEnumerable<CustomerReview> members)
+        protected virtual void ClearCache()
         {
             CustomerReviewCacheRegion.ExpireRegion();
         }
