@@ -16,7 +16,7 @@
 
                     var params = {
                         productIds: [blade.itemId],
-                        catalogId: blade.catalog.id
+                        catalogId: blade.catalog ? blade.catalog.id : ''
                     };
 
                     ratingApi.get(params, function (data) {
