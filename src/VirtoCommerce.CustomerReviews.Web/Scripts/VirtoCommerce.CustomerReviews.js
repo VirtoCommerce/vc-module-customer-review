@@ -1,4 +1,4 @@
-﻿//Call this to register our module to main application
+//Call this to register our module to main application
 var moduleTemplateName = "VirtoCommerce.CustomerReviews";
 
 if (AppDependencies != undefined) {
@@ -46,14 +46,15 @@ angular.module(moduleTemplateName, [])
         var itemReviewsWidget = {
             controller: 'VirtoCommerce.CustomerReviews.customerReviewWidgetController',
             template: 'Modules/$(VirtoCommerce.CustomerReviews)/Scripts/widgets/customerReviewWidget.tpl.html',
-            isVisible: function (blade) { return authService.checkPermission('customerReviews:read'); },
+            isVisible: function (blade) { return authService.checkPermission('customerReviews:read'); }
         };
         widgetService.registerWidget(itemReviewsWidget, 'itemDetail');
 
         //Register rating widget inside product blade
         var ratingWidget = {
             controller: 'VirtoCommerce.CustomerReviews.ratingProductWidgetController',
-            template: 'modules/$(VirtoCommerce.CustomerReviews)/Scripts/widgets/virtoCommerceRatingProductWidget.tpl.html'
+            template: 'modules/$(VirtoCommerce.CustomerReviews)/Scripts/widgets/virtoCommerceRatingProductWidget.tpl.html',
+            isVisible: function (blade) { return authService.checkPermission('customerReviews:ratingRead'); }
         };
         widgetService.registerWidget(ratingWidget, 'itemDetail');
         
