@@ -9,7 +9,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
             migrationBuilder.Sql(@"IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '__MigrationHistory'))
                     IF (EXISTS (SELECT * FROM __MigrationHistory WHERE ContextKey = 'VirtoCommerce.CustomerReviews.Data.Migrations.Configuration'))
                         BEGIN
-                            INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId],[ProductVersion]) VALUES ('20200226143146_InitialCustomerReviews', '3.1.0')
+                            INSERT INTO [__EFMigrationsHistory] ([MigrationId],[ProductVersion]) VALUES ('20200226143146_InitialCustomerReviews', '3.1.0')
                         END");
         }
 
