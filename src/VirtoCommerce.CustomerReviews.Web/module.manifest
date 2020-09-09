@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<module>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.CustomerReviews</id>
-  <version>3.2.0</version>
-  <version-tag>
-  </version-tag>
+  <version>3.3.0</version>
+  <version-tag />
   <platformVersion>3.0.0</platformVersion>
   <title>Customer Reviews</title>
   <description>Customer reviews and product rating</description>
@@ -12,10 +11,12 @@
     <author>Andrew Nikutin</author>
     <author>Evgeny Gusev</author>
   </authors>
+  <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  <assemblyFile>VirtoCommerce.CustomerReviews.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>
   <dependencies>
     <dependency id="VirtoCommerce.Catalog" version="3.0.0" />
     <dependency id="VirtoCommerce.Store" version="3.0.0" />
   </dependencies>
-  <assemblyFile>VirtoCommerce.CustomerReviews.Web.dll</assemblyFile>
-  <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>
+  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>
