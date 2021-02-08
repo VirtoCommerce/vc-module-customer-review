@@ -57,7 +57,7 @@ angular.module('VirtoCommerce.CustomerReviews')
                 bladeNavigationService.showBlade(newBlade, blade);
             }    
             
-            blade.headIcon = 'fa-comments';
+            blade.headIcon = 'fa fa-comments';
             blade.title = 'Customer reviews';
 
             blade.toolbarCommands = [
