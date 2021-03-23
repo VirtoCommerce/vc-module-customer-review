@@ -46,16 +46,16 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             });
         }
 
-        public async Task SaveCustomerReviewsAsync(CustomerReview[] customerReviews)
+        public async Task SaveCustomerReviewsAsync(CustomerReview[] items)
         {
             var pkMap = new PrimaryKeyResolvingMap();
             var changedEntries = new List<GenericChangedEntry<CustomerReview>>();
 
             using (var repository = _repositoryFactory())
             {
-                
-                var alreadyExistEntities = await repository.GetByIdsAsync(customerReviews.Where(m => !m.IsTransient()).Select(x => x.Id));
-                foreach (var customerReview in customerReviews)
+
+                var alreadyExistEntities = await repository.GetByIdsAsync(items.Where(m => !m.IsTransient()).Select(x => x.Id));
+                foreach (var customerReview in items)
                 {
                     var sourceEntity = AbstractTypeFactory<CustomerReviewEntity>.TryCreateInstance().FromModel(customerReview, pkMap);
                     var targetEntity = alreadyExistEntities.FirstOrDefault(x => x.Id == sourceEntity.Id);
@@ -131,6 +131,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 {
                     reviewStatusChanges.Add(new ReviewStatusChangeData
                     {
+                        Id = customerReviewEntity.Id,
                         ProductId = customerReviewEntity.ProductId,
                         StoreId = customerReviewEntity.StoreId,
                         OldStatus = (CustomerReviewStatus)customerReviewEntity.ReviewStatus,
@@ -147,7 +148,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                     new GenericChangedEntry<ReviewStatusChangeData>(x, EntryState.Modified))));
             }
         }
-        
+
 
         protected virtual void ClearCache()
         {
