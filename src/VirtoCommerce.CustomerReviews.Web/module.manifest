@@ -1,22 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <id>VirtoCommerce.CustomerReviews</id>
-  <version>3.4.0</version>
-  <version-tag />
-  <platformVersion>3.0.0</platformVersion>
-  <title>Customer Reviews</title>
-  <description>Customer reviews and product rating</description>
-  <authors>
-    <author>Egidijus Mazeika</author>
-    <author>Andrew Nikutin</author>
-    <author>Evgeny Gusev</author>
-  </authors>
-  <requireLicenseAcceptance>false</requireLicenseAcceptance>
-  <assemblyFile>VirtoCommerce.CustomerReviews.Web.dll</assemblyFile>
-  <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>
-  <dependencies>
-    <dependency id="VirtoCommerce.Catalog" version="3.0.0" />
-    <dependency id="VirtoCommerce.Store" version="3.0.0" />
-  </dependencies>
-  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
+    <id>VirtoCommerce.CustomerReviews</id>
+    <version>3.4.0</version>
+    <version-tag />
+    <platformVersion>3.0.0</platformVersion>
+    <title>Customer Reviews</title>
+    <description>Customer reviews and product rating</description>
+    <authors>
+        <author>Egidijus Mazeika</author>
+        <author>Andrew Nikutin</author>
+        <author>Evgeny Gusev</author>
+    </authors>
+    <owners>
+        <owner>Virto Commerce</owner>
+    </owners>
+    <tags>customer review</tags>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright © 2021 Virto Commerce. All rights reserved</copyright>
+    <assemblyFile>VirtoCommerce.CustomerReviews.Web.dll</assemblyFile>
+    <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>
+    <dependencies>
+        <dependency id="VirtoCommerce.Catalog" version="3.0.0" />
+        <dependency id="VirtoCommerce.Store" version="3.0.0" />
+    </dependencies>
+    <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>
