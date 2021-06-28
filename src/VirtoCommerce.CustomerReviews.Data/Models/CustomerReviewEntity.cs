@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 
 namespace VirtoCommerce.CustomerReviews.Data.Models
 {
-    public class CustomerReviewEntity : AuditableEntity
+    public class CustomerReviewEntity : AuditableEntity, IDataEntity<CustomerReviewEntity, CustomerReview>
     {
         public string Title { get; set; }
         [Required]
@@ -31,54 +32,54 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
         public int ReviewStatus { get; set; }
 
 
-        public virtual CustomerReview ToModel(CustomerReview customerReview)
+        public virtual CustomerReview ToModel(CustomerReview model)
         {
-            if (customerReview == null)
-                throw new ArgumentNullException(nameof(customerReview));
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
 
-            customerReview.Id = Id;
-            customerReview.CreatedBy = CreatedBy;
-            customerReview.CreatedDate = CreatedDate;
-            customerReview.ModifiedBy = ModifiedBy;
-            customerReview.ModifiedDate = ModifiedDate;
+            model.Id = Id;
+            model.CreatedBy = CreatedBy;
+            model.CreatedDate = CreatedDate;
+            model.ModifiedBy = ModifiedBy;
+            model.ModifiedDate = ModifiedDate;
 
-            customerReview.UserId = UserId;
-            customerReview.UserName = UserName;
+            model.UserId = UserId;
+            model.UserName = UserName;
 
-            customerReview.Review = Review;
-            customerReview.ReviewStatus = (CustomerReviewStatus)ReviewStatus;
-            customerReview.Rating = Rating;
-            customerReview.Title = Title;
+            model.Review = Review;
+            model.ReviewStatus = (CustomerReviewStatus)ReviewStatus;
+            model.Rating = Rating;
+            model.Title = Title;
 
-            customerReview.ProductId = ProductId;
-            customerReview.StoreId = StoreId;
+            model.ProductId = ProductId;
+            model.StoreId = StoreId;
 
-            return customerReview;
+            return model;
         }
 
-        public virtual CustomerReviewEntity FromModel(CustomerReview customerReview, PrimaryKeyResolvingMap pkMap)
+        public virtual CustomerReviewEntity FromModel(CustomerReview model, PrimaryKeyResolvingMap pkMap)
         {
-            if (customerReview == null)
-                throw new ArgumentNullException(nameof(customerReview));
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
 
-            pkMap.AddPair(customerReview, this);
+            pkMap.AddPair(model, this);
 
-            Id = customerReview.Id;
-            CreatedBy = customerReview.CreatedBy;
-            CreatedDate = customerReview.CreatedDate;
-            ModifiedBy = customerReview.ModifiedBy;
-            ModifiedDate = customerReview.ModifiedDate;
+            Id = model.Id;
+            CreatedBy = model.CreatedBy;
+            CreatedDate = model.CreatedDate;
+            ModifiedBy = model.ModifiedBy;
+            ModifiedDate = model.ModifiedDate;
 
-            UserId = customerReview.UserId;
-            UserName = customerReview.UserName;
+            UserId = model.UserId;
+            UserName = model.UserName;
 
-            Title = customerReview.Title;
-            Review = customerReview.Review;
-            ReviewStatus = (byte)customerReview.ReviewStatus;
-            Rating = customerReview.Rating;
+            Title = model.Title;
+            Review = model.Review;
+            ReviewStatus = (byte)model.ReviewStatus;
+            Rating = model.Rating;
 
-            ProductId = customerReview.ProductId;
-            StoreId = customerReview.StoreId;
+            ProductId = model.ProductId;
+            StoreId = model.StoreId;
 
             return this;
         }
