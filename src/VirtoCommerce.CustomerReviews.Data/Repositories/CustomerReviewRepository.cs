@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +15,10 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
         #region CustomerReviews
         public IQueryable<CustomerReviewEntity> CustomerReviews => DbContext.Set<CustomerReviewEntity>();
-        
-        public Task<CustomerReviewEntity[]> GetByIdsAsync(IEnumerable<string> ids)
+
+        public Task<IEnumerable<CustomerReviewEntity>> GetByIdsAsync(IEnumerable<string> ids)
         {
-            return CustomerReviews.Where(x => ids.Contains(x.Id)).ToArrayAsync();
+            return Task.Run(() => CustomerReviews.Where(x => ids.Contains(x.Id)).AsEnumerable());
         }
 
         public async Task DeleteCustomerReviewsAsync(IEnumerable<string> ids)

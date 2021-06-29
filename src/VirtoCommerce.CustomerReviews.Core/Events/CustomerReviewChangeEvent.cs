@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.Platform.Core.Events;
 

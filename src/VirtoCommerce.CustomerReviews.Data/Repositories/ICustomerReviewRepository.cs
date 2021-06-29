@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.CustomerReviews.Data.Models;
@@ -11,7 +11,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         #region CustomerReviews
         IQueryable<CustomerReviewEntity> CustomerReviews { get; }
 
-        Task<CustomerReviewEntity[]> GetByIdsAsync(IEnumerable<string> ids);
+        Task<IEnumerable<CustomerReviewEntity>> GetByIdsAsync(IEnumerable<string> ids);
         Task DeleteCustomerReviewsAsync(IEnumerable<string> ids);
 
         Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> productIds, IEnumerable<int> reviewStatuses);

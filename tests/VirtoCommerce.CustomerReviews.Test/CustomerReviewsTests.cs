@@ -42,7 +42,7 @@ namespace VirtoCommerce.CustomerReviews.Test
             _platformMemoryCacheMock.Setup(x => x.GetDefaultCacheEntryOptions()).Returns(() => new MemoryCacheEntryOptions());
 
 
-            var cacheKeyCRUD = CacheKey.With(typeof(CustomerReviewService), "GetByIdsAsync", string.Join("-", CustomerReviewId), null);            
+            var cacheKeyCRUD = CacheKey.With(typeof(CustomerReviewService), "GetByIdsAsync", string.Join("-", CustomerReviewId), null);
             _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKeyCRUD)).Returns(_cacheEntryMock.Object);
         }
 
@@ -52,12 +52,10 @@ namespace VirtoCommerce.CustomerReviews.Test
             IEnumerable<CustomerReview> result;
 
             // Read non-existing item
-            await using (var context = new CustomerReviewsDbContext(_dbContextOptions))
-            {
-                result = await CustomerReviewService(context).GetByIdsAsync(new[] { CustomerReviewId });
-                Assert.NotNull(result);
-                Assert.Empty(result);
-            }
+
+            result = await CustomerReviewService().GetByIdsAsync(new[] { CustomerReviewId });
+            Assert.NotNull(result);
+            Assert.Empty(result);
 
 
 
@@ -77,75 +75,52 @@ namespace VirtoCommerce.CustomerReviews.Test
                 ReviewStatus = CustomerReviewStatus.New
             };
 
-            await using (var context = new CustomerReviewsDbContext(_dbContextOptions))
-            {
-                await CustomerReviewService(context).SaveChangesAsync(new[] { item });
-            }
+            await CustomerReviewService().SaveChangesAsync(new[] { item });
 
-            await using (var context = new CustomerReviewsDbContext(_dbContextOptions))
-            {
-                result = await CustomerReviewService(context).GetByIdsAsync(new[] { CustomerReviewId });
-                Assert.Single(result);
-                item = result.First();
-                Assert.Equal(CustomerReviewId, item.Id);
-            }
+            result = await CustomerReviewService().GetByIdsAsync(new[] { CustomerReviewId });
+            Assert.Single(result);
+            item = result.First();
+            Assert.Equal(CustomerReviewId, item.Id);
 
             // Update
             var updatedContent = "Updated content";
             Assert.NotEqual(updatedContent, item.Review);
 
             item.Review = updatedContent;
-            await using (var context = new CustomerReviewsDbContext(_dbContextOptions))
-            {
-                await CustomerReviewService(context).SaveChangesAsync(new[] { item });
-            }
+            await CustomerReviewService().SaveChangesAsync(new[] { item });
 
-            await using (var context = new CustomerReviewsDbContext(_dbContextOptions))
-            {
-                result = await CustomerReviewService(context).GetByIdsAsync(new[] { CustomerReviewId });
-                Assert.Single(result);
-            }
+            result = await CustomerReviewService().GetByIdsAsync(new[] { CustomerReviewId });
+            Assert.Single(result);
 
             item = result.First();
             Assert.Equal(updatedContent, item.Review);
 
-            await using (var context = new CustomerReviewsDbContext(_dbContextOptions))
-            {
-                var criteria = new CustomerReviewSearchCriteria { ProductIds = new[] { ProductId } };
-                var cacheKeySearch = CacheKey.With(typeof(CustomerReviewSearchService), "SearchAsync", criteria.GetCacheKey());
-                _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKeySearch)).Returns(_cacheEntryMock.Object);
+            var criteria = new CustomerReviewSearchCriteria { ProductIds = new[] { ProductId } };
+            var cacheKeySearch = CacheKey.With(typeof(CustomerReviewSearchService), "SearchAsync", criteria.GetCacheKey());
+            _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKeySearch)).Returns(_cacheEntryMock.Object);
 
-                var searchResult = await CustomerReviewSearchService(context).SearchAsync(criteria);
-                Assert.NotNull(searchResult);
-                Assert.Equal(1, searchResult.TotalCount);
-                Assert.Single(searchResult.Results);
-            }
+            var searchResult = await CustomerReviewSearchService().SearchAsync(criteria);
+            Assert.NotNull(searchResult);
+            Assert.Equal(1, searchResult.TotalCount);
+            Assert.Single(searchResult.Results);
 
             // Delete
-            using (var context = new CustomerReviewsDbContext(_dbContextOptions))
-            {
-                await CustomerReviewService(context).DeleteAsync(new[] { CustomerReviewId });
+            await CustomerReviewService().DeleteAsync(new[] { CustomerReviewId });
 
-            }
-
-            using (var context = new CustomerReviewsDbContext(_dbContextOptions))
-            {
-                var getByIdsResult = await CustomerReviewService(context).GetByIdsAsync(new[] { CustomerReviewId });
-                Assert.NotNull(getByIdsResult);
-                Assert.Empty(getByIdsResult);
-            }
-
+            var getByIdsResult = await CustomerReviewService().GetByIdsAsync(new[] { CustomerReviewId });
+            Assert.NotNull(getByIdsResult);
+            Assert.Empty(getByIdsResult);
         }
 
 
-        private ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> CustomerReviewSearchService(CustomerReviewsDbContext customerReviewsDbContext)
+        private ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> CustomerReviewSearchService()
         {
-            return new CustomerReviewSearchService(() => GetRepository(customerReviewsDbContext), _platformMemoryCacheMock.Object, (ICustomerReviewService)CustomerReviewService(customerReviewsDbContext));
+            return new CustomerReviewSearchService(() => GetRepository(new CustomerReviewsDbContext(_dbContextOptions)), _platformMemoryCacheMock.Object, (ICustomerReviewService)CustomerReviewService());
         }
 
-        private ICrudService<CustomerReview> CustomerReviewService(CustomerReviewsDbContext customerReviewsDbContext)
+        private ICrudService<CustomerReview> CustomerReviewService()
         {
-            return new CustomerReviewService(() => GetRepository(customerReviewsDbContext), _platformMemoryCacheMock.Object, _eventPublisherMock.Object);
+            return new CustomerReviewService(() => GetRepository(new CustomerReviewsDbContext(_dbContextOptions)), _platformMemoryCacheMock.Object, _eventPublisherMock.Object);
         }
 
 

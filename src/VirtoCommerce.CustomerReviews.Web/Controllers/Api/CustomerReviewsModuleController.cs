@@ -7,14 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CatalogModule.Core.Services;
 using VirtoCommerce.CustomerReviews.Core;
-using VirtoCommerce.CustomerReviews.Core.Events;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
-using VirtoCommerce.CustomerReviews.Data.Models;
-using VirtoCommerce.CustomerReviews.Web.Model;
-using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.GenericCrud;
-using VirtoCommerce.Platform.Data.GenericCrud;
 using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
@@ -28,9 +23,9 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         private readonly IStoreService _storeService;
         private readonly IItemService _itemService;
 
-        public CustomerReviewsModuleController(ICustomerReviewSearchService customerReviewSearchService, 
-            ICustomerReviewService customerReviewService, 
-            IStoreService storeService, 
+        public CustomerReviewsModuleController(ICustomerReviewSearchService customerReviewSearchService,
+            ICustomerReviewService customerReviewService,
+            IStoreService storeService,
             IItemService itemService)
         {
             _customerReviewSearchService = (ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview>)customerReviewSearchService;
@@ -44,8 +39,8 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("reviewList")]
-        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRead)]        
-        public async Task<ActionResult<CustomerReviewListItemSearchResult>> GetCustomerReviewsList([FromBody]CustomerReviewSearchCriteria criteria)
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRead)]
+        public async Task<ActionResult<CustomerReviewListItemSearchResult>> GetCustomerReviewsList([FromBody] CustomerReviewSearchCriteria criteria)
         {
             var reviews = await _customerReviewSearchService.SearchAsync(criteria);
 
@@ -86,7 +81,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("search")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRead)]
-        public async Task<ActionResult<CustomerReviewSearchResult>> SearchCustomerReviews([FromBody]CustomerReviewSearchCriteria criteria)
+        public async Task<ActionResult<CustomerReviewSearchResult>> SearchCustomerReviews([FromBody] CustomerReviewSearchCriteria criteria)
         {
             var reviews = await _customerReviewSearchService.SearchAsync(criteria);
             return Ok(reviews);
@@ -97,7 +92,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("changes")]
-        public async Task<ActionResult<string[]>> GetProductIdsOfModifiedReviews([FromBody]ChangedReviewsQuery query)
+        public async Task<ActionResult<string[]>> GetProductIdsOfModifiedReviews([FromBody] ChangedReviewsQuery query)
         {
             var productIds = await ((ICustomerReviewSearchService)_customerReviewSearchService).GetProductIdsOfModifiedReviewsAsync(query);
             return Ok(productIds);
@@ -157,7 +152,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewUpdate)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Update([FromBody]CustomerReview[] customerReviews)
+        public async Task<ActionResult> Update([FromBody] CustomerReview[] customerReviews)
         {
             await _customerReviewService.SaveChangesAsync(customerReviews);
             return NoContent();

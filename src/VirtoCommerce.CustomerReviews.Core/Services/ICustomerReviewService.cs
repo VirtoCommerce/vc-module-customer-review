@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using VirtoCommerce.CustomerReviews.Core.Models;
 
 namespace VirtoCommerce.CustomerReviews.Core.Services
 {

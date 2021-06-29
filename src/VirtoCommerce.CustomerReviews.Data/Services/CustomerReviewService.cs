@@ -23,11 +23,10 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         {
         }
 
-        protected async override Task<IEnumerable<CustomerReviewEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
+        protected override Task<IEnumerable<CustomerReviewEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
         {
-            return ((ICustomerReviewRepository)repository).GetByIdsAsync(ids).Result;
+            return ((ICustomerReviewRepository)repository).GetByIdsAsync(ids);
         }
-
 
         public Task ApproveReviewAsync(string[] customerReviewsIds)
         {
