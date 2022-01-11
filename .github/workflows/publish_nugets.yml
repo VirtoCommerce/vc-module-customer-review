@@ -1,0 +1,56 @@
+# v1.0.0
+name: Module nuget publishing
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    if: ${{ github.actor != 'dependabot[bot]' && (github.event.pull_request.head.repo.full_name == github.repository || github.event.pull_request.head.repo.full_name == '') }}  # Check that PR not from forked repo and not from Dependabot
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_SECRET: ${{secrets.CLIENT_SECRET}}
+      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+      NUGET_KEY: ${{ secrets.NUGET_KEY }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install VirtoCommerce.GlobalTool
+        uses: VirtoCommerce/vc-github-actions/setup-vcbuild@master
+
+      - name: Install dotnet-sonarscanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Get Image Version
+        uses: VirtoCommerce/vc-github-actions/get-image-version@master
+        id: image
+
+        #check img version == 3.200
+
+      - name: SonarCloud Begin
+        uses: VirtoCommerce/vc-github-actions/sonar-scanner-begin@master
+
+      - name: Build
+        run: vc-build Compile
+
+      - name: Unit Tests
+        run: vc-build Test -skip
+
+      - name: SonarCloud End
+        uses: VirtoCommerce/vc-github-actions/sonar-scanner-end@master
+
+      - name: Quality Gate
+        uses: VirtoCommerce/vc-github-actions/sonar-quality-gate@master
+        with:
+          login: ${{secrets.SONAR_TOKEN}}
+
+      - name: Packaging
+        run: vc-build Compress -skip Clean+Restore+Compile+Test
+
+      - name: Publish Nuget
+        if: ${{ (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master') && github.event_name != 'workflow_dispatch' }}
+        uses: VirtoCommerce/vc-github-actions/publish-nuget@master
