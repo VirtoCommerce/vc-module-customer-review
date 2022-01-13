@@ -3,6 +3,7 @@ name: Module nuget publishing
 
 on:
   workflow_dispatch:
+  repository_dispatch:
 
 jobs:
   ci:
