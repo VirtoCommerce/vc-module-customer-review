@@ -7,8 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Events;
+using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.Handlers;
+using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.CustomerReviews.Data.Services;
 using VirtoCommerce.Platform.Core.Bus;
@@ -17,6 +19,8 @@ using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
+using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.Platform.Data.GenericCrud;
 using VirtoCommerce.StoreModule.Core.Model;
 
 namespace VirtoCommerce.CustomerReviews.Web
@@ -35,8 +39,11 @@ namespace VirtoCommerce.CustomerReviews.Web
             serviceCollection.AddDbContext<CustomerReviewsDbContext>(options => options.UseSqlServer(connectionString));
             serviceCollection.AddSingleton<Func<ICustomerReviewRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<ICustomerReviewRepository>());
 
-            serviceCollection.AddTransient<ICustomerReviewSearchService, CustomerReviewSearchService>();
-            serviceCollection.AddTransient<ICustomerReviewService, CustomerReviewService>();
+            serviceCollection.AddTransient<ICrudService<CustomerReview>, CustomerReviewService>();
+            serviceCollection.AddTransient(x => (ICustomerReviewService)x.GetRequiredService<ICrudService<CustomerReview>>());
+
+            serviceCollection.AddTransient<ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview>, CustomerReviewSearchService>();
+            serviceCollection.AddTransient(x => (ICustomerReviewSearchService)x.GetRequiredService<ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview>>());
 
             serviceCollection.AddTransient<IRatingCalculator, AverageRatingCalculator>();
             serviceCollection.AddTransient<IRatingCalculator, WilsonRatingCalculator>();

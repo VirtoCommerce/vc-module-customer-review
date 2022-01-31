@@ -23,10 +23,10 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         {
         }
 
-        public async Task<string[]> GetProductIdsOfModifiedReviewsAsync(ChangedReviewsQuery criteria)
+        public Task<string[]> GetProductIdsOfModifiedReviewsAsync(ChangedReviewsQuery criteria)
         {
             var cacheKey = CacheKey.With(GetType(), nameof(GetProductIdsOfModifiedReviewsAsync), criteria.ModifiedDate.ToString("s"));
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 cacheEntry.AddExpirationToken(GenericCachingRegion<CustomerReview>.CreateChangeToken());
                 using (var repository = _repositoryFactory())

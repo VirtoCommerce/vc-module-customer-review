@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +8,7 @@ using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Model.Search;
@@ -19,13 +20,14 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
     {
         private readonly Func<ICustomerReviewRepository> _repositoryFactory;
         private readonly IEnumerable<IRatingCalculator> _ratingCalculators;
-        private readonly IStoreService _storeService;
-        private readonly IStoreSearchService _storeSearchService;
+        private readonly ICrudService<Store> _storeService;
+        private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeSearchService;
 
 
         public RatingService(Func<ICustomerReviewRepository> repositoryFactory,
             IEnumerable<IRatingCalculator> ratingCalculators,
-            IStoreService storeService, IStoreSearchService storeSearchService)
+            ICrudService<Store> storeService,
+            ISearchService<StoreSearchCriteria, StoreSearchResult, Store> storeSearchService)
         {
             _repositoryFactory = repositoryFactory;
             _ratingCalculators = ratingCalculators;
@@ -62,11 +64,19 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
             var calculator = await GetCalculatorAsync(storeId);
 
-            List<RatingEntity> entities = new List<RatingEntity>();
+            var entities = new List<RatingEntity>();
             foreach (var productStore in reviews.GroupBy(r => new { r.ProductId, r.StoreId }))
             {
-                decimal rating = calculator.Calculate(productStore.Select(r => r.Rating).ToArray());
-                entities.Add(new RatingEntity() { ProductId = productStore.Key.ProductId, StoreId = productStore.Key.StoreId, Value = rating });
+                var storeReviews = productStore.Select(r => r.Rating).ToArray();
+                var storeTotalRating = calculator.Calculate(storeReviews);
+
+                entities.Add(new RatingEntity()
+                {
+                    ProductId = productStore.Key.ProductId,
+                    StoreId = productStore.Key.StoreId,
+                    Value = storeTotalRating,
+                    ReviewCount = storeReviews.Length,
+                }); 
             }
 
             using (var repository = _repositoryFactory())
@@ -110,7 +120,8 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 return ratings.Select(x => new RatingProductDto
                 {
                     Value = x.Value,
-                    ProductId = x.ProductId
+                    ProductId = x.ProductId,
+                    ReviewCount = x.ReviewCount,
                 }).ToArray();
 
             }
@@ -120,7 +131,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         {
             var storeSearchCriteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
             storeSearchCriteria.Take = int.MaxValue;
-            var storeSearchResult = await _storeSearchService.SearchStoresAsync(storeSearchCriteria);
+
+            var storeSearchResult = await _storeSearchService.SearchAsync(storeSearchCriteria);
+
             var result = new List<RatingStoreDto>();
 
             using (var repository = _repositoryFactory())
@@ -132,9 +145,11 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                     {
                         result.AddRange(ratings.Select(x => new RatingStoreDto
                         {
-                            Value = x.Value,
                             StoreId = store.Id,
-                            StoreName = store.Name
+                            StoreName = store.Name,
+                            ProductId = x.ProductId,
+                            Value = x.Value,
+                            ReviewCount = x.ReviewCount,
                         }));
                     }
                 }
@@ -147,6 +162,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         private async Task<IRatingCalculator> GetCalculatorAsync(string storeId)
         {
             var store = await _storeService.GetByIdAsync(storeId, StoreResponseGroup.Full.ToString());
+
             if (store == null)
             {
                 throw new KeyNotFoundException($"Store not found, storeId: {storeId}");
