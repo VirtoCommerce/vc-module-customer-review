@@ -12,7 +12,6 @@ using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Model.Search;
-using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.Data.Services
 {
@@ -22,7 +21,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         private readonly IEnumerable<IRatingCalculator> _ratingCalculators;
         private readonly ICrudService<Store> _storeService;
         private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeSearchService;
-
 
         public RatingService(Func<ICustomerReviewRepository> repositoryFactory,
             IEnumerable<IRatingCalculator> ratingCalculators,
