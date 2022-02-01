@@ -68,7 +68,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 var storeReviews = productStore.Select(r => r.Rating).ToArray();
                 var storeTotalRating = calculator.Calculate(storeReviews);
 
-                entities.Add(new RatingEntity()
+                entities.Add(new RatingEntity
                 {
                     ProductId = productStore.Key.ProductId,
                     StoreId = productStore.Key.StoreId,
