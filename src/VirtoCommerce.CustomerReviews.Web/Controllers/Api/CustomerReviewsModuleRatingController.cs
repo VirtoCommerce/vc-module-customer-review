@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.CustomerReviews.Core;
@@ -23,7 +24,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRead)]
         public async Task<ActionResult<RatingStoreDto[]>> GetForCatalog([FromBody]ProductCatalogRatingRequest request)
         {
-            var result = new RatingStoreDto[0];
+            var result = Array.Empty<RatingStoreDto>();
 
             if (!string.IsNullOrWhiteSpace(request.CatalogId) && request.ProductIds.Length > 0)
             {
@@ -36,9 +37,9 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("productRatingInStore")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRead)]
-        public async Task<ActionResult<RatingStoreDto[]>> GetProductRating([FromBody]ProductStoreRatingRequest request)
+        public async Task<ActionResult<RatingProductDto[]>> GetProductRating([FromBody]ProductStoreRatingRequest request)
         {
-            var result = new RatingProductDto[0];
+            var result = Array.Empty<RatingProductDto>();
 
             if (!string.IsNullOrWhiteSpace(request.StoreId) && request.ProductIds.Length > 0)
             {

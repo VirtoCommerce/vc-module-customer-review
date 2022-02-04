@@ -1,8 +1,9 @@
-﻿namespace VirtoCommerce.CustomerReviews.Core.Models
+namespace VirtoCommerce.CustomerReviews.Core.Models
 {
     public class RatingProductDto
     {
         public string ProductId { get; set; }
         public decimal Value { get; set; }
+        public int ReviewCount { get; set; }
     }
 }

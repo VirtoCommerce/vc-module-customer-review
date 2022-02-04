@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -17,6 +17,8 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
 
         public decimal Value { get; set; }
 
+        public int ReviewCount { get; set; }
+
         public virtual void Patch(RatingEntity target)
         {
             if (target == null)
@@ -25,6 +27,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
             target.StoreId = StoreId;
             target.ProductId = ProductId;
             target.Value = Value;
+            target.ReviewCount = ReviewCount;
         }
     }
 

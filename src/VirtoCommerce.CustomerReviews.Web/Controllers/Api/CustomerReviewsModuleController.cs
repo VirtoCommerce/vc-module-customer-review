@@ -10,6 +10,7 @@ using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
@@ -20,16 +21,16 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
     {
         private readonly ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> _customerReviewSearchService;
         private readonly ICrudService<CustomerReview> _customerReviewService;
-        private readonly IStoreService _storeService;
+        private readonly ICrudService<Store> _storeService;
         private readonly IItemService _itemService;
 
-        public CustomerReviewsModuleController(ICustomerReviewSearchService customerReviewSearchService,
-            ICustomerReviewService customerReviewService,
-            IStoreService storeService,
+        public CustomerReviewsModuleController(ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> customerReviewSearchService,
+            ICrudService<CustomerReview> customerReviewService,
+            ICrudService<Store> storeService,
             IItemService itemService)
         {
-            _customerReviewSearchService = (ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview>)customerReviewSearchService;
-            _customerReviewService = (ICrudService<CustomerReview>)customerReviewService;
+            _customerReviewSearchService = customerReviewSearchService;
+            _customerReviewService = customerReviewService;
             _storeService = storeService;
             _itemService = itemService;
         }
@@ -47,9 +48,9 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
             var storeIds = reviews.Results
                 .Select(r => r.StoreId)
                 .Distinct()
-                .ToArray();
+                .ToList();
 
-            var stores = await _storeService.GetByIdsAsync(storeIds);
+            var stores = await _storeService.GetAsync(storeIds);
 
             var productIds = reviews.Results
                 .Select(r => r.ProductId)
@@ -58,7 +59,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 
             var products = await _itemService.GetByIdsAsync(productIds, ItemResponseGroup.None.ToString());
 
-            List<CustomerReviewListItem> results = new List<CustomerReviewListItem>();
+            var results = new List<CustomerReviewListItem>();
             foreach (var review in reviews.Results)
             {
                 var listItem = new CustomerReviewListItem(review)

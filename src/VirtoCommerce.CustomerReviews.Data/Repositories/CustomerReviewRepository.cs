@@ -56,16 +56,16 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
         public IQueryable<RatingEntity> Ratings => DbContext.Set<RatingEntity>();
 
-        public async Task<RatingEntity[]> GetAsync(string storeId, IEnumerable<string> productIds)
+        public Task<RatingEntity[]> GetAsync(string storeId, IEnumerable<string> productIds)
         {
-            return await Ratings
+            return Ratings
                 .Where(x => x.StoreId == storeId && productIds.Contains(x.ProductId))
                 .ToArrayAsync();
         }
 
-        public async Task<RatingEntity> GetAsync(string storeId, string productId)
+        public Task<RatingEntity> GetAsync(string storeId, string productId)
         {
-            return await Ratings.FirstOrDefaultAsync(x => x.StoreId == storeId && x.ProductId == productId);
+            return Ratings.FirstOrDefaultAsync(x => x.StoreId == storeId && x.ProductId == productId);
         }
 
         public void Delete(RatingEntity entity)

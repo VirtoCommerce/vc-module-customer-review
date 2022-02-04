@@ -38,11 +38,10 @@ namespace VirtoCommerce.CustomerReviews.Test
                 .UseSqlServer("Data Source=(local);Initial Catalog=VirtoCommerce3;Persist Security Info=True;User ID=virto;Password=virto;Connect Timeout=30")
                 .Options;
 
-
             _platformMemoryCacheMock.Setup(x => x.GetDefaultCacheEntryOptions()).Returns(() => new MemoryCacheEntryOptions());
 
 
-            var cacheKeyCRUD = CacheKey.With(typeof(CustomerReviewService), "GetByIdsAsync", string.Join("-", CustomerReviewId), null);
+            var cacheKeyCRUD = CacheKey.With(typeof(CustomerReviewService), "GetAsync", string.Join("-", CustomerReviewId), null);
             _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKeyCRUD)).Returns(_cacheEntryMock.Object);
         }
 
@@ -53,7 +52,7 @@ namespace VirtoCommerce.CustomerReviews.Test
 
             // Read non-existing item
 
-            result = await CustomerReviewService().GetByIdsAsync(new[] { CustomerReviewId });
+            result = await CustomerReviewService().GetAsync(new List<string>() { CustomerReviewId });
             Assert.NotNull(result);
             Assert.Empty(result);
 
@@ -77,7 +76,7 @@ namespace VirtoCommerce.CustomerReviews.Test
 
             await CustomerReviewService().SaveChangesAsync(new[] { item });
 
-            result = await CustomerReviewService().GetByIdsAsync(new[] { CustomerReviewId });
+            result = await CustomerReviewService().GetAsync(new List<string>() { CustomerReviewId });
             Assert.Single(result);
             item = result.First();
             Assert.Equal(CustomerReviewId, item.Id);
@@ -89,7 +88,7 @@ namespace VirtoCommerce.CustomerReviews.Test
             item.Review = updatedContent;
             await CustomerReviewService().SaveChangesAsync(new[] { item });
 
-            result = await CustomerReviewService().GetByIdsAsync(new[] { CustomerReviewId });
+            result = await CustomerReviewService().GetAsync(new List<string>() { CustomerReviewId });
             Assert.Single(result);
 
             item = result.First();
@@ -107,7 +106,7 @@ namespace VirtoCommerce.CustomerReviews.Test
             // Delete
             await CustomerReviewService().DeleteAsync(new[] { CustomerReviewId });
 
-            var getByIdsResult = await CustomerReviewService().GetByIdsAsync(new[] { CustomerReviewId });
+            var getByIdsResult = await CustomerReviewService().GetAsync(new List<string>() { CustomerReviewId });
             Assert.NotNull(getByIdsResult);
             Assert.Empty(getByIdsResult);
         }
