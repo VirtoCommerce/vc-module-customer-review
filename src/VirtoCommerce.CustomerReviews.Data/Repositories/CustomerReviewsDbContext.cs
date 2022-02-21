@@ -26,6 +26,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             modelBuilder.Entity<CustomerReviewEntity>()
                 .HasIndex(x => new { x.StoreId, x.ProductId, x.ReviewStatus })
                 .IsUnique(false);
+            modelBuilder.Entity<CustomerReviewEntity>()
+                .HasIndex(x => new { x.StoreId, x.ProductId, x.UserId })
+                .IsUnique();
 
             #endregion
 
@@ -37,6 +40,16 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             modelBuilder.Entity<RatingEntity>()
                 .HasIndex(x => new { x.StoreId, x.ProductId })
                 .IsUnique();
+
+            #endregion
+
+            #region RequestReview
+
+            modelBuilder.Entity<RequestReviewEntity>().HasKey(x => x.Id);
+            modelBuilder.Entity<RequestReviewEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
+            modelBuilder.Entity<RequestReviewEntity>().ToTable("RequestReview");
+            modelBuilder.Entity<RequestReviewEntity>().
+                HasIndex(x => new { x.StoreId, x.ProductId, x.UserId });
 
             #endregion
 

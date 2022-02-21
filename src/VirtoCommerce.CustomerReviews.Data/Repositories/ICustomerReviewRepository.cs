@@ -26,5 +26,17 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         void Delete(RatingEntity entity);
 
         #endregion
+
+
+        #region RequestReview
+
+        IQueryable<RequestReviewEntity> RequestReview { get; }
+        Task<RequestReviewEntity> GetRequestReviewByIdAsync(string Id);
+        Task<RequestReviewEntity[]> GetRequestReviewByIdAsync(IEnumerable<string> Ids);
+        Task<RequestReviewEntity> GetRequestReviewAsync(string ProductId, string UserId);
+        void Delete(RequestReviewEntity entity);
+
+        #endregion
+
     }
 }

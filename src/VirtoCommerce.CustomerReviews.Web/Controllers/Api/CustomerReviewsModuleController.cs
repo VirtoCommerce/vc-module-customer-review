@@ -23,16 +23,19 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         private readonly ICrudService<CustomerReview> _customerReviewService;
         private readonly ICrudService<Store> _storeService;
         private readonly IItemService _itemService;
+        private readonly IRequestReviewService _requestReviewService;
 
         public CustomerReviewsModuleController(ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> customerReviewSearchService,
             ICrudService<CustomerReview> customerReviewService,
             ICrudService<Store> storeService,
-            IItemService itemService)
+            IItemService itemService,
+            IRequestReviewService requestReviewService)
         {
             _customerReviewSearchService = customerReviewSearchService;
             _customerReviewService = customerReviewService;
             _storeService = storeService;
             _itemService = itemService;
+            _requestReviewService = requestReviewService;
         }
 
         /// <summary>
@@ -171,6 +174,15 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         public async Task<ActionResult> Delete([FromQuery] string[] ids)
         {
             await _customerReviewService.DeleteAsync(ids);
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("viewedRequestReview")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<string[]>> ViewedRequestReview(string[] requestId)
+        {
+            await _requestReviewService.MarkAccessRequest(requestId);
             return NoContent();
         }
     }
