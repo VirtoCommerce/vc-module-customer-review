@@ -23,6 +23,46 @@ namespace VirtoCommerce.CustomerReviews.Core
         {
             public static class General
             {
+                public static SettingDescriptor RequestReviewEnableJob = new SettingDescriptor
+                {
+                    Name = "CustomerReviews.CustomerReviewsEnabledRequestReviewJob",
+                    GroupName = "Job|CustomerReviews",
+                    ValueType = SettingValueType.Boolean,
+                    DefaultValue = false
+                };
+
+                public static SettingDescriptor RequestReviewCronJob = new SettingDescriptor
+                {
+                    Name = "CustomerReviews.CustomerReviewsRequestReviewCronJob",
+                    GroupName = "Job|CustomerReviews",
+                    ValueType = SettingValueType.ShortText,
+                    DefaultValue = "0/15 * * * *"
+                };
+
+                public static SettingDescriptor RequestReviewDaysInState = new SettingDescriptor
+                {
+                    Name = "CustomerReviews.CustomerReviewsRequestReviewDaysInState",
+                    GroupName = "Job|CustomerReviews",
+                    ValueType = SettingValueType.PositiveInteger,
+                    DefaultValue = 10
+                };
+
+                public static SettingDescriptor RequestReviewOrderInState = new SettingDescriptor
+                {
+                    Name = "CustomerReviews.CustomerReviewsRequestReviewOrderInState",
+                    GroupName = "Job|CustomerReviews",
+                    ValueType = SettingValueType.ShortText,
+                    DefaultValue = "Completed"
+                };
+
+                public static SettingDescriptor RequestReviewMaxRequests = new SettingDescriptor
+                {
+                    Name = "CustomerReviews.CustomerReviewsRequestReviewMaxRequests",
+                    GroupName = "Job|CustomerReviews",
+                    ValueType = SettingValueType.PositiveInteger,
+                    DefaultValue = 2
+                };
+
                 public static SettingDescriptor CustomerReviewsEnabled = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CustomerReviewsEnabled",
@@ -63,9 +103,26 @@ namespace VirtoCommerce.CustomerReviews.Core
                                {
                                    CustomerReviewsEnabled,
                                    CustomerReviewsEnabledForAnonymous,
-                                   CanSubmitReviewWhenHasOrder
+                                   CanSubmitReviewWhenHasOrder,
+                                   RequestReviewEnableJob,
+                                   RequestReviewCronJob,
+                                   RequestReviewDaysInState,
+                                   RequestReviewOrderInState,
+                                   RequestReviewMaxRequests
                                };
                     }
+                }
+            }
+
+            public static IEnumerable<SettingDescriptor> JobSettings
+            {
+                get
+                {
+                    yield return General.RequestReviewEnableJob;
+                    yield return General.RequestReviewCronJob;
+                    yield return General.RequestReviewDaysInState;
+                    yield return General.RequestReviewOrderInState;
+                    yield return General.RequestReviewMaxRequests;
                 }
             }
 

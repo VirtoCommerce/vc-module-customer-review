@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,10 +10,12 @@ using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Events;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.CustomerReviews.Data.BackgroundJobs;
 using VirtoCommerce.CustomerReviews.Data.Handlers;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.CustomerReviews.Data.Services;
+using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -21,7 +24,11 @@ using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.GenericCrud;
+using VirtoCommerce.Platform.Hangfire;
+using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.CustomerReviews.Core.Notifications;
+using VirtoCommerce.OrdersModule.Core.Events;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
@@ -48,17 +55,25 @@ namespace VirtoCommerce.CustomerReviews.Web
             serviceCollection.AddTransient<IRatingCalculator, AverageRatingCalculator>();
             serviceCollection.AddTransient<IRatingCalculator, WilsonRatingCalculator>();
             serviceCollection.AddTransient<IRatingService, RatingService>();
+            serviceCollection.AddTransient<IRequestReviewService, RequestReviewService>();
 
             serviceCollection.AddTransient<ReviewStatusChangedEventHandler>();
+            serviceCollection.AddTransient<OrderChangedEventHandler>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
         {
             _applicationBuilder = appBuilder;
+
+            var settingsManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
+            var order_status = settingsManager.GetObjectSettingAsync(VirtoCommerce.OrdersModule.Core.ModuleConstants.Settings.General.OrderStatus.Name).GetAwaiter().GetResult().AllowedValues;
+            ModuleConstants.Settings.AllSettings.FirstOrDefault(x => x.Name == ModuleConstants.Settings.General.RequestReviewOrderInState.Name).AllowedValues = order_status;
+
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
-            var storeSettings = settingsRegistrar.AllRegisteredSettings.Where(x => x.ModuleId.EqualsInvariant(ModuleInfo.Id)).ToList();
+			var jobsettings = ModuleConstants.Settings.JobSettings.Select(s => s.Name).ToList();
+            var storeSettings = settingsRegistrar.AllRegisteredSettings.Where(x => x.ModuleId.EqualsInvariant(ModuleInfo.Id) && !jobsettings.Contains(x.Name)).ToList();
             storeSettings.Add(GetCalculatorStoreSetting());
             settingsRegistrar.RegisterSettingsForType(storeSettings, nameof(Store));
             settingsRegistrar.RegisterSettings(storeSettings, ConfigStoreModuleId);
@@ -67,8 +82,22 @@ namespace VirtoCommerce.CustomerReviews.Web
             permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
                 new Permission() { GroupName = "CustomerReviews", Name = x }).ToArray());
 
+            var notificationRegistrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
+            notificationRegistrar.RegisterNotification<CustomerReviewEmailNotification>();
+
+
             var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             inProcessBus.RegisterHandler<ReviewStatusChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<ReviewStatusChangedEventHandler>().Handle(message));
+            inProcessBus.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<OrderChangedEventHandler>().Handle(message));
+
+            var recurringJobManager = appBuilder.ApplicationServices.GetService<IRecurringJobManager>();
+            recurringJobManager.WatchJobSetting(
+               settingsManager,
+               new SettingCronJobBuilder()
+                   .SetEnablerSetting(ModuleConstants.Settings.General.RequestReviewEnableJob)
+                   .SetCronSetting(ModuleConstants.Settings.General.RequestReviewCronJob)
+                   .ToJob<RequestCustomerReviewJob>(x => x.Process())
+                   .Build());
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {

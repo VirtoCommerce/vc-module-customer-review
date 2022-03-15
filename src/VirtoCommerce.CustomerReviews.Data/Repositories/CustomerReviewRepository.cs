@@ -74,6 +74,34 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         }
 
         #endregion
+
+
+        #region RequestReview
+
+        public IQueryable<RequestReviewEntity> RequestReview => DbContext.Set<RequestReviewEntity>();
+
+
+        public Task<RequestReviewEntity> GetRequestReviewByIdAsync(string Id)
+        {
+            return RequestReview.FirstOrDefaultAsync(x => x.Id == Id);
+        }
+
+        public Task<RequestReviewEntity[]> GetRequestReviewByIdAsync(IEnumerable<string> Ids)
+        {
+            return RequestReview.Where(x => Ids.Contains(x.Id)).ToArrayAsync();
+        }
+
+        public Task<RequestReviewEntity> GetRequestReviewAsync(string ProductId, string UserId)
+        {
+            return RequestReview.FirstOrDefaultAsync(x => x.ProductId == ProductId && x.UserId == UserId);
+        }
+
+        public void Delete(RequestReviewEntity entity)
+        {
+            Remove(entity);
+        }
+
+        #endregion
     }
 }
 
