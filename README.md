@@ -2,19 +2,23 @@
 
 [![CI status](https://github.com/VirtoCommerce/vc-module-customer-review/workflows/Module%20CI/badge.svg?branch=dev)](https://github.com/VirtoCommerce/vc-module-customer-review/actions?query=workflow%3A"Module+CI") [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=alert_status&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Reliability rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=reliability_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Security rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=security_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Sqale rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=sqale_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review)
 
-
 The Product Rating and Reviews module presents the ability to customers to add reviews and ratings to products.
-In Admin Portal, you can manage customers’ ratings and reviews to moderate content and collect information before publishing them live.
-Rating information can be used for sorting and filtering products. Product ratings and reviews can be displayed for customers on demand. 
 
+In Admin Portal, you can manage customers’ ratings and reviews to moderate content and collect information before publishing them live.
+ 
+Rating information can be used for sorting and filtering products. Product ratings and reviews can be displayed for customers on demand.
+ 
+*"70% of online shoppers say that the reviews are a decision maker for the purchase."*
 
 ## Key features
-* Create new or update existing product reviews.
-* Return reviews for the product(s).
-* Multi-Store capability, every store have own review for same products.
-* Approval and Moderation process.
-* Confugurable rating calculator: Average and [Wilson](https://www.evanmiller.org/how-not-to-sort-by-average-rating.html). 
-* Review Reminder to send emails to customers who have purchased products, reminding them to come back and leave a review.
+* Submite a product review.
+* Update existing product review.
+* Get products ratings.
+* View products reviews.
+* Multi-store capability, every store has own review for same products.
+* Moderate/checking reviews.
+* Configurable rating calculator: Average and [Wilson](https://www.evanmiller.org/how-not-to-sort-by-average-rating.html). 
+* Email review reminder for customers who have purchased products, reminding them to come back and leave a review.
 
 
 ## Documentation
