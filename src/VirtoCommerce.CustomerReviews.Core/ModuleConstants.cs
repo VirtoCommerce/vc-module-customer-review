@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.CustomerReviews.Core
@@ -23,74 +23,74 @@ namespace VirtoCommerce.CustomerReviews.Core
         {
             public static class General
             {
-                public static SettingDescriptor RequestReviewEnableJob = new SettingDescriptor
+                public static readonly SettingDescriptor RequestReviewEnableJob = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CustomerReviewsEnabledRequestReviewJob",
-                    GroupName = "Job|CustomerReviews",
+                    GroupName = "Product Reviews|Email Review Reminder",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = false
                 };
 
-                public static SettingDescriptor RequestReviewCronJob = new SettingDescriptor
+                public static readonly SettingDescriptor RequestReviewCronJob = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CustomerReviewsRequestReviewCronJob",
-                    GroupName = "Job|CustomerReviews",
+                    GroupName = "Product Reviews|Email Review Reminder",
                     ValueType = SettingValueType.ShortText,
                     DefaultValue = "0/15 * * * *"
                 };
 
-                public static SettingDescriptor RequestReviewDaysInState = new SettingDescriptor
+                public static readonly SettingDescriptor RequestReviewDaysInState = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CustomerReviewsRequestReviewDaysInState",
-                    GroupName = "Job|CustomerReviews",
+                    GroupName = "Product Reviews|Email Review Reminder",
                     ValueType = SettingValueType.PositiveInteger,
                     DefaultValue = 10
                 };
 
-                public static SettingDescriptor RequestReviewOrderInState = new SettingDescriptor
+                public static readonly SettingDescriptor RequestReviewOrderInState = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CustomerReviewsRequestReviewOrderInState",
-                    GroupName = "Job|CustomerReviews",
+                    GroupName = "Product Reviews|Email Review Reminder",
                     ValueType = SettingValueType.ShortText,
                     DefaultValue = "Completed"
                 };
 
-                public static SettingDescriptor RequestReviewMaxRequests = new SettingDescriptor
+                public static readonly SettingDescriptor RequestReviewMaxRequests = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CustomerReviewsRequestReviewMaxRequests",
-                    GroupName = "Job|CustomerReviews",
+                    GroupName = "Product Reviews|Email Review Reminder",
                     ValueType = SettingValueType.PositiveInteger,
                     DefaultValue = 2
                 };
 
-                public static SettingDescriptor CustomerReviewsEnabled = new SettingDescriptor
+                public static readonly SettingDescriptor CustomerReviewsEnabled = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CustomerReviewsEnabled",
-                    GroupName = "Store|CustomerReviews",
+                    GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = false
                 };
 
-                public static SettingDescriptor CustomerReviewsEnabledForAnonymous = new SettingDescriptor
+                public static readonly SettingDescriptor CustomerReviewsEnabledForAnonymous = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CustomerReviewsEnabledForAnonymous",
-                    GroupName = "Store|CustomerReviews",
+                    GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = false
                 };
 
-                public static SettingDescriptor CanSubmitReviewWhenHasOrder = new SettingDescriptor
+                public static readonly SettingDescriptor CanSubmitReviewWhenHasOrder = new SettingDescriptor
                 {
                     Name = "CustomerReviews.CanSubmitReviewWhenHasOrder",
-                    GroupName = "Store|CustomerReviews",
+                    GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = true,
                 };
 
-                public static SettingDescriptor CalculationMethod = new SettingDescriptor
+                public static readonly SettingDescriptor CalculationMethod = new SettingDescriptor
                 {
                     Name = "CustomerReviews.Calculation.Method",
-                    GroupName = "CustomerReviews",
+                    GroupName = "Product Reviews|General",
                     ValueType = SettingValueType.ShortText,
                     DefaultValue = "Average",
                 };

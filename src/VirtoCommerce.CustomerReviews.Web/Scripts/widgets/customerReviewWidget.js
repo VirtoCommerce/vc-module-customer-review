@@ -21,7 +21,7 @@ angular.module('VirtoCommerce.CustomerReviews')
             var newBlade = {
                 id: "reviewsList",
                 filter: filter,
-                title: 'Customer reviews for "' + blade.title + '"',
+                title: 'Product Reviews for "' + blade.title + '"',
                 controller: 'VirtoCommerce.CustomerReviews.reviewsListController',
                 template: 'Modules/$(VirtoCommerce.CustomerReviews)/Scripts/blades/reviews-list.tpl.html'
             };
