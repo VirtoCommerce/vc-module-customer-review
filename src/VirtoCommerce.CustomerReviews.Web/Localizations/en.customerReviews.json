@@ -1,109 +1,109 @@
-﻿{
-  "customerReviews": {
-    "blades": {
-      "review-list": {
-        "title": "Customer Reviews",
-        "labels": {
-          "title": "Title",
-          "rating": "Rating",
-          "review": "Review",
-          "modifiedDate": "Last updated",
-          "no-review": "No Customer Reviews found"
-        },
-        "placeholders": {
-          "select-review-Status": "Select review status"
-        }
-      },
-      "store": {
-        "calculate-btn": {
-          "title": "Calculate product rating"
-        }
-      },
-      "review-detail": {
-        "labels": {
-          "title": "Title",
-          "content": "Content",
-          "rating": "Rating",
-          "productName": "Product",
-          "storeName": "Store",
-          "createdDate": "From",
-          "review": "Review"
+{
+	"customerReviews": {
+		"blades": {
+			"review-list": {
+				"title": "Product Reviews",
+				"labels": {
+					"title": "Title",
+					"rating": "Rating",
+					"review": "Review",
+					"modifiedDate": "Last updated",
+					"no-review": "No Product Reviews found"
+				},
+				"placeholders": {
+					"select-review-Status": "Select review status"
+				}
+			},
+			"store": {
+				"calculate-btn": {
+					"title": "Calculate product rating"
+				}
+			},
+			"review-detail": {
+				"labels": {
+					"title": "Title",
+					"content": "Content",
+					"rating": "Rating",
+					"productName": "Product",
+					"storeName": "Store",
+					"createdDate": "From",
+					"review": "Review"
 
-        },
-        "commands": {
-          "approve": "Approve Review",
-          "reject": "Reject Review",
-          "resetReviewStatus": "Reset review status"
-        }
-      }
-    },
-    "widgets": {
-      "item-detail": {
-        "title": "Customer reviews"
-      },
-      "product-rating": {
-        "title": "Rating"
-      }
-    },
-    "dialogs": {
-      "customerReview-save": {
-        "title": "Save changes",
-        "message": "The review has been modified. Do you want to save changes?"
-      }
-    }
-  },
-  "permissions": {
-    "customerReviews:read": "Open customers reviews",
-    "customerReviews:update": "Approve, reject and reset review status",
-    "customerReviews:delete": "Delete customer review related data",
-    "customerReviews:ratingRead": "Read rating",
-    "customerReviews:ratingRecalc": "Recalculate rating"
-  },
-  "notificationTypes": {
-    "CustomerReviewEmailNotification": {
-      "displayName": "Order request review notification",
-      "description": "This notification sends by email to client when order is compled and customer not review a product order. One email by item in order."
-    }
-  },
-  "settings": {
-    "CustomerReviews": {
-      "CustomerReviewsEnabled": {
-        "title": "Customer Reviews enabled",
-        "description": ""
-      },
-      "CustomerReviewsEnabledForAnonymous": {
-        "title": "Allow anonymous to submit customer reviews",
-        "description": ""
-      },
-      "CanSubmitReviewWhenHasOrder": {
-        "title": "Only customer who bought product can create new review",
-        "description": ""
-      },
-	  "Calculation.Method": {
-        "title": "Rating calculation method",
-        "description": ""
-      },
-      "CustomerReviewsEnabledRequestReviewJob": {
-        "title": "Enable job to send e-mails request a reviews to customer when order in state at x days",
-        "description": ""
-      },
-      "CustomerReviewsRequestReviewCronJob": {
-        "title": "Cron expression for processing job execution",
-        "description": "The value is a regular CRON expression.\nTo run task every X minutes please use \"0/x * * * *\".\nTo run it every X hours at 00 minutes use \"0 */X * * *\". You can also specify minutes: \"15 */x * * *\"\nTo run it every X days at midnight use \"0 0 */x * *\""
-      },
-      "CustomerReviewsRequestReviewDaysInState": {
-        "title": "Order state at x days",
-        "description": ""
-      },
-      "CustomerReviewsRequestReviewOrderInState": {
-        "title": "Order state to send mails",
-        "description": ""
-      },
-      "CustomerReviewsRequestReviewMaxRequests": {
-        "title": "Max e-mails sent to customer",
-        "description": ""
-      }
+				},
+				"commands": {
+					"approve": "Approve Review",
+					"reject": "Reject Review",
+					"resetReviewStatus": "Reset review status"
+				}
+			}
+		},
+		"widgets": {
+			"item-detail": {
+				"title": "Product Reviews"
+			},
+			"product-rating": {
+				"title": "Rating"
+			}
+		},
+		"dialogs": {
+			"customerReview-save": {
+				"title": "Save changes",
+				"message": "The review has been modified. Do you want to save changes?"
+			}
+		}
+	},
+	"permissions": {
+		"customerReviews:read": "Open product reviews",
+		"customerReviews:update": "Approve, reject and reset review status",
+		"customerReviews:delete": "Delete customer review related data",
+		"customerReviews:ratingRead": "Read rating",
+		"customerReviews:ratingRecalc": "Recalculate rating"
+	},
+	"notificationTypes": {
+		"CustomerReviewEmailNotification": {
+			"displayName": "Order request review notification",
+			"description": "This notification sends by email to client when order is compled and customer not review a product order. One email by item in order."
+		}
+	},
+	"settings": {
+		"CustomerReviews": {
+			"CustomerReviewsEnabled": {
+				"title": "Product reviews enabled",
+				"description": ""
+			},
+			"CustomerReviewsEnabledForAnonymous": {
+				"title": "Allow anonymous to submit product reviews",
+				"description": ""
+			},
+			"CanSubmitReviewWhenHasOrder": {
+				"title": "Only customer who bought product can create new review",
+				"description": ""
+			},
+		"Calculation.Method": {
+				"title": "Rating calculation method",
+				"description": ""
+			},
+			"CustomerReviewsEnabledRequestReviewJob": {
+				"title": "Enable job to send e-mails request a reviews to customer when order in state at x days",
+				"description": ""
+			},
+			"CustomerReviewsRequestReviewCronJob": {
+				"title": "Cron expression for processing job execution",
+				"description": "The value is a regular CRON expression.\nTo run task every X minutes please use \"0/x * * * *\".\nTo run it every X hours at 00 minutes use \"0 */X * * *\". You can also specify minutes: \"15 */x * * *\"\nTo run it every X days at midnight use \"0 0 */x * *\""
+			},
+			"CustomerReviewsRequestReviewDaysInState": {
+				"title": "Order state at x days",
+				"description": ""
+			},
+			"CustomerReviewsRequestReviewOrderInState": {
+				"title": "Order state to send mails",
+				"description": ""
+			},
+			"CustomerReviewsRequestReviewMaxRequests": {
+				"title": "Max e-mails sent to customer",
+				"description": ""
+			}
 
-      }
-    }
-  }
+			}
+		}
+	}

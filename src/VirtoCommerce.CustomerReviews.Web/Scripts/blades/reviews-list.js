@@ -1,8 +1,6 @@
 angular.module('VirtoCommerce.CustomerReviews')
     .controller('VirtoCommerce.CustomerReviews.reviewsListController', ['$scope', 'CustomerReviews.WebApi', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.authService',
         function ($scope, reviewsApi, bladeUtils, uiGridConstants, uiGridHelper, authService) {
-            var vm = this;
-
             $scope.uiGridConstants = uiGridConstants;
 
             var blade = $scope.blade;
@@ -58,7 +56,7 @@ angular.module('VirtoCommerce.CustomerReviews')
             }    
             
             blade.headIcon = 'fa fa-comments';
-            blade.title = 'Customer reviews';
+            blade.title = 'Product Rating and Reviews';
 
             blade.toolbarCommands = [
                 {
@@ -95,8 +93,6 @@ angular.module('VirtoCommerce.CustomerReviews')
 
             // simple and advanced filtering
             var filter = $scope.filter = blade.filter || {};
-
-            //var reviewStatusObj = $scope.reviewStatusObj = {};
 
             if (filter.reviewStatus >= 0) {
                 filter.reviewStatusObj = $scope.reviewStatusList[filter.reviewStatus];
