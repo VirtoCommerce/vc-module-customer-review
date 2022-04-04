@@ -12,6 +12,7 @@ One can leverage rating information for sorting and filtering products. Product 
  
 ## Key Features
 The Product Rating and Reviews module enables:
+
 * Submitting product reviews
 * Updating the existing product reviews
 * Getting products ratings
@@ -87,7 +88,7 @@ Just like product rating, you can view product reviews in the Admin Portal by na
 ![View Product Reviews in the Admin Porta](media/view-product-reviews.png)
  
  
-From the front end app, you can call an API and request current rating for multiple products and a specific store:
+From the front end app, you can call an API and request list of product review:
 
 ```json
 POST /api/customerReviews/reviewList
