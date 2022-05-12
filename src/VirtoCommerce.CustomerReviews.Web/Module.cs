@@ -40,10 +40,13 @@ namespace VirtoCommerce.CustomerReviews.Web
 
         public void Initialize(IServiceCollection serviceCollection)
         {
+            serviceCollection.AddDbContext<CustomerReviewsDbContext>((provider, options) =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+            });
+
             serviceCollection.AddTransient<ICustomerReviewRepository, CustomerReviewRepository>();
-            var configuration = serviceCollection.BuildServiceProvider().GetRequiredService<IConfiguration>();
-            var connectionString = configuration.GetConnectionString("VirtoCommerce.CustomerReviews") ?? configuration.GetConnectionString("VirtoCommerce");
-            serviceCollection.AddDbContext<CustomerReviewsDbContext>(options => options.UseSqlServer(connectionString));
             serviceCollection.AddSingleton<Func<ICustomerReviewRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<ICustomerReviewRepository>());
 
             serviceCollection.AddTransient<ICrudService<CustomerReview>, CustomerReviewService>();
