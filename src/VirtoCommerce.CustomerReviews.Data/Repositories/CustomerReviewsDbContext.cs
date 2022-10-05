@@ -1,4 +1,4 @@
-﻿using EntityFrameworkCore.Triggers;
+using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CustomerReviews.Data.Models;
 
@@ -40,7 +40,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             modelBuilder.Entity<RatingEntity>()
                 .HasIndex(x => new { x.StoreId, x.ProductId })
                 .IsUnique();
-
+            modelBuilder.Entity<RatingEntity>().Property(x => x.Value).HasPrecision(18, 2);
             #endregion
 
             #region RequestReview
