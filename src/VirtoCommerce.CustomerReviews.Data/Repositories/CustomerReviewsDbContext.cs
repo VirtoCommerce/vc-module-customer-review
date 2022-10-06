@@ -6,6 +6,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 {
     public class CustomerReviewsDbContext : DbContextWithTriggers
     {
+#pragma warning disable S109
         public CustomerReviewsDbContext(DbContextOptions<CustomerReviewsDbContext> options)
             : base(options)
         {
@@ -55,5 +56,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
             base.OnModelCreating(modelBuilder);
         }
+#pragma warning restore S109
     }
 }
