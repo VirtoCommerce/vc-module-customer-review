@@ -28,8 +28,10 @@ angular.module(moduleTemplateName, [])
             
     }
 ])
-    .run(['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'platformWebApp.authService', 'VirtoCommerce.CustomerReviews.entityTypesResolverService', 'virtoCommerce.catalogModule.items',
-        function ($rootScope, mainMenuService, widgetService, $state, authService, entityTypesResolverService, items) {
+    .run(['platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state',
+        'platformWebApp.authService', 'VirtoCommerce.CustomerReviews.entityTypesResolverService',
+        'virtoCommerce.catalogModule.items',
+        function (mainMenuService, widgetService, $state, authService, entityTypesResolverService, items) {
 
         //Register reviews menu item
         var menuItemNewReviews = {

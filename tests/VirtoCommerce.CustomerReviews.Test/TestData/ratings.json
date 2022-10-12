@@ -1,0 +1,9 @@
+[
+  {
+    "EntityId": "testProductId",
+    "EntityType": "Product",
+    "StoreId": "Electronics",
+    "Value": 4,
+    "ReviewCount": 2
+  }
+]

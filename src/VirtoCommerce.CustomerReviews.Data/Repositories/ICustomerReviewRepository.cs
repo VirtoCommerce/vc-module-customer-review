@@ -21,7 +21,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         #region Rating
 
         IQueryable<RatingEntity> Ratings { get; }
-        Task<RatingEntity[]> GetAsync(IEnumerable<string> entityId, string entityType);
+        Task<RatingEntity[]> GetAsync(IEnumerable<string> entityIds, string entityType);
         Task<RatingEntity> GetAsync(string storeId, string entityId, string entityType);
         Task<RatingEntity[]> GetAsync(string storeId, IEnumerable<string> entityIds, string entityType);
         void Delete(RatingEntity entity);

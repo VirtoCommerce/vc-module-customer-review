@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using VirtoCommerce.CatalogModule.Core.Services;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
@@ -20,19 +19,16 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         private readonly ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> _customerReviewSearchService;
         private readonly ICrudService<CustomerReview> _customerReviewService;
         private readonly ICrudService<Store> _storeService;
-        private readonly IItemService _itemService;
         private readonly IRequestReviewService _requestReviewService;
 
         public CustomerReviewsModuleController(ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> customerReviewSearchService,
             ICrudService<CustomerReview> customerReviewService,
             ICrudService<Store> storeService,
-            IItemService itemService,
             IRequestReviewService requestReviewService)
         {
             _customerReviewSearchService = customerReviewSearchService;
             _customerReviewService = customerReviewService;
             _storeService = storeService;
-            _itemService = itemService;
             _requestReviewService = requestReviewService;
         }
 

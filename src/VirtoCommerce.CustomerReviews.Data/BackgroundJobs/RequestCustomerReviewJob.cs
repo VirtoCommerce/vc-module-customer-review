@@ -57,9 +57,10 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
 
             using (var repository = _customerReviewRepository())
             {
-                var query = from r in repository.RequestReview
-                            where r.AccessDate == null && r.ModifiedDate < DateTime.Now.AddDays(-countDays) && r.ReviewsRequest < maxRequests && !repository.CustomerReviews.Any(cr => r.StoreId == cr.StoreId && r.EntityId == cr.EntityId && r.EntityType == "Product" && cr.UserId == r.UserId)
-                            select r;
+                var query = repository.RequestReview
+                    .Where(r =>
+                        r.AccessDate == null && r.ModifiedDate < DateTime.Now.AddDays(-countDays) && r.ReviewsRequest < maxRequests
+                        && !repository.CustomerReviews.Any(cr => r.StoreId == cr.StoreId && r.EntityId == cr.EntityId && r.EntityType == "Product" && cr.UserId == r.UserId));
 
                 var RequestReviews = query.ToList();
 
@@ -75,7 +76,16 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
                         RequestReview.ReviewsRequest++;
                         repository.Update(RequestReview);
 
-                        ordeMail.Add(new OrderNotificationJobArgument() { RequestId = RequestReview.Id, EntityId = RequestReview.EntityId, EntityType = RequestReview.EntityType, CustomerId = RequestReview.UserId, CustomerOrderId = RequestReview.CustomerOrderId, StoreId = RequestReview.StoreId, NotificationTypeName = nameof(CustomerReviewEmailNotification) });
+                        ordeMail.Add(new OrderNotificationJobArgument()
+                        {
+                            RequestId = RequestReview.Id,
+                            EntityId = RequestReview.EntityId,
+                            EntityType = RequestReview.EntityType,
+                            CustomerId = RequestReview.UserId,
+                            CustomerOrderId = RequestReview.CustomerOrderId,
+                            StoreId = RequestReview.StoreId,
+                            NotificationTypeName = nameof(CustomerReviewEmailNotification)
+                        });
                     }
                 }
                 if (ordeMail.Any())

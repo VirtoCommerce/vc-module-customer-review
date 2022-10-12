@@ -104,7 +104,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 foreach (var existing in alreadyExistEntities)
                 {
                     if (!entities.Any(e => e.EntityId == existing.EntityId && e.EntityType == entityType && e.StoreId == existing.StoreId))
+                    {
                         repository.Delete(existing);
+                    }
                 }
 
                 await repository.UnitOfWork.CommitAsync();
@@ -232,7 +234,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
         private async Task<IRatingCalculator> GetCalculatorAsync(string storeId)
         {
-            var settings = _settingsManager.GetObjectSettingsAsync(new[] { ModuleConstants.Settings.General.RequestReviewDaysInState.Name, ModuleConstants.Settings.General.RequestReviewMaxRequests.Name }).GetAwaiter().GetResult();
+            var settings = await _settingsManager.GetObjectSettingsAsync(new[] { ModuleConstants.Settings.General.RequestReviewDaysInState.Name, ModuleConstants.Settings.General.RequestReviewMaxRequests.Name });
 
             var calculatorName = settings.GetSettingValue(
                 ModuleConstants.Settings.General.CalculationMethod.Name,

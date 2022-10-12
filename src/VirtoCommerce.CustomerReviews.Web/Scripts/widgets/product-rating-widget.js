@@ -29,7 +29,7 @@ angular.module('VirtoCommerce.CustomerReviews')
                 }
 
                 function getRating(ratings) {
-                    let ratingValues = ratings.map(x => x.value);
+                    const ratingValues = ratings.map(x => x.value);
                     if (ratingValues && ratingValues.length > 0) {
                         return ratingValues[0].toFixed(1);
                     }
@@ -37,7 +37,7 @@ angular.module('VirtoCommerce.CustomerReviews')
                 }
 
                 function getReviewsCount(ratings) {
-                    let reviewsCounts = ratings.map(x => x.reviewCount);
+                    const reviewsCounts = ratings.map(x => x.reviewCount);
                     if (reviewsCounts && reviewsCounts.length > 0) {
                         return reviewsCounts[0];
                     }
@@ -45,7 +45,9 @@ angular.module('VirtoCommerce.CustomerReviews')
                 }
 
                 $scope.openBlade = function () {
-                    if ($scope.loading) return;
+                    if ($scope.loading) {
+                        return;
+                    }
 
                     var newBlade = {
                         id: 'sellerReviewsList',
@@ -60,7 +62,9 @@ angular.module('VirtoCommerce.CustomerReviews')
                 };
 
                 $scope.$watch("blade.itemId", function (id) {
-                    if (id) refresh();
+                    if (id) {
+                        refresh();
+                    }
                 });
 
                 init();

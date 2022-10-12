@@ -1,7 +1,9 @@
 angular.module('VirtoCommerce.CustomerReviews')
     .controller('VirtoCommerce.CustomerReviews.reviewDetailController',
-        ['$rootScope', '$scope', 'platformWebApp.bladeNavigationService', 'CustomerReviews.WebApi', 'platformWebApp.metaFormsService', 'VirtoCommerce.CustomerReviews.entityTypesResolverService', 'platformWebApp.dialogService', 'VirtoCommerce.RatingApi',
-            function ($rootScope, $scope, bladeNavigationService, reviewsApi, metaFormsService, entityTypesResolverService, dialogService, ratingApi) {
+        ['$scope', 'platformWebApp.bladeNavigationService', 'CustomerReviews.WebApi',
+            'VirtoCommerce.CustomerReviews.entityTypesResolverService', 'platformWebApp.dialogService',
+            'VirtoCommerce.RatingApi',
+            function ($scope, bladeNavigationService, reviewsApi, entityTypesResolverService, dialogService, ratingApi) {
         var blade = $scope.blade;
         blade.updatePermission = 'customerReviews:update';
 
@@ -75,7 +77,7 @@ angular.module('VirtoCommerce.CustomerReviews')
 
         function getEntityRating(entityId, entityType) {
             ratingApi.get({ entityIds: [entityId], entityType: entityType }, function (data) {
-                let ratingValues = data.map(x => x.value);
+                const ratingValues = data.map(x => x.value);
                 if (ratingValues.length > 0) {
                     blade.ratingValue = ratingValues[0].toFixed(1) + '/5';
                 }

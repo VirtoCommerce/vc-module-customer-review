@@ -1,0 +1,17 @@
+[
+  {
+    "Id": "TestId",
+    "EntityId": "TestProductId",
+    "EntityType": "Product",
+    "EntityName": "Test product",
+    "CreatedDate": "2022-10-12",
+    "CreatedBy": "Initial data seed",
+    "UserName": "John Doe",
+    "UserId": "dsdsd12dfsd",
+    "Review": "Liked that",
+    "Rating": 5,
+    "StoreId": "Electronics",
+    "Title": "My first review",
+    "ReviewStatus": 0
+  }
+]

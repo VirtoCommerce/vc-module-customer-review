@@ -1,5 +1,7 @@
 angular.module('VirtoCommerce.CustomerReviews')
-    .controller('VirtoCommerce.CustomerReviews.reviewsListController', ['$scope', 'CustomerReviews.WebApi', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.authService', 'VirtoCommerce.CustomerReviews.entityTypesResolverService',
+    .controller('VirtoCommerce.CustomerReviews.reviewsListController',
+        ['$scope', 'CustomerReviews.WebApi', 'platformWebApp.bladeUtils', 'uiGridConstants',
+            'platformWebApp.uiGridHelper', 'platformWebApp.authService', 'VirtoCommerce.CustomerReviews.entityTypesResolverService',
         function ($scope, reviewsApi, bladeUtils, uiGridConstants, uiGridHelper, authService, entityTypesResolverService) {
             $scope.uiGridConstants = uiGridConstants;
 
