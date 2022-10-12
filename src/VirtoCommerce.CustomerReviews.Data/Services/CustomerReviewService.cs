@@ -43,6 +43,20 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.New);
         }
 
+        public async Task DeleteReviews(string[] customerReviewsIds)
+        {
+            if (!customerReviewsIds.Any())
+            {
+                return;
+            }
+
+            await ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.New);
+
+            GenericCachingRegion<CustomerReview>.ExpireRegion();
+
+            await DeleteAsync(customerReviewsIds);
+        }
+
         private async Task ChangeReviewStatusAsync(string[] ids, CustomerReviewStatus status)
         {
             if (!ids.Any())
@@ -61,7 +75,8 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                     reviewStatusChanges.Add(new ReviewStatusChangeData
                     {
                         Id = customerReviewEntity.Id,
-                        ProductId = customerReviewEntity.ProductId,
+                        EntityId = customerReviewEntity.EntityId,
+                        EntityType = customerReviewEntity.EntityType,
                         StoreId = customerReviewEntity.StoreId,
                         OldStatus = (CustomerReviewStatus)customerReviewEntity.ReviewStatus,
                         NewStatus = status
@@ -72,6 +87,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 await repository.UnitOfWork.CommitAsync();
 
                 GenericCachingRegion<CustomerReview>.ExpireRegion();
+                GenericSearchCachingRegion<CustomerReview>.ExpireRegion();
 
                 await _eventPublisher.Publish(new ReviewStatusChangedEvent(reviewStatusChanges.Select(x =>
                     new GenericChangedEntry<ReviewStatusChangeData>(x, EntryState.Modified))));

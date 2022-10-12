@@ -20,7 +20,9 @@ namespace VirtoCommerce.CustomerReviews.Test
     [Trait("Category", "IntegrationTest")]
     public class CustomerReviewsTests
     {
-        private const string ProductId = "testProductId";
+        private const string EntityId = "testProductId";
+        private const string EntityType = "Product";
+        private const string EntityName = "Tset product";
         private const string CustomerReviewId = "testId";
 
         private readonly Mock<IPlatformMemoryCache> _platformMemoryCacheMock;
@@ -62,7 +64,9 @@ namespace VirtoCommerce.CustomerReviews.Test
             var item = new CustomerReview
             {
                 Id = CustomerReviewId,
-                ProductId = ProductId,
+                EntityId = EntityId,
+                EntityType = EntityType,
+                EntityName = EntityName,
                 CreatedDate = DateTime.Now,
                 CreatedBy = "initial data seed",
                 UserName = "John Doe",
@@ -94,7 +98,7 @@ namespace VirtoCommerce.CustomerReviews.Test
             item = result.First();
             Assert.Equal(updatedContent, item.Review);
 
-            var criteria = new CustomerReviewSearchCriteria { ProductIds = new[] { ProductId } };
+            var criteria = new CustomerReviewSearchCriteria { EntityIds = new[] { EntityId }, EntityType = EntityType };
             var cacheKeySearch = CacheKey.With(typeof(CustomerReviewSearchService), "SearchAsync", criteria.GetCacheKey());
             _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKeySearch)).Returns(_cacheEntryMock.Object);
 

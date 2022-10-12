@@ -1,17 +1,25 @@
 <div class="blade-static">
     <div class="form-group">
         <div class="form-input __search">
-            <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" style="width: 200px" />
+            <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" style="width: 180px" />
             <button class="btn __other" style="position: relative;right: 45px;">
                 <i class="btn-ico fa fa-times-circle" title="Clear" ng-click="filter.keyword=null;filter.criteriaChanged()"></i>
             </button>
 
-            <ui-select ng-model="filter.reviewStatusObj" ng-change="filter.criteriaChanged()" style="left: 220px;position: absolute; width: 200px; top: 0px">
+            <ui-select ng-model="filter.reviewStatusObj" ng-change="filter.criteriaChanged()" style="left: 200px;position: absolute; width: 180px; top: 0px">
                 <ui-select-match allow-clear="true" placeholder="{{'customerReviews.blades.review-list.placeholders.select-review-Status' | translate}}">{{$select.selected.name | translate}}</ui-select-match>
                 <ui-select-choices repeat="x in reviewStatusList | filter: $select.search">
                     <span ng-bind-html="x.name | translate | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
+
+            <ui-select ng-model="filter.entityType" ng-change="filter.criteriaChanged()" style="left: 400px;position: absolute; width: 170px; top: 0px">
+                <ui-select-match allow-clear="true" placeholder="{{'customerReviews.blades.review-list.placeholders.select-entity-type' | translate}}">{{ $select.selected | translate }}</ui-select-match>
+                <ui-select-choices repeat="x in entityTypesList | filter: $select.search">
+                    <span ng-bind-html="x | translate | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+
         </div>
         <p class="form-count">{{ 'platform.list.count' | translate }}: <span class="count">{{pageSettings.totalItems | number:0}}</span></p>
     </div>
@@ -26,9 +34,11 @@
                 columnDefs: [
                             { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft:true },
                             { name: 'title', displayName: 'Title' },
-                            { name: 'review', displayName: 'Review' },
-                            { name: 'rating', displayName: 'Rating' },
-                            { name: 'createdDate', displayName: 'CreatedDate', sort: { direction: uiGridConstants.DESC }}
+                            { name: 'rating', displayName: 'Rating', cellTemplate: 'rating.cell.html' },
+                            { name: 'createdDate', displayName: 'Created Date', sort: { direction: uiGridConstants.DESC }},
+                            { name: 'entityName', displayName: 'Name' },
+                            { name: 'reviewStatus', displayName: 'Status' },
+                            { name: 'userName', displayName: 'Created By' }
                     ]})">
                 <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
                 <ul class="menu __context" role="menu" id="rev_menu">
@@ -45,9 +55,15 @@
 <script type="text/ng-template" id="list.row.html">
     <div ng-click="grid.appScope.blade.selectNode(row.entity)" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'" class="ui-grid-cell" ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': row.entity.id===grid.appScope.selectedNodeId }" role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}" ui-grid-cell context-menu="grid.appScope.contextMenuEntity = row.entity" data-target="rev_menu"></div>
 </script>
+
 <script type="text/ng-template" id="list-actions.cell.html">
     <div class="ui-grid-actions" left-click-menu="grid.appScope.contextMenuEntity = row.entity" data-target="rev_menu">
         <i class="fa fa-ellipsis-v"></i>
     </div>
 </script>
 
+<script type="text/ng-template" id="rating.cell.html">
+    <div class="ui-grid-cell-contents">
+        <i class="fa fa-star" aria-hidden="true" ng-repeat="i in [] | range:COL_FIELD"></i><i class="fa fa-star-o" aria-hidden="true" ng-repeat="i in [] | range:5-COL_FIELD"></i>
+    </div>
+</script>

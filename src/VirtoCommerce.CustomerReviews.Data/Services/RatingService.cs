@@ -21,21 +21,25 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         private readonly IEnumerable<IRatingCalculator> _ratingCalculators;
         private readonly ICrudService<Store> _storeService;
         private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeSearchService;
+        private readonly ISettingsManager _settingsManager;
 
         public RatingService(Func<ICustomerReviewRepository> repositoryFactory,
             IEnumerable<IRatingCalculator> ratingCalculators,
             ICrudService<Store> storeService,
-            ISearchService<StoreSearchCriteria, StoreSearchResult, Store> storeSearchService)
+            ISearchService<StoreSearchCriteria, StoreSearchResult, Store> storeSearchService,
+            ISettingsManager settingsManager)
+
         {
             _repositoryFactory = repositoryFactory;
             _ratingCalculators = ratingCalculators;
             _storeService = storeService;
             _storeSearchService = storeSearchService;
+            _settingsManager = settingsManager;
         }
 
         public Task CalculateAsync(string storeId)
         {
-            return Calculate(storeId, null);
+            return Calculate(storeId, null, "Product");
         }
 
         public async Task CalculateAsync(ReviewStatusChangeData[] data)
@@ -45,46 +49,47 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 return;
             }
 
-            foreach (var store in data.Where(d => d.OldStatus != d.NewStatus).GroupBy(r => r.StoreId))
+            foreach (var store in data.Where(d => d.OldStatus != d.NewStatus).GroupBy(r => new { r.StoreId, r.EntityType }))
             {
-                await Calculate(store.Key, store.Select(i => i.ProductId).ToArray());
+                await Calculate(store.Key.StoreId, store.Select(i => i.EntityId).ToArray(), store.Key.EntityType);
             }
         }
 
-        private async Task Calculate(string storeId, string[] productIds)
+        private async Task Calculate(string storeId, string[] entityIds, string entityType)
         {
             IEnumerable<ReviewRatingCalculateDto> reviews;
-            var statuses = new [] { (int)CustomerReviewStatus.Approved };
+            var statuses = new[] { (int)CustomerReviewStatus.Approved };
             using (var repository = _repositoryFactory())
             {
-                reviews = await repository.GetCustomerReviewsByStoreProductAsync(storeId, productIds, statuses);
+                reviews = await repository.GetCustomerReviewsByStoreProductAsync(storeId, entityIds, entityType, statuses);
             }
 
             var calculator = await GetCalculatorAsync(storeId);
 
             var entities = new List<RatingEntity>();
-            foreach (var productStore in reviews.GroupBy(r => new { r.ProductId, r.StoreId }))
+            foreach (var productStore in reviews.GroupBy(r => new { r.EntityId, r.StoreId }))
             {
                 var storeReviews = productStore.Select(r => r.Rating).ToArray();
                 var storeTotalRating = calculator.Calculate(storeReviews);
 
                 entities.Add(new RatingEntity
                 {
-                    ProductId = productStore.Key.ProductId,
+                    EntityId = productStore.Key.EntityId,
+                    EntityType = entityType,
                     StoreId = productStore.Key.StoreId,
                     Value = storeTotalRating,
                     ReviewCount = storeReviews.Length,
-                }); 
+                });
             }
 
             using (var repository = _repositoryFactory())
             {
                 var pkMap = new PrimaryKeyResolvingMap();
-                var alreadyExistEntities = await repository.GetAsync(storeId, productIds);
+                var alreadyExistEntities = await repository.GetAsync(storeId, entityIds, entityType);
                 foreach (var rating in entities)
                 {
                     var target = alreadyExistEntities
-                        .FirstOrDefault(x => x.ProductId == rating.ProductId && x.StoreId == rating.StoreId);
+                        .FirstOrDefault(x => x.EntityId == rating.EntityId && x.EntityType == entityType && x.StoreId == rating.StoreId);
 
                     if (target == null)
                     {
@@ -98,27 +103,25 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
                 foreach (var existing in alreadyExistEntities)
                 {
-                    if (!entities.Any(e => e.ProductId == existing.ProductId && e.StoreId == existing.StoreId))
+                    if (!entities.Any(e => e.EntityId == existing.EntityId && e.EntityType == entityType && e.StoreId == existing.StoreId))
                         repository.Delete(existing);
                 }
 
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
-
             }
-
         }
 
         public async Task<RatingProductDto[]> GetForStoreAsync(string storeId, string[] productIds)
         {
             using (var repository = _repositoryFactory())
             {
-                var ratings = await repository.GetAsync(storeId, productIds);
+                var ratings = await repository.GetAsync(storeId, productIds, "Product");
 
                 return ratings.Select(x => new RatingProductDto
                 {
                     Value = x.Value,
-                    ProductId = x.ProductId,
+                    ProductId = x.EntityId,
                     ReviewCount = x.ReviewCount,
                 }).ToArray();
 
@@ -136,16 +139,22 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
             using (var repository = _repositoryFactory())
             {
-                foreach (var store in storeSearchResult.Results.Where(s => s.Catalog == catalogId))
+                var stores = storeSearchResult.Results;
+                if (!string.IsNullOrEmpty(catalogId))
                 {
-                    var ratings = await repository.GetAsync(store.Id, productIds);
+                    stores = stores.Where(s => s.Catalog == catalogId).ToList();
+                }
+
+                foreach (var store in stores)
+                {
+                    var ratings = await repository.GetAsync(store.Id, productIds, "Product");
                     if (ratings.Any())
                     {
                         result.AddRange(ratings.Select(x => new RatingStoreDto
                         {
                             StoreId = store.Id,
                             StoreName = store.Name,
-                            ProductId = x.ProductId,
+                            ProductId = x.EntityId,
                             Value = x.Value,
                             ReviewCount = x.ReviewCount,
                         }));
@@ -156,23 +165,94 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             return result.ToArray();
         }
 
+        public async Task<RatingEntityDto[]> GetForStoreAsync(string storeId, string[] entityIds, string entityType)
+        {
+            using (var repository = _repositoryFactory())
+            {
+                var ratings = await repository.GetAsync(storeId, entityIds, entityType);
+
+                return ratings.Select(x => new RatingEntityDto
+                {
+                    Value = x.Value,
+                    EntityId = x.EntityId,
+                    EntityType = entityType,
+                    ReviewCount = x.ReviewCount,
+                }).ToArray();
+
+            }
+        }
+
+        public async Task<RatingEntityStoreDto[]> GetRatingsAsync(string[] entityIds, string entityType)
+        {
+            var storeSearchCriteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
+            storeSearchCriteria.Take = int.MaxValue;
+
+            var storeSearchResult = await _storeSearchService.SearchAsync(storeSearchCriteria);
+
+            var result = new List<RatingEntityStoreDto>();
+
+            using (var repository = _repositoryFactory())
+            {
+                var stores = storeSearchResult.Results;
+
+                var ratings = await repository.GetAsync(null, entityIds, entityType);
+                if (ratings.Any())
+                {
+                    result.AddRange(ratings.Select(x => new RatingEntityStoreDto
+                    {
+                        StoreId = null,
+                        StoreName = null,
+                        EntityId = x.EntityId,
+                        EntityType = entityType,
+                        Value = x.Value,
+                        ReviewCount = x.ReviewCount,
+                    }));
+                }
+
+                foreach (var store in stores)
+                {
+                    ratings = await repository.GetAsync(store.Id, entityIds, entityType);
+                    if (ratings.Any())
+                    {
+                        result.AddRange(ratings.Select(x => new RatingEntityStoreDto
+                        {
+                            StoreId = store.Id,
+                            StoreName = store.Name,
+                            EntityId = x.EntityId,
+                            EntityType = entityType,
+                            Value = x.Value,
+                            ReviewCount = x.ReviewCount,
+                        }));
+                    }
+                }
+            }
+
+            return result.ToArray();
+        }
 
         private async Task<IRatingCalculator> GetCalculatorAsync(string storeId)
         {
-            var store = await _storeService.GetByIdAsync(storeId, StoreResponseGroup.Full.ToString());
+            var settings = _settingsManager.GetObjectSettingsAsync(new[] { ModuleConstants.Settings.General.RequestReviewDaysInState.Name, ModuleConstants.Settings.General.RequestReviewMaxRequests.Name }).GetAwaiter().GetResult();
 
-            if (store == null)
-            {
-                throw new KeyNotFoundException($"Store not found, storeId: {storeId}");
-            }
-
-            var calculatorName = store.Settings.GetSettingValue(
+            var calculatorName = settings.GetSettingValue(
                 ModuleConstants.Settings.General.CalculationMethod.Name,
                 ModuleConstants.Settings.General.CalculationMethod.DefaultValue.ToString());
 
+            if (!string.IsNullOrEmpty(storeId))
+            {
+                var store = await _storeService.GetByIdAsync(storeId, StoreResponseGroup.Full.ToString());
+
+                if (store != null)
+                {
+                    calculatorName = store.Settings.GetSettingValue(
+                        ModuleConstants.Settings.General.CalculationMethod.Name,
+                        ModuleConstants.Settings.General.CalculationMethod.DefaultValue.ToString());
+                }
+            }
+
             if (string.IsNullOrWhiteSpace(calculatorName))
             {
-                throw new KeyNotFoundException($"Store settings not found: {ModuleConstants.Settings.General.CalculationMethod.Name}");
+                throw new KeyNotFoundException($"Settings not found: {ModuleConstants.Settings.General.CalculationMethod.Name}");
             }
 
             var ratingCalculator = _ratingCalculators.FirstOrDefault(c => c.Name == calculatorName);
@@ -183,6 +263,5 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
             return ratingCalculator;
         }
-
     }
 }

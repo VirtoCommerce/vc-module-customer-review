@@ -13,10 +13,13 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
 
         [StringLength(128)]
         [Required]
-        public string ProductId { get; set; }
+        public string EntityId { get; set; }
+
+        [Required]
+        [StringLength(128)]
+        public string EntityType { get; set; }
 
         [StringLength(128)]
-        [Required]
         public string StoreId { get; set; }
 
         [Required]
@@ -40,13 +43,12 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
                 throw new ArgumentNullException(nameof(target));
 
             target.CreatedDate = CreatedDate;
-            target.ProductId = ProductId;
+            target.EntityId = EntityId;
+            target.EntityType = EntityType;
             target.CustomerOrderId = CustomerOrderId;
             target.AccessDate = AccessDate;
             target.UserId = UserId;
-            target.ReviewsRequest = ReviewsRequest;            
+            target.ReviewsRequest = ReviewsRequest;
         }
     }
-
-
 }

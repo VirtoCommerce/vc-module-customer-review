@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 
 namespace VirtoCommerce.CustomerReviews.Core.Models
 {
     public class CustomerReviewListItem
     {
         public string Id { get; set; }
-        public string ProductName { get; set; }
+        public string EntityId { get; set; }
+        public string EntityName { get; set; }
+        public string EntityType { get; set; }
         public string ReviewStatus { get; set; }
         public byte ReviewStatusId { get; set; }
         public string Title { get; set; }
@@ -25,7 +27,9 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
             Rating = review.Rating;
             UserName = review.UserName;
             CreatedDate = review.CreatedDate;
+            EntityId = review.EntityId;
+            EntityType = review.EntityType;
+            EntityName = review.EntityName;
         }
-
     }
 }

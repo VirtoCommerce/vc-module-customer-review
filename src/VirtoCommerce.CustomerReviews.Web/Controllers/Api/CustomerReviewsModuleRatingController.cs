@@ -13,7 +13,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
     public class CustomerReviewsModuleRatingController : Controller
     {
         private readonly IRatingService _ratingService;
-        
+
         public CustomerReviewsModuleRatingController(IRatingService ratingService)
         {
             _ratingService = ratingService;
@@ -22,7 +22,8 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("productRatingInCatalog")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRead)]
-        public async Task<ActionResult<RatingStoreDto[]>> GetForCatalog([FromBody]ProductCatalogRatingRequest request)
+        [Obsolete("Use generic entityRating method")]
+        public async Task<ActionResult<RatingStoreDto[]>> GetForCatalog([FromBody] ProductCatalogRatingRequest request)
         {
             var result = Array.Empty<RatingStoreDto>();
 
@@ -35,9 +36,24 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         }
 
         [HttpPost]
+        [Route("entityRating")]
+        [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRead)]
+        public async Task<ActionResult<RatingEntityStoreDto[]>> GetEntityRating([FromBody] EntityRatingRequest request)
+        {
+            var result = Array.Empty<RatingEntityStoreDto>();
+
+            if (request.EntityIds.Length > 0)
+            {
+                result = await _ratingService.GetRatingsAsync(request.EntityIds, request.EntityType);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost]
         [Route("productRatingInStore")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRead)]
-        public async Task<ActionResult<RatingProductDto[]>> GetProductRating([FromBody]ProductStoreRatingRequest request)
+        public async Task<ActionResult<RatingProductDto[]>> GetProductRating([FromBody] ProductStoreRatingRequest request)
         {
             var result = Array.Empty<RatingProductDto>();
 
@@ -52,7 +68,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("calculateStore")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRecalc)]
-        public async Task<ActionResult> CalculateStore([FromQuery]string storeId)
+        public async Task<ActionResult> CalculateStore([FromQuery] string storeId)
         {
             if (!string.IsNullOrWhiteSpace(storeId))
             {

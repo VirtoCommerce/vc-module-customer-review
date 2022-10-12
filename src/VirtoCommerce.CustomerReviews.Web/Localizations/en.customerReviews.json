@@ -8,34 +8,40 @@
 					"rating": "Rating",
 					"review": "Review",
 					"modifiedDate": "Last updated",
-					"no-review": "No Product Reviews found"
+					"no-review": "No Reviews found"
 				},
-				"placeholders": {
-					"select-review-Status": "Select review status"
-				}
+        "placeholders": {
+          "select-review-Status": "Select review status",
+          "select-entity-type": "Select entity type"
+        }
 			},
 			"store": {
 				"calculate-btn": {
 					"title": "Calculate product rating"
 				}
 			},
-			"review-detail": {
-				"labels": {
-					"title": "Title",
-					"content": "Content",
-					"rating": "Rating",
-					"productName": "Product",
-					"storeName": "Store",
-					"createdDate": "From",
-					"review": "Review"
-
-				},
-				"commands": {
-					"approve": "Approve Review",
-					"reject": "Reject Review",
-					"resetReviewStatus": "Reset review status"
-				}
-			}
+      "review-detail": {
+        "labels": {
+          "title": "Title",
+          "content": "Content",
+          "rating": "Review rating",
+          "productName": "Product",
+          "storeName": "Store",
+          "createdBy": "Created By",
+          "createdDate": "Created Date",
+          "review": "Review",
+          "status": "Status",
+          "average-rating": "Average rating"
+        },
+        "commands": {
+          "approve": "Approve Review",
+          "reject": "Reject Review",
+          "resetReviewStatus": "Reset review status"
+        }
+      },
+      "product-detail": {
+        "description": "Product detail"
+      }
 		},
 		"widgets": {
 			"item-detail": {
@@ -45,12 +51,20 @@
 				"title": "Rating"
 			}
 		},
-		"dialogs": {
-			"customerReview-save": {
-				"title": "Save changes",
-				"message": "The review has been modified. Do you want to save changes?"
-			}
-		}
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Save changes",
+        "message": "The review has been modified. Do you want to save changes?"
+      },
+      "unknown-entity-type": {
+        "title": "Error resolve Entity Type",
+        "message": "Cannot resolve an unknown type: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Delete review",
+        "message": "This action may result in a rating change. Are you sure you want to delete review?"
+      }
+    }
 	},
 	"permissions": {
 		"customerReviews:read": "Open product reviews",

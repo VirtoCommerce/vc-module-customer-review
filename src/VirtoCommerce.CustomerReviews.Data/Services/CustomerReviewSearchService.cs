@@ -33,7 +33,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 {
                     var ids = await ((ICustomerReviewRepository)repository).CustomerReviews
                         .Where(r => r.ModifiedDate >= criteria.ModifiedDate)
-                        .GroupBy(r => r.ProductId)
+                        .GroupBy(r => r.EntityId)
                         .Select(x => x.Key)
                         .ToArrayAsync();
                     return ids;
@@ -45,9 +45,14 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         {
             var query = ((ICustomerReviewRepository)repository).CustomerReviews;
 
-            if (!criteria.ProductIds.IsNullOrEmpty())
+            if (!criteria.EntityIds.IsNullOrEmpty())
             {
-                query = query.Where(x => criteria.ProductIds.Contains(x.ProductId));
+                query = query.Where(x => criteria.EntityIds.Contains(x.EntityId));
+            }
+
+            if (!string.IsNullOrEmpty(criteria.EntityType))
+            {
+                query = query.Where(x => x.EntityType == criteria.EntityType);
             }
 
             if (!criteria.ReviewStatus.IsNullOrEmpty())
