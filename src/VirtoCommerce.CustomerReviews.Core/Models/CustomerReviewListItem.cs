@@ -8,6 +8,10 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
         public string EntityId { get; set; }
         public string EntityName { get; set; }
         public string EntityType { get; set; }
+
+        [Obsolete("Use EntityName instead")]
+        public string ProductName { get { return EntityName; } }
+
         public string ReviewStatus { get; set; }
         public byte ReviewStatusId { get; set; }
         public string Title { get; set; }
