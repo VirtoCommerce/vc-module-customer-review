@@ -9,6 +9,7 @@ using VirtoCommerce.CustomerModule.Core.Model;
 using VirtoCommerce.CustomerModule.Core.Services;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
+using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -57,12 +58,7 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
 
             using (var repository = _customerReviewRepository())
             {
-                var query = repository.RequestReview
-                    .Where(r =>
-                        r.AccessDate == null && r.ModifiedDate < DateTime.Now.AddDays(-countDays) && r.ReviewsRequest < maxRequests
-                        && !repository.CustomerReviews.Any(cr => r.StoreId == cr.StoreId && r.EntityId == cr.EntityId && r.EntityType == "Product" && cr.UserId == r.UserId));
-
-                var RequestReviews = query.ToList();
+                var RequestReviews = GetReviewsList(countDays, maxRequests);
 
                 var items = (await _itemService.GetByIdsAsync(RequestReviews.Select(i => i.EntityId).Distinct().ToArray(), CatalogModule.Core.Model.ItemResponseGroup.ItemInfo.ToString())).ToDictionary(i => i.Id).WithDefaultValue(null);
 
@@ -105,6 +101,18 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
 
             countDays = settings.GetSettingValue(ModuleConstants.Settings.General.RequestReviewDaysInState.Name, (int)ModuleConstants.Settings.General.RequestReviewDaysInState.DefaultValue);
             maxRequests = settings.GetSettingValue(ModuleConstants.Settings.General.RequestReviewMaxRequests.Name, (int)ModuleConstants.Settings.General.RequestReviewMaxRequests.DefaultValue);
+        }
+
+        private List<RequestReviewEntity> GetReviewsList(int countDays, int maxRequests)
+        {
+            using (var repository = _customerReviewRepository())
+            {
+                return repository.RequestReview
+                    .Where(r =>
+                        r.AccessDate == null && r.ModifiedDate < DateTime.Now.AddDays(-countDays) && r.ReviewsRequest < maxRequests
+                        && !repository.CustomerReviews.Any(cr => r.StoreId == cr.StoreId && r.EntityId == cr.EntityId && r.EntityType == "Product" && cr.UserId == r.UserId))
+                    .ToList();
+            }
         }
 
         public virtual async Task TryToSendOrderNotificationsAsync(OrderNotificationJobArgument[] jobArguments)

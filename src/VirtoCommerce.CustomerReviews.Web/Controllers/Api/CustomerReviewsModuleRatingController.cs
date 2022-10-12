@@ -53,6 +53,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [HttpPost]
         [Route("productRatingInStore")]
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRatingRead)]
+        [Obsolete("Use generic entityRating method")]
         public async Task<ActionResult<RatingProductDto[]>> GetProductRating([FromBody] ProductStoreRatingRequest request)
         {
             var result = Array.Empty<RatingProductDto>();
@@ -77,7 +78,5 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 
             return Ok();
         }
-
-
     }
 }
