@@ -11,10 +11,10 @@ namespace VirtoCommerce.CustomerReviews.Core.Services
 
         [Obsolete("Use generic entityRating method")]
         Task<RatingProductDto[]> GetForStoreAsync(string storeId, string[] productIds);
+        Task<RatingEntityDto[]> GetForStoreAsync(string storeId, string[] entityIds, string entityType);
         [Obsolete("Use generic entityRating method")]
         Task<RatingStoreDto[]> GetForCatalogAsync(string catalogId, string[] productIds);
 
-        Task<RatingEntityDto[]> GetForStoreAsync(string storeId, string[] entityIds, string entityType);
         Task<RatingEntityStoreDto[]> GetRatingsAsync(string[] entityIds, string entityType);
     }
 }

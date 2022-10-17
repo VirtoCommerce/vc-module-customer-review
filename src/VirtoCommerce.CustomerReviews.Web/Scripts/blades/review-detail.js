@@ -69,7 +69,7 @@ angular.module('VirtoCommerce.CustomerReviews')
                 return foundTemplate.getEntity(entityId, setEntityObjectCallback);
             }
             return {};
-        };
+        }
 
         function setEntityObjectCallback(entityName, entityImage) {
             blade.entityObject = { name: entityName, image: entityImage };

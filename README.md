@@ -1,28 +1,27 @@
-# Virto Commerce Product Rating and Reviews Module
+# Virto Commerce Rating and Reviews Module
 
 [![CI status](https://github.com/VirtoCommerce/vc-module-customer-review/workflows/Module%20CI/badge.svg?branch=dev)](https://github.com/VirtoCommerce/vc-module-customer-review/actions?query=workflow%3A"Module+CI") [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=alert_status&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Reliability rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=reliability_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Security rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=security_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Sqale rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=sqale_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review)
 
-The Product Rating and Reviews module allows your customers to add reviews and ratings to products.
+The Rating and Reviews module allows your users to add reviews and ratings to entities in your system.
  
-To manage customer ratings and reviews, moderate content, and collect information before publishing it live, you can use Admin Portal.
+To manage user ratings and reviews, moderate content, and collect information before publishing it live, you can use Admin Portal.
  
-One can leverage rating information for sorting and filtering products. Product ratings and reviews can be displayed for customers on demand.
+One can leverage rating information for sorting and filtering review objects. Ratings and reviews can be displayed for users on demand.
  
 > ***Note:*** *70% of online shoppers say reviews are a decision maker for a purchase.*
 
 ## Key features
-* Submitting product reviews
-* Updating the existing product reviews
-* Getting products ratings
-* Viewing products reviews
-* Multi-store capability with every store having its own review for the same product
 * Moderating and checking reviews
+* Approving or rejecting reviews
+* Updating the existing reviews
+* Getting ratings
+* Multi-store and none-store capability with every store having its own review
 * Configurable rating calculator, both average and [Wilson](https://www.evanmiller.org/how-not-to-sort-by-average-rating.html)
 * Email review reminder for customers who purchased products prompting them to come back and leave a review
 
 
 ## Documentation
-* [Product Rating and Reviews Module Documentation](https://virtocommerce.com/docs/latest/modules/customer-review/)
+* [Rating and Reviews Module Documentation](https://virtocommerce.com/docs/latest/modules/customer-review/)
 * [View on GitHub](docs/index.md)
 
 

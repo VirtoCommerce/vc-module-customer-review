@@ -178,24 +178,7 @@ Delete Customer Reviews by IDs
 | ---- | ----------- |
 | 204 | Success |
 
-### /api/rating/productRatingInCatalog
-
-#### POST
-##### Responses
-
-| Code | Description |
-| ---- | ----------- |
-| 200 | Success |
-| 401 | Unauthorized |
-| 403 | Forbidden |
-
-##### Security
-
-| Security Schema | Scopes |
-| --- | --- |
-| oauth2 | customerReviews:ratingRead |
-
-### /api/rating/productRatingInStore
+### /api/rating/entityRating
 
 #### POST
 ##### Responses
@@ -254,7 +237,8 @@ Delete Customer Reviews by IDs
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| productIds | [ string ] |  | No |
+| entityIds | [ string ] |  | No |
+| entityType | string |  | No |
 | reviewStatus | [ integer ] |  | No |
 | storeId | string |  | No |
 | modifiedDate | dateTime |  | No |
@@ -276,7 +260,9 @@ Delete Customer Reviews by IDs
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | id | string |  | No |
-| productName | string |  | No |
+| entityId | string |  | No |
+| entityType | string |  | No |
+| entityName | string |  | No |
 | reviewStatus | string |  | No |
 | reviewStatusId | integer |  | No |
 | title | string |  | No |
@@ -308,7 +294,9 @@ Delete Customer Reviews by IDs
 | rating | integer |  | No |
 | userId | string |  | No |
 | userName | string |  | No |
-| productId | string |  | No |
+| entityId | string |  | No |
+| entityType | string |  | No |
+| entityName | string |  | No |
 | storeId | string |  | No |
 | reviewStatus | string | _Enum:_ `"New"`, `"Approved"`, `"Rejected"` | No |
 | createdDate | dateTime |  | No |
@@ -329,6 +317,34 @@ Delete Customer Reviews by IDs
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | modifiedDate | dateTime |  | No |
+
+#### EntityRatingRequest
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| catalogId | string |  | No |
+| entityIds | [ string ] |  | No |
+| entityType | string |  | No |
+
+#### RatingEntityDto
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| entityId | string |  | No |
+| entityType | string |  | No |
+| value | double |  | No |
+| reviewCount | integer |  | No |
+
+#### RatingEntityStoreDto
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| storeName | string |  | No |
+| storeId | string |  | No |
+| entityId | string |  | No |
+| entityType | string |  | No |
+| value | double |  | No |
+| reviewCount | integer |  | No |
 
 #### ProductCatalogRatingRequest
 

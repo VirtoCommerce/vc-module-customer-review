@@ -2,49 +2,81 @@
 
 [![CI status](https://github.com/VirtoCommerce/vc-module-customer-review/workflows/Module%20CI/badge.svg?branch=dev)](https://github.com/VirtoCommerce/vc-module-customer-review/actions?query=workflow%3A"Module+CI") [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=alert_status&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Reliability rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=reliability_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Security rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=security_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Sqale rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=sqale_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review)
  
-The Product Rating and Reviews module allows your customers to add reviews and ratings to products.
+The Rating and Reviews module allows your users to add reviews and ratings for almost any type of object in the system, such as Products, Vendors, Delivery Services, Orders, you can even create reviews for objects such as Managers, Customers, Price Lists, anything that may require rating when building your business applications.
+
+To manage user ratings and reviews, moderate content, and collect information before publishing it, you can use Admin Portal.
  
-To manage customer ratings and reviews, moderate content, and collect information before publishing it live, you can use Admin Portal.
- 
-One can leverage rating information for sorting and filtering products. Product ratings and reviews can be displayed for customers on demand.
+One can leverage rating information for sorting and filtering review objects. Ratings and reviews can be displayed for users on demand.
  
 > ***Note:*** *70% of online shoppers say reviews are a decision maker for a purchase.*
- 
-## Key Features
-The Product Rating and Reviews module enables:
 
-* Submitting product reviews
-* Updating the existing product reviews
-* Getting products ratings
-* Viewing products reviews
-* Multi-store capability with every store having its own review for the same product
+## Key features
+The Rating and Reviews module enables:
+
 * Moderating and checking reviews
+* Approving or rejecting reviews
+* Updating the existing reviews
+* Getting ratings
+* Multi-store and none-store capability with every store having its own review
 * Configurable rating calculator, both average and [Wilson](https://www.evanmiller.org/how-not-to-sort-by-average-rating.html)
 * Email review reminder for customers who purchased products prompting them to come back and leave a review
- 
-## Current Constraints
-* Product reviews are linked to the store
-* One review per one customer, per product, and per store
- 
- 
+
+## Ratings and Reviews for custom object types
+
+The flexibility of use contains in the structure of Review - when storing and querying, the EntityId and EntityType fields are used, which allow you to describe almost any object used in the application. The ReviewsModule allows developers to define the required object types themselves, in their production systems, without directly modifying the ReviewsModule source code. When registering the type of an object being viewed, the developer specifies the Templates and Controllers that will handle the rendering of the object.
+
+As an example, you can use the described Product type, which is used for reviews of catalog products (this code is placed in the ReviewsModule as a sample for use, further it is assumed that developers will register Custom Types directly in their Modules). 
+
+`VirtoCommerce.CustomerReviews.js`
+```js
+55    //Product entityType resolver
+56    entityTypesResolverService.registerType({
+57        entityType: 'Product',
+58        description: 'customerReviews.blades.product-detail.description',
+59        fullTypeName: 'VirtoCommerce.CatalogModule.Core.Model.CatalogProduct',
+60        icon: 'fas fa-shopping-bag',
+61        entityIdFieldName: 'itemId',
+62        detailBlade: {
+63            controller: 'virtoCommerce.catalogModule.itemDetailController',
+64            template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/item-detail.tpl.html'
+65        },
+66        getEntity: function (entityId, setEntityCallback) {
+67            items.get({ id: entityId, respGroup: 1 }, (data) => {
+68                setEntityCallback(data.name, data.imgSrc);
+69            });
+70        },
+71        knownChildrenTypes: []
+72    });
+```
+***Notes:***
+
+Line 57: this entityType will use to resolve objects anywhere - filters, queries, commands.
+
+Lines 63 and 64: controller and template to show object in Admin Portal, you can use "default" object's blades from your Modules. In this example was reused template and controller for "Item" blade from *Catalog*.
+
+Line 66: function to get information about object. In example - method from *Catalog* for getting Product's info
+
 ## Scenarios
 
-> ***Note:*** *In order to get access to some scenarios, you need to integrate the Product Rating and Reviews API into your frontend application.
+> ***Note:*** In order to get access to some scenarios, you need to integrate the Rating and Reviews API into your frontend application.
  
-### Submitting Product Review
-Customers usually submit product reviews to provide feedback and improve the decision making process for the purchase.
+### Submitting Review
+
+Users usually submit reviews to provide feedback (for example, about product, or vendor, or delivery service) and improve the decision making process for the purchase.
  
-You can submit a product review from the front end application by calling an API like this:
+You can submit a review from the front end application by calling an API like this:
  
 ```json
 POST /api/customerReviews
  
 [
   {
-    "storeId": "B2B-store",
+    "storeId": "Electronics",
     "userId": "test_user_id",
     "userName": "Alex B.",
-    "productId": "baa4931161214690ad51c50787b1ed94",
+    "EntityId": "baa4931161214690ad51c50787b1ed94",
+    "EntityType": "Product",
+    "EntityName": "Aunkler's Favorite Product",
     "title": "Demo Product Review",
     "review": "Nice Product. I liked it",
     "rating": 5
@@ -53,98 +85,108 @@ POST /api/customerReviews
 ```
  
  
-### Getting Products Ratings
+### Viewing Ratings and Reviews
 
-To view product rating in the Admin Portal, go to *Catalog* and open the *Product* screen:
+To view reviews in the Admin Portal, go to *Rating and Reviews* in main menu:
  
-![View Product Reviews in the Admin Porta](media/view-product-reviews.png)
+![View Reviews in the Admin Portal](media/view-review-list.png)
  
-From the front end application, you can call an API and request current rating for multiple products and a specific store:
+From the front end application, you can call an API and request list of reviews:
  
-```json
-POST /api/rating/productRatingInStore
- 
-{
-  "storeId": "B2B-store",
-  "productIds": [
-    "baa4931161214690ad51c50787b1ed94"
-  ]
-}
- 
-Response:
-[
-  {
-    "productId": "baa4931161214690ad51c50787b1ed94",
-    "value": 4.5,
-    "reviewCount": 4
-  }
-]
-```
- 
- 
-### Viewing Product Reviews
-Just like product rating, you can view product reviews in the Admin Portal by navigating to *Catalog > Product*:
- 
-![View Product Reviews in the Admin Porta](media/view-product-reviews.png)
- 
- 
-From the front end app, you can call an API and request list of product review:
-
 ```json
 POST /api/customerReviews/reviewList
  
 {
-    "productIds":["baa4931161214690ad51c50787b1ed94"],
-    "storeId":"B2B-store",
-    "reviewStatus":[1],
+    "reviewStatus":null,
     "sort":"",
     "take":20,
-    "skip":0,
+    "skip":0
 }
+```
  
 Response:
+```json
 {
-    "totalCount":1,
+    "totalCount":7,
     "results":[
         {
             "id":"fc9a07db-f09f-4a85-bafc-f5e9299d3301",
-            "productName":"1\" Stainless Steel Carriage Bolt, 18-8, NL-19(SM) Finish, 1/4\"-20 Dia/Thread Size, 50 PK",
+            "entityId":"8c01bcf0-4bab-4675-97b9-ea6cc41912e5",
+            "entityName":"Aunkler's Favorite Product",
+            "entityType":"Product",
             "reviewStatus":"Approved",
             "reviewStatusId":1,
             "title": "Demo Product Review",
             "review": "Nice Product. I liked it",
             "rating":5,
             "userName":"Alex B.",
-            "storeName":"B2B-store",
-            "createdDate":"2022-01-31T14:09:15.491305Z"
-        }
+            "storeName":"Electronics",
+            "createdDate":"2022-10-04T03:46:43.433Z"
+        },
+        {...}
     ]
 }
 ```
+
+You can filter list of reviews using additional fields in request (for example):
+
+```json
+{
+    "entityType":"Product",
+    "searchPhrase":"demo",
+    "sort":"createdDate:desc",
+    "take":20,
+    "skip":0,
+}
+```
+
+### Getting current average Rating of reviewable object
+
+To view entity's rating, as example, for Product, in the Admin Portal, go to *Catalog* in main menu, and open your product's screen. In widjets you can see average rating and product's reviews count. Click to the widget and you can see list of this product's reviews:
+
+![Product's average rating in the Admin Portal](media/view-product-reviews.png)
+
+From the front end application, you can call an API to request rating:
+
+```json
+POST /api/rating/entityRating
  
+{
+    "entityIds": [
+        "8c01bcf0-4bab-4675-97b9-ea6cc41912e5"
+    ],
+    "entityType":"Product"
+}
+```
+ 
+Response:
+```json
+[
+    {
+        "storeName":"Electronics",
+        "storeId":"Electronics",
+        "entityId":"8c01bcf0-4bab-4675-97b9-ea6cc41912e5",
+        "entityType":"Product",
+        "value":3.50,
+        "reviewCount":2
+    }
+]
+```
  
 ### Moderating Reviews
-Moderating product reviews is crucial, as it allows you to remove undesired content and protect your web store from spam.
+Moderating reviews is crucial, as it allows you to remove undesired content and protect your web store from spam.
  
 > ***Note:*** The moderation process can be customized based on the solution requirements.
  
-Before changing the review status, you can first read its contents. To read a review, select *Product Rating and Reviews*:
- 
-![view new reviews](media/view-review-list.png)
+Before changing the review status, you can first read its contents. To read a review, select *Rating and Reviews* as described above and filter rewiew status "New". You can also apply extra filtering and sorting, if required.
 
-You can also apply filtering and sorting, if required.
+To change the status of a customer review click to review in list (this will show review's details), and in the toolbar, click *Approve Review* or *Reject Review*:
 
-To change the status of a customer review, all you need to do is:
-1. Open the review in question and
-1. In the toolbar, click *Approve Review* or *Reject Review*:
+![Moderate new review](media/moderate-customer-review.png)
+ 
 
-![view new reviews](media/moderate-customer-review.png)
- 
-You cannot remove reviews through the Admin Portal; however, this option is available thorugh the following API you can call from your front end app:
- 
 ```json
-POST 
-​/api​/customerReviews​/approve
+POST /api/customerReviews/approve
  
 [
     "fc9a07db-f09f-4a85-bafc-f5e9299d3301"
@@ -152,14 +194,35 @@ POST
 ```
  
 ```json
-POST 
-/api/customerReviews/reject
+POST /api/customerReviews/reject
  
 [
     "fc9a07db-f09f-4a85-bafc-f5e9299d3301"
 ]
 ```
+
+You can rollback approved or rejected modetated review's status - just use "Reset review status" option in toolbar. This will recalculate entity's rating excluding current review.
+
+```json
+POST /api/customerReviews/reset
  
+[
+    "fc9a07db-f09f-4a85-bafc-f5e9299d3301"
+]
+```
+
+You can remove unwanted reviews (like a spam) from your system.
+
+```json
+DELETE /api/customerReviews
+
+{
+    "ids":
+    [
+        "fc9a07db-f09f-4a85-bafc-f5e9299d3301"
+    ]
+} 
+```
  
 ### Email Review Reminder
 There is also an option to configure email review reminder for the customers who purchased products but still did not leave any feedback.
@@ -185,8 +248,8 @@ Currently, there are three types of settings you can configure within the Produc
 * Rating calculation method: Enables selecting rating method, average or [Wilson](https://www.evanmiller.org/how-not-to-sort-by-average-rating.html)
  
 ### Store Settings
-* Enable product reviews (default value: false)
-* Allow anonymous product reviews (default value: false)
+* Enable reviews (default value: false)
+* Allow anonymous reviews (default value: false)
 * Allow reviews only from customers who made a purchase (default value: true)
  
 ### Email Review Reminder Settings

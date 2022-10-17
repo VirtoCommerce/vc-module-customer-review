@@ -130,6 +130,23 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             }
         }
 
+        public async Task<RatingEntityDto[]> GetForStoreAsync(string storeId, string[] entityIds, string entityType)
+        {
+            using (var repository = _repositoryFactory())
+            {
+                var ratings = await repository.GetAsync(storeId, entityIds, entityType);
+
+                return ratings.Select(x => new RatingEntityDto
+                {
+                    Value = x.Value,
+                    EntityId = x.EntityId,
+                    EntityType = entityType,
+                    ReviewCount = x.ReviewCount,
+                }).ToArray();
+
+            }
+        }
+
         public async Task<RatingStoreDto[]> GetForCatalogAsync(string catalogId, string[] productIds)
         {
             var storeSearchCriteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
@@ -165,23 +182,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             }
 
             return result.ToArray();
-        }
-
-        public async Task<RatingEntityDto[]> GetForStoreAsync(string storeId, string[] entityIds, string entityType)
-        {
-            using (var repository = _repositoryFactory())
-            {
-                var ratings = await repository.GetAsync(storeId, entityIds, entityType);
-
-                return ratings.Select(x => new RatingEntityDto
-                {
-                    Value = x.Value,
-                    EntityId = x.EntityId,
-                    EntityType = entityType,
-                    ReviewCount = x.ReviewCount,
-                }).ToArray();
-
-            }
         }
 
         public async Task<RatingEntityStoreDto[]> GetRatingsAsync(string[] entityIds, string entityType)
