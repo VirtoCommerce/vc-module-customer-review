@@ -22,9 +22,16 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
 
         [Required]
         [StringLength(128)]
-        public string ProductId { get; set; }
+        public string EntityId { get; set; }
 
         [Required]
+        [StringLength(128)]
+        public string EntityType { get; set; }
+
+        [Required]
+        [StringLength(1024)]
+        public string EntityName { get; set; }
+
         [StringLength(128)]
         public string StoreId { get; set; }
 
@@ -51,7 +58,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
             model.Rating = Rating;
             model.Title = Title;
 
-            model.ProductId = ProductId;
+            model.EntityId = EntityId;
+            model.EntityType = EntityType;
+            model.EntityName = EntityName;
             model.StoreId = StoreId;
 
             return model;
@@ -78,7 +87,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
             ReviewStatus = (byte)model.ReviewStatus;
             Rating = model.Rating;
 
-            ProductId = model.ProductId;
+            EntityId = model.EntityId;
+            EntityType = model.EntityType;
+            EntityName = model.EntityName;
             StoreId = model.StoreId;
 
             return this;
@@ -97,7 +108,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
             target.Rating = Rating;
             target.ReviewStatus = ReviewStatus;
 
-            target.ProductId = ProductId;
+            target.EntityId = EntityId;
+            target.EntityType = EntityType;
+            target.EntityName = EntityName;
             target.StoreId = StoreId;
         }
     }

@@ -1,6 +1,8 @@
 angular.module('VirtoCommerce.CustomerReviews')
-    .controller('VirtoCommerce.CustomerReviews.reviewsListController', ['$scope', 'CustomerReviews.WebApi', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.authService',
-        function ($scope, reviewsApi, bladeUtils, uiGridConstants, uiGridHelper, authService) {
+    .controller('VirtoCommerce.CustomerReviews.reviewsListController',
+        ['$scope', 'CustomerReviews.WebApi', 'platformWebApp.bladeUtils', 'uiGridConstants',
+            'platformWebApp.uiGridHelper', 'platformWebApp.authService', 'VirtoCommerce.CustomerReviews.entityTypesResolverService',
+        function ($scope, reviewsApi, bladeUtils, uiGridConstants, uiGridHelper, authService, entityTypesResolverService) {
             $scope.uiGridConstants = uiGridConstants;
 
             var blade = $scope.blade;
@@ -42,21 +44,11 @@ angular.module('VirtoCommerce.CustomerReviews')
                     controller: 'VirtoCommerce.CustomerReviews.reviewDetailController',
                     template: 'Modules/$(VirtoCommerce.CustomerReviews)/Scripts/blades/review-detail.tpl.html'
                 };
-                newBlade.metaFields = [
-                    {
-                        name: 'content',
-                        title: 'Content',
-                        valueType: 'LongText',
-                    },
-                    {
-                        name: 'rating',
-                        valueType: 'Integer'
-                    }];
                 bladeNavigationService.showBlade(newBlade, blade);
             }    
             
             blade.headIcon = 'fa fa-comments';
-            blade.title = 'Product Rating and Reviews';
+            blade.title = 'Rating and Reviews';
 
             blade.toolbarCommands = [
                 {
@@ -65,14 +57,6 @@ angular.module('VirtoCommerce.CustomerReviews')
                     canExecuteMethod: function () {
                         return true;
                     }
-                },
-                {
-                    name: "platform.commands.edit", icon: 'fa fa-edit',
-                    executeMethod: blade.selectNode,
-                    canExecuteMethod: function () {
-                        return true;
-                    },
-                    permission: 'customerReviews:update'
                 }
             ];
 
@@ -90,6 +74,8 @@ angular.module('VirtoCommerce.CustomerReviews')
                     value: 2
                 }
             ];
+
+            $scope.entityTypesList = entityTypesResolverService.objects.map(x => x.entityType);
 
             // simple and advanced filtering
             var filter = $scope.filter = blade.filter || {};

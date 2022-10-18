@@ -9,6 +9,7 @@ using VirtoCommerce.CustomerModule.Core.Model;
 using VirtoCommerce.CustomerModule.Core.Services;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
+using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -57,25 +58,30 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
 
             using (var repository = _customerReviewRepository())
             {
-                var query = from r in repository.RequestReview
-                            where r.AccessDate == null && r.ModifiedDate < DateTime.Now.AddDays(-countDays) && r.ReviewsRequest < maxRequests && !repository.CustomerReviews.Any(cr => r.StoreId == cr.StoreId && r.ProductId == cr.ProductId && cr.UserId == r.UserId)
-                            select r;
+                var RequestReviews = GetReviewsList(countDays, maxRequests);
 
-                var RequestReviews = query.ToList();
-
-                var items = (await _itemService.GetByIdsAsync(RequestReviews.Select(i => i.ProductId).Distinct().ToArray(), CatalogModule.Core.Model.ItemResponseGroup.ItemInfo.ToString())).ToDictionary(i => i.Id).WithDefaultValue(null);
+                var items = (await _itemService.GetByIdsAsync(RequestReviews.Select(i => i.EntityId).Distinct().ToArray(), CatalogModule.Core.Model.ItemResponseGroup.ItemInfo.ToString())).ToDictionary(i => i.Id).WithDefaultValue(null);
 
                 List<OrderNotificationJobArgument> ordeMail = new List<OrderNotificationJobArgument>();
                 foreach (var RequestReview in RequestReviews)
                 {
-                    var item = items[RequestReview.ProductId];
+                    var item = items[RequestReview.EntityId];
                     if (item != null && item.EnableReview.GetValueOrDefault(true))
                     {
                         RequestReview.ModifiedDate = DateTime.Now;
                         RequestReview.ReviewsRequest++;
                         repository.Update(RequestReview);
 
-                        ordeMail.Add(new OrderNotificationJobArgument() { RequestId = RequestReview.Id, ProductId = RequestReview.ProductId, CustomerId = RequestReview.UserId, CustomerOrderId = RequestReview.CustomerOrderId, StoreId = RequestReview.StoreId, NotificationTypeName = nameof(CustomerReviewEmailNotification) });
+                        ordeMail.Add(new OrderNotificationJobArgument()
+                        {
+                            RequestId = RequestReview.Id,
+                            EntityId = RequestReview.EntityId,
+                            EntityType = RequestReview.EntityType,
+                            CustomerId = RequestReview.UserId,
+                            CustomerOrderId = RequestReview.CustomerOrderId,
+                            StoreId = RequestReview.StoreId,
+                            NotificationTypeName = nameof(CustomerReviewEmailNotification)
+                        });
                     }
                 }
                 if (ordeMail.Any())
@@ -97,6 +103,18 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
             maxRequests = settings.GetSettingValue(ModuleConstants.Settings.General.RequestReviewMaxRequests.Name, (int)ModuleConstants.Settings.General.RequestReviewMaxRequests.DefaultValue);
         }
 
+        private List<RequestReviewEntity> GetReviewsList(int countDays, int maxRequests)
+        {
+            using (var repository = _customerReviewRepository())
+            {
+                return repository.RequestReview
+                    .Where(r =>
+                        r.AccessDate == null && r.ModifiedDate < DateTime.Now.AddDays(-countDays) && r.ReviewsRequest < maxRequests
+                        && !repository.CustomerReviews.Any(cr => r.StoreId == cr.StoreId && r.EntityId == cr.EntityId && r.EntityType == "Product" && cr.UserId == r.UserId))
+                    .ToList();
+            }
+        }
+
         public virtual async Task TryToSendOrderNotificationsAsync(OrderNotificationJobArgument[] jobArguments)
         {
             var ordersByIdDict = (await _customerOrderService.GetAsync(jobArguments.Select(x => x.CustomerOrderId).Distinct().ToList()))
@@ -113,7 +131,7 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
                     {
                         var customer = await _memberResolver.ResolveMemberByIdAsync(jobArgument.CustomerId);
 
-                        orderNotification.Item = order.Items.FirstOrDefault(i => i.ProductId == jobArgument.ProductId);
+                        orderNotification.Item = order.Items.FirstOrDefault(i => i.ProductId == jobArgument.EntityId);
                         orderNotification.Customer = customer;
                         orderNotification.RequestId = jobArgument.RequestId;
                         orderNotification.LanguageCode = order.LanguageCode;
@@ -167,6 +185,7 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
         public string CustomerOrderId { get; set; }
         public string StoreId { get; set; }
         public string RequestId { get; set; }
-        public string ProductId { get; set; }
+        public string EntityId { get; set; }
+        public string EntityType { get; set; }
     }
 }

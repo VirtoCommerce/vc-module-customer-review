@@ -30,20 +30,26 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             }
         }
 
-        public Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> productIds, IEnumerable<int> reviewStatuses)
+        public Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> entityIds, string entityType, IEnumerable<int> reviewStatuses)
         {
             var q = CustomerReviews
                    .Where(r => r.StoreId == storeId && reviewStatuses.Contains(r.ReviewStatus));
 
-            if (productIds != null && productIds.Any())
+            if (entityIds != null && entityIds.Any())
             {
-                q = q.Where(r => productIds.Contains(r.ProductId));
+                q = q.Where(r => entityIds.Contains(r.EntityId));
+            }
+
+            if (!string.IsNullOrEmpty(entityType))
+            {
+                q = q.Where(r => r.EntityType == entityType);
             }
 
             return q.Select(r => new ReviewRatingCalculateDto()
             {
                 StoreId = r.StoreId,
-                ProductId = r.ProductId,
+                EntityId = r.EntityId,
+                EntityType = r.EntityType,
                 Rating = r.Rating,
                 CreatedDate = r.CreatedDate
             })
@@ -56,16 +62,23 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
         public IQueryable<RatingEntity> Ratings => DbContext.Set<RatingEntity>();
 
-        public Task<RatingEntity[]> GetAsync(string storeId, IEnumerable<string> productIds)
+        public Task<RatingEntity[]> GetAsync(IEnumerable<string> entityIds, string entityType)
         {
             return Ratings
-                .Where(x => x.StoreId == storeId && productIds.Contains(x.ProductId))
+                .Where(x => entityIds.Contains(x.EntityId) && x.EntityType == entityType)
                 .ToArrayAsync();
         }
 
-        public Task<RatingEntity> GetAsync(string storeId, string productId)
+        public Task<RatingEntity[]> GetAsync(string storeId, IEnumerable<string> entityIds, string entityType)
         {
-            return Ratings.FirstOrDefaultAsync(x => x.StoreId == storeId && x.ProductId == productId);
+            return Ratings
+                .Where(x => x.StoreId == storeId && entityIds.Contains(x.EntityId) && x.EntityType == entityType)
+                .ToArrayAsync();
+        }
+
+        public Task<RatingEntity> GetAsync(string storeId, string entityId, string entityType)
+        {
+            return Ratings.FirstOrDefaultAsync(x => x.StoreId == storeId && x.EntityId == entityId && x.EntityType == entityType);
         }
 
         public void Delete(RatingEntity entity)
@@ -91,9 +104,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             return RequestReview.Where(x => Ids.Contains(x.Id)).ToArrayAsync();
         }
 
-        public Task<RequestReviewEntity> GetRequestReviewAsync(string ProductId, string UserId)
+        public Task<RequestReviewEntity> GetRequestReviewAsync(string entityId, string entityType, string userId)
         {
-            return RequestReview.FirstOrDefaultAsync(x => x.ProductId == ProductId && x.UserId == UserId);
+            return RequestReview.FirstOrDefaultAsync(x => x.EntityId == entityId && x.EntityType == entityType && x.UserId == userId);
         }
 
         public void Delete(RequestReviewEntity entity)
@@ -104,4 +117,3 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         #endregion
     }
 }
-

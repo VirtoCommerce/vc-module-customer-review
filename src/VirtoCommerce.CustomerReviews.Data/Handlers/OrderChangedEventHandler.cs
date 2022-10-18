@@ -75,7 +75,17 @@ namespace VirtoCommerce.CustomerReviews.Data.Handlers
                     {
                         foreach (var item in order.Items)
                         {
-                            repository.Add(new RequestReviewEntity() { CreatedDate = DateTime.Now, CustomerOrderId = jobArgument.CustomerOrderId, ModifiedDate = DateTime.Now, ProductId = item.ProductId, ReviewsRequest = 0, StoreId = jobArgument.StoreId, UserId = jobArgument.CustomerId });
+                            repository.Add(new RequestReviewEntity()
+                            {
+                                CreatedDate = DateTime.Now,
+                                CustomerOrderId = jobArgument.CustomerOrderId,
+                                ModifiedDate = DateTime.Now,
+                                EntityId = item.ProductId,
+                                EntityType = "Product",
+                                ReviewsRequest = 0,
+                                StoreId = jobArgument.StoreId,
+                                UserId = jobArgument.CustomerId
+                            });
                         }
                     }
                 }

@@ -25,10 +25,10 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             modelBuilder.Entity<CustomerReviewEntity>().ToTable("CustomerReview");
             modelBuilder.Entity<CustomerReviewEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<CustomerReviewEntity>()
-                .HasIndex(x => new { x.StoreId, x.ProductId, x.ReviewStatus })
+                .HasIndex(x => new { x.StoreId, x.EntityId, x.EntityType, x.ReviewStatus })
                 .IsUnique(false);
             modelBuilder.Entity<CustomerReviewEntity>()
-                .HasIndex(x => new { x.StoreId, x.ProductId, x.UserId })
+                .HasIndex(x => new { x.StoreId, x.EntityId, x.EntityType, x.UserId })
                 .IsUnique();
 
             #endregion
@@ -39,7 +39,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             modelBuilder.Entity<RatingEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<RatingEntity>().ToTable("Ratings");
             modelBuilder.Entity<RatingEntity>()
-                .HasIndex(x => new { x.StoreId, x.ProductId })
+                .HasIndex(x => new { x.StoreId, x.EntityId, x.EntityType })
                 .IsUnique();
             modelBuilder.Entity<RatingEntity>().Property(x => x.Value).HasPrecision(18, 2);
             #endregion
@@ -50,7 +50,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
             modelBuilder.Entity<RequestReviewEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<RequestReviewEntity>().ToTable("RequestReview");
             modelBuilder.Entity<RequestReviewEntity>().
-                HasIndex(x => new { x.StoreId, x.ProductId, x.UserId });
+                HasIndex(x => new { x.StoreId, x.EntityId, x.EntityType, x.UserId });
 
             #endregion
 

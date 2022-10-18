@@ -28,35 +28,48 @@ angular.module(moduleTemplateName, [])
             
     }
 ])
-    .run(['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'platformWebApp.authService',
-    function ($rootScope, mainMenuService, widgetService, $state, authService) {
+    .run(['platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state',
+        'platformWebApp.authService', 'VirtoCommerce.CustomerReviews.entityTypesResolverService',
+        'virtoCommerce.catalogModule.items',
+        function (mainMenuService, widgetService, $state, authService, entityTypesResolverService, items) {
 
         //Register reviews menu item
         var menuItemNewReviews = {
             path: 'browse/customerReviewsNew',
             icon: 'fa fa-comments',
-            title: 'Product Rating and Reviews',
+            title: 'Rating and Reviews',
             priority: 100,
             action: function () { $state.go('workspace.customerReviews') },
             permission: 'customerReviews:read'
         };
         mainMenuService.addMenuItem(menuItemNewReviews);
 
-        //Register reviews widget inside product blade
+        //Reviews widget inside product blade
         var itemReviewsWidget = {
-            controller: 'VirtoCommerce.CustomerReviews.customerReviewWidgetController',
-            template: 'Modules/$(VirtoCommerce.CustomerReviews)/Scripts/widgets/customerReviewWidget.tpl.html',
+            controller: 'VirtoCommerce.CustomerReviews.productRatingWidgetController',
+            template: 'Modules/$(VirtoCommerce.CustomerReviews)/Scripts/widgets/product-rating-widget.tpl.html',
             isVisible: function (blade) { return authService.checkPermission('customerReviews:read'); }
         };
         widgetService.registerWidget(itemReviewsWidget, 'itemDetail');
 
-        //Register rating widget inside product blade
-        var ratingWidget = {
-            controller: 'VirtoCommerce.CustomerReviews.ratingProductWidgetController',
-            template: 'modules/$(VirtoCommerce.CustomerReviews)/Scripts/widgets/virtoCommerceRatingProductWidget.tpl.html',
-            isVisible: function (blade) { return authService.checkPermission('customerReviews:ratingRead'); }
-        };
-        widgetService.registerWidget(ratingWidget, 'itemDetail');
-        
+        //Product entityType resolver
+        entityTypesResolverService.registerType({
+            entityType: 'Product',
+            description: 'customerReviews.blades.product-detail.description',
+            fullTypeName: 'VirtoCommerce.CatalogModule.Core.Model.CatalogProduct',
+            icon: 'fas fa-shopping-bag',
+            entityIdFieldName: 'itemId',
+            detailBlade: {
+                controller: 'virtoCommerce.catalogModule.itemDetailController',
+                template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/item-detail.tpl.html'
+            },
+            getEntity: function (entityId, setEntityCallback) {
+                items.get({ id: entityId, respGroup: 1 }, (data) => {
+                    setEntityCallback(data.name, data.imgSrc);
+                });
+            },
+            knownChildrenTypes: []
+        });
+
     }
 ]);

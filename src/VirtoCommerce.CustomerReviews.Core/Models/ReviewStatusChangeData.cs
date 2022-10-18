@@ -1,4 +1,4 @@
-﻿using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CustomerReviews.Core.Models
 {
@@ -6,7 +6,8 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
     {
         public string Id { get; set; }
         public string StoreId { get; set; }
-        public string ProductId { get; set; }
+        public string EntityId { get; set; }
+        public string EntityType { get; set; }
         public CustomerReviewStatus OldStatus { get; set; }
         public CustomerReviewStatus NewStatus { get; set; }
     }

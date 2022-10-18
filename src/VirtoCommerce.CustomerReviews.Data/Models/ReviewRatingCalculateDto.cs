@@ -5,7 +5,8 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
     public class ReviewRatingCalculateDto
     {
         public string StoreId { get; set; }
-        public string ProductId { get; set; }
+        public string EntityId { get; set; }
+        public string EntityType { get; set; }
         public int Rating { get; set; }
         public DateTime CreatedDate { get; set; }
     }

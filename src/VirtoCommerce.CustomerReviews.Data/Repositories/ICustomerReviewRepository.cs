@@ -14,26 +14,26 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         Task<IEnumerable<CustomerReviewEntity>> GetByIdsAsync(IEnumerable<string> ids);
         Task DeleteCustomerReviewsAsync(IEnumerable<string> ids);
 
-        Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> productIds, IEnumerable<int> reviewStatuses);
+        Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> entityIds, string entityType, IEnumerable<int> reviewStatuses);
 
         #endregion
 
         #region Rating
 
         IQueryable<RatingEntity> Ratings { get; }
-        Task<RatingEntity> GetAsync(string storeId, string productId);
-        Task<RatingEntity[]> GetAsync(string storeId, IEnumerable<string> productIds);
+        Task<RatingEntity[]> GetAsync(IEnumerable<string> entityIds, string entityType);
+        Task<RatingEntity> GetAsync(string storeId, string entityId, string entityType);
+        Task<RatingEntity[]> GetAsync(string storeId, IEnumerable<string> entityIds, string entityType);
         void Delete(RatingEntity entity);
 
         #endregion
-
 
         #region RequestReview
 
         IQueryable<RequestReviewEntity> RequestReview { get; }
         Task<RequestReviewEntity> GetRequestReviewByIdAsync(string Id);
         Task<RequestReviewEntity[]> GetRequestReviewByIdAsync(IEnumerable<string> Ids);
-        Task<RequestReviewEntity> GetRequestReviewAsync(string ProductId, string UserId);
+        Task<RequestReviewEntity> GetRequestReviewAsync(string entityId, string entityType, string userId);
         void Delete(RequestReviewEntity entity);
 
         #endregion

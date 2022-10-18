@@ -36,17 +36,27 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EntityId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -59,7 +69,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("StoreId")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
@@ -76,11 +85,11 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId", "ProductId", "ReviewStatus");
+                    b.HasIndex("StoreId", "EntityId", "EntityType", "ReviewStatus");
 
-                    b.HasIndex("StoreId", "ProductId", "UserId")
+                    b.HasIndex("StoreId", "EntityId", "EntityType", "UserId")
                         .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .HasFilter("[StoreId] IS NOT NULL AND [UserId] IS NOT NULL");
 
                     b.ToTable("CustomerReview", (string)null);
                 });
@@ -92,7 +101,12 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("ProductId")
+                    b.Property<string>("EntityId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("EntityType")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
@@ -101,7 +115,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("StoreId")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
@@ -110,8 +123,9 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId", "ProductId")
-                        .IsUnique();
+                    b.HasIndex("StoreId", "EntityId", "EntityType")
+                        .IsUnique()
+                        .HasFilter("[StoreId] IS NOT NULL");
 
                     b.ToTable("Ratings", (string)null);
                 });
@@ -134,19 +148,23 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProductId")
+                    b.Property<string>("EntityId")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ReviewsRequest")
                         .HasColumnType("int");
 
                     b.Property<string>("StoreId")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
@@ -157,7 +175,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId", "ProductId", "UserId");
+                    b.HasIndex("StoreId", "EntityId", "EntityType", "UserId");
 
                     b.ToTable("RequestReview", (string)null);
                 });

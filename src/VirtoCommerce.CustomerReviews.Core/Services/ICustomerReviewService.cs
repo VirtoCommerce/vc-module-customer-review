@@ -7,5 +7,6 @@ namespace VirtoCommerce.CustomerReviews.Core.Services
         Task ApproveReviewAsync(string[] customerReviewsIds);
         Task RejectReviewAsync(string[] customerReviewsIds);
         Task ResetReviewStatusAsync(string[] customerReviewsIds);
+        Task DeleteReviews(string[] customerReviewsIds);
     }
 }
