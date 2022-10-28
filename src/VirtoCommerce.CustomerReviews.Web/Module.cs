@@ -70,7 +70,7 @@ namespace VirtoCommerce.CustomerReviews.Web
 
             var settingsManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
             var order_status = settingsManager.GetObjectSettingAsync(VirtoCommerce.OrdersModule.Core.ModuleConstants.Settings.General.OrderStatus.Name).GetAwaiter().GetResult().AllowedValues;
-            ModuleConstants.Settings.AllSettings.FirstOrDefault(x => x.Name == ModuleConstants.Settings.General.RequestReviewOrderInState.Name).AllowedValues = order_status;
+            ModuleConstants.Settings.AllSettings.First(x => x.Name == ModuleConstants.Settings.General.RequestReviewOrderInState.Name).AllowedValues = order_status;
 
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
