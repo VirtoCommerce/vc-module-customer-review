@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.CustomerReviews</id>
   <version>3.208.0</version>
@@ -10,6 +10,7 @@
     <author>Egidijus Mazeika</author>
     <author>Andrew Nikutin</author>
     <author>Evgeny Gusev</author>
+    <author>Aleksandr Vishniakov</author>
   </authors>
   <owners>
     <owner>Virto Commerce</owner>
@@ -22,10 +23,11 @@
   <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>
   <dependencies>
     <dependency id="VirtoCommerce.Catalog" version="3.200.0" />
-    <dependency id="VirtoCommerce.Store" version="3.200.0" />
-    <dependency id="VirtoCommerce.Notifications" version="3.200.0" />
     <dependency id="VirtoCommerce.Customer" version="3.200.0" />
+    <dependency id="VirtoCommerce.ExperienceApi" version="3.241.0" />
+    <dependency id="VirtoCommerce.Notifications" version="3.200.0" />
     <dependency id="VirtoCommerce.Orders" version="3.200.0" />
+    <dependency id="VirtoCommerce.Store" version="3.200.0" />
   </dependencies>
   <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>

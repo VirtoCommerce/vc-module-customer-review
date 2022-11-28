@@ -1,7 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using GraphQL.Server;
 using Hangfire;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +14,6 @@ using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.BackgroundJobs;
 using VirtoCommerce.CustomerReviews.Data.Handlers;
-using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.CustomerReviews.Data.Services;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -23,12 +24,16 @@ using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Core.GenericCrud;
-using VirtoCommerce.Platform.Data.GenericCrud;
 using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
+using VirtoCommerce.CustomerReviews.ExperienceApi;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Schemas;
+using VirtoCommerce.ExperienceApiModule.Core.Extensions;
+using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
 using VirtoCommerce.OrdersModule.Core.Events;
+using VirtoCommerce.XDigitalCatalog.Schemas;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
@@ -62,6 +67,15 @@ namespace VirtoCommerce.CustomerReviews.Web
 
             serviceCollection.AddTransient<ReviewStatusChangedEventHandler>();
             serviceCollection.AddTransient<OrderChangedEventHandler>();
+
+            // GraphQL
+            var assemblyMarker = typeof(AssemblyMarker);
+            var graphQlBuilder = new CustomGraphQLBuilder(serviceCollection);
+            graphQlBuilder.AddGraphTypes(assemblyMarker);
+            serviceCollection.AddMediatR(assemblyMarker);
+            serviceCollection.AddAutoMapper(assemblyMarker);
+            serviceCollection.AddSchemaBuilders(assemblyMarker);
+            serviceCollection.AddSchemaType<RatedVendorType>().OverrideType<VendorType, RatedVendorType>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
