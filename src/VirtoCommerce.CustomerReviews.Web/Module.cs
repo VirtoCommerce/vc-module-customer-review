@@ -29,11 +29,12 @@ using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
 using VirtoCommerce.CustomerReviews.ExperienceApi;
-using VirtoCommerce.CustomerReviews.ExperienceApi.Schemas;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 using VirtoCommerce.ExperienceApiModule.Core.Extensions;
 using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
+using VirtoCommerce.ExperienceApiModule.Core.Pipelines;
 using VirtoCommerce.OrdersModule.Core.Events;
-using VirtoCommerce.XDigitalCatalog.Schemas;
+using VirtoCommerce.XDigitalCatalog.Queries;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
@@ -75,7 +76,11 @@ namespace VirtoCommerce.CustomerReviews.Web
             serviceCollection.AddMediatR(assemblyMarker);
             serviceCollection.AddAutoMapper(assemblyMarker);
             serviceCollection.AddSchemaBuilders(assemblyMarker);
-            serviceCollection.AddSchemaType<RatedVendorType>().OverrideType<VendorType, RatedVendorType>();
+
+            serviceCollection.AddPipeline<SearchProductResponse>(builder =>
+            {
+                builder.AddMiddleware(typeof(EvalVendorRatingMiddleware));
+            });
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
