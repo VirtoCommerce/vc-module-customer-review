@@ -23,7 +23,7 @@ public class EvalVendorRatingMiddleware : IAsyncMiddleware<SearchProductResponse
         _ratingService = ratingService;
     }
     
-    public async Task Run(SearchProductResponse parameter, Func<SearchProductResponse, Task> next)
+    public virtual async Task Run(SearchProductResponse parameter, Func<SearchProductResponse, Task> next)
     {
         if (parameter == null)
         {
