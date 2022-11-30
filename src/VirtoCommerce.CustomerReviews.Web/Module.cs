@@ -1,9 +1,6 @@
 using System;
 using System.Linq;
-using AutoMapper;
-using GraphQL.Server;
 using Hangfire;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,13 +25,8 @@ using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
-using VirtoCommerce.CustomerReviews.ExperienceApi;
-using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
-using VirtoCommerce.ExperienceApiModule.Core.Extensions;
-using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
-using VirtoCommerce.ExperienceApiModule.Core.Pipelines;
 using VirtoCommerce.OrdersModule.Core.Events;
-using VirtoCommerce.XDigitalCatalog.Queries;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
@@ -70,17 +62,7 @@ namespace VirtoCommerce.CustomerReviews.Web
             serviceCollection.AddTransient<OrderChangedEventHandler>();
 
             // GraphQL
-            var assemblyMarker = typeof(AssemblyMarker);
-            var graphQlBuilder = new CustomGraphQLBuilder(serviceCollection);
-            graphQlBuilder.AddGraphTypes(assemblyMarker);
-            serviceCollection.AddMediatR(assemblyMarker);
-            serviceCollection.AddAutoMapper(assemblyMarker);
-            serviceCollection.AddSchemaBuilders(assemblyMarker);
-
-            serviceCollection.AddPipeline<SearchProductResponse>(builder =>
-            {
-                builder.AddMiddleware(typeof(EvalVendorRatingMiddleware));
-            });
+            serviceCollection.AddExperienceApi();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)

@@ -15,5 +15,6 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Mapping\" />
+      <Folder Include="Extensions\" />
     </ItemGroup>
 </Project>
