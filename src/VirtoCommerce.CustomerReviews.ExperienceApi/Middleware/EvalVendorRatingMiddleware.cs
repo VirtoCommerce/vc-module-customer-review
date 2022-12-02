@@ -46,9 +46,8 @@ public class EvalVendorRatingMiddleware : IAsyncMiddleware<SearchProductResponse
             foreach (var vendorsByType in vendors.GroupBy(vendor => vendor.Type))
             {
                 var vendorType = vendorsByType.Key;
-                var vendorIds = vendorsByType.Select(vendor => vendor.Id).ToArray();
-                ratings .AddRange(await _ratingService.GetForStoreAsync(query.StoreId, vendorIds, vendorType));
-                
+                var vendorIds = vendorsByType.Select(vendor => vendor.Id).Distinct().ToArray();
+                ratings.AddRange(await _ratingService.GetForStoreAsync(query.StoreId, vendorIds, vendorType));
             }
 
             if (ratings.Any())
