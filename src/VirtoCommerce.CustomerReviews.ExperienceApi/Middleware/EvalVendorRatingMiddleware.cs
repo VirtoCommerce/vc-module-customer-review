@@ -41,23 +41,29 @@ public class EvalVendorRatingMiddleware : IAsyncMiddleware<SearchProductResponse
         {
             var vendors = parameter.Results.Where(product => product.Vendor != null).Select(product => product.Vendor).ToArray();
 
-            var ratings = new List<RatingEntityDto>();
+            var ratingByIds = new Dictionary<(string, string), RatingEntityDto>();
 
             foreach (var vendorsByType in vendors.GroupBy(vendor => vendor.Type))
             {
                 var vendorType = vendorsByType.Key;
                 var vendorIds = vendorsByType.Select(vendor => vendor.Id).Distinct().ToArray();
-                ratings.AddRange(await _ratingService.GetForStoreAsync(query.StoreId, vendorIds, vendorType));
+                var ratings = await _ratingService.GetForStoreAsync(query.StoreId, vendorIds, vendorType);
+
+                foreach (var rating in ratings)
+                {
+                    ratingByIds.Add((rating.EntityId, rating.EntityType), rating);
+                }
             }
 
-            if (ratings.Any())
+            if (ratingByIds.Any())
             {
                 parameter.Results
                     .Where(product => product.Vendor != null)
                     .Apply(product =>
-                        product.Vendor.Rating =
-                            _mapper.Map<ExpProductVendorRating>(ratings.FirstOrDefault(rating =>
-                                rating.EntityId == product.Vendor.Id && rating.EntityType == product.Vendor.Type)));
+                    {
+                        ratingByIds.TryGetValue((product.Vendor.Id, product.Vendor.Type), out var rating);
+                        product.Vendor.Rating = _mapper.Map<ExpProductVendorRating>(rating);
+                    });
             }
         }
 
