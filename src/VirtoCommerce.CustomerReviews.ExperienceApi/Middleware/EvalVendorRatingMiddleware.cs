@@ -6,6 +6,7 @@ using AutoMapper;
 using PipelineNet.Middleware;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.ExperienceApiModule.Core;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.XDigitalCatalog;
 using VirtoCommerce.XDigitalCatalog.Queries;
@@ -62,7 +63,7 @@ public class EvalVendorRatingMiddleware : IAsyncMiddleware<SearchProductResponse
                     .Apply(product =>
                     {
                         ratingByIds.TryGetValue((product.Vendor.Id, product.Vendor.Type), out var rating);
-                        product.Vendor.Rating = _mapper.Map<ExpProductVendorRating>(rating);
+                        product.Vendor.Rating = _mapper.Map<ExpRating>(rating);
                     });
             }
         }
