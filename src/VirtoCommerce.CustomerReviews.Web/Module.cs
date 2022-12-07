@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +11,6 @@ using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.BackgroundJobs;
 using VirtoCommerce.CustomerReviews.Data.Handlers;
-using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.CustomerReviews.Data.Services;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -23,12 +21,12 @@ using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Core.GenericCrud;
-using VirtoCommerce.Platform.Data.GenericCrud;
 using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
 using VirtoCommerce.OrdersModule.Core.Events;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
@@ -62,6 +60,9 @@ namespace VirtoCommerce.CustomerReviews.Web
 
             serviceCollection.AddTransient<ReviewStatusChangedEventHandler>();
             serviceCollection.AddTransient<OrderChangedEventHandler>();
+
+            // GraphQL
+            serviceCollection.AddExperienceApi();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)

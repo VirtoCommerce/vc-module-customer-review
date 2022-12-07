@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CustomerRevie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CustomerReviews.Data", "src\VirtoCommerce.CustomerReviews.Data\VirtoCommerce.CustomerReviews.Data.csproj", "{51C23336-EECF-4902-9B59-24B43D01A60E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CustomerReviews.ExperienceApi", "src\VirtoCommerce.CustomerReviews.ExperienceApi\VirtoCommerce.CustomerReviews.ExperienceApi.csproj", "{4B0AAFBD-83D1-4BC4-85BA-8742A22F1140}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CustomerReviews.Web", "src\VirtoCommerce.CustomerReviews.Web\VirtoCommerce.CustomerReviews.Web.csproj", "{67473448-1BAA-4206-A414-34568B3C6FB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.CustomerReviews.Test", "tests\VirtoCommerce.CustomerReviews.Test\VirtoCommerce.CustomerReviews.Test.csproj", "{8C1B4751-30C8-41E7-AD37-24708AF28E6E}"
@@ -37,6 +39,10 @@ Global
 		{8C1B4751-30C8-41E7-AD37-24708AF28E6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C1B4751-30C8-41E7-AD37-24708AF28E6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C1B4751-30C8-41E7-AD37-24708AF28E6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B0AAFBD-83D1-4BC4-85BA-8742A22F1140}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B0AAFBD-83D1-4BC4-85BA-8742A22F1140}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B0AAFBD-83D1-4BC4-85BA-8742A22F1140}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B0AAFBD-83D1-4BC4-85BA-8742A22F1140}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{51C23336-EECF-4902-9B59-24B43D01A60E} = {6A0B6A20-F973-4EF6-BDA3-270630301EB1}
 		{67473448-1BAA-4206-A414-34568B3C6FB9} = {6A0B6A20-F973-4EF6-BDA3-270630301EB1}
 		{8C1B4751-30C8-41E7-AD37-24708AF28E6E} = {E5A6379E-02BC-417D-8058-9AA646FE2674}
+		{4B0AAFBD-83D1-4BC4-85BA-8742A22F1140} = {6A0B6A20-F973-4EF6-BDA3-270630301EB1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EC7FC04A-0D0E-4C1F-AE75-B031A8B9B7B9}
