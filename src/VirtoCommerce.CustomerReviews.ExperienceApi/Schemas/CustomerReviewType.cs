@@ -7,6 +7,7 @@ public class CustomerReviewType: ExtendableGraphType<CustomerReview>
 {
     public CustomerReviewType()
     {
+        Field(x => x.Id);
         Field(x => x.CreatedDate);
         Field(x => x.ModifiedDate, nullable: true);
         Field(x => x.StoreId);
