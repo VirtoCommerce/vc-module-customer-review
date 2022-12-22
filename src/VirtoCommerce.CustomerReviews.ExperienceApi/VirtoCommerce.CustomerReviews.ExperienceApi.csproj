@@ -8,6 +8,7 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="VirtoCommerce.ExperienceApiModule.Core" Version="3.244.0" />
+        <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.232.0-alpha.126-vm-868" />
         <PackageReference Include="VirtoCommerce.XDigitalCatalog" Version="3.244.0" />
     </ItemGroup>
     <ItemGroup>
@@ -16,5 +17,9 @@
     <ItemGroup>
       <Folder Include="Mapping\" />
       <Folder Include="Extensions\" />
+      <Folder Include="Commands\" />
+      <Folder Include="Authorization\" />
+      <Folder Include="Queries\" />
+      <Folder Include="Schemas\" />
     </ItemGroup>
 </Project>
