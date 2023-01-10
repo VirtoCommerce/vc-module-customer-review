@@ -4,14 +4,10 @@
     <noWarn>1591</noWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="3.1.2">
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="HangFire" Version="1.7.14" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="3.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
@@ -24,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\VirtoCommerce.CustomerReviews.Core\VirtoCommerce.CustomerReviews.Core.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.CustomerReviews.Data\VirtoCommerce.CustomerReviews.Data.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.CustomerReviews.ExperienceApi\VirtoCommerce.CustomerReviews.ExperienceApi.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.CustomerReviews.Web\VirtoCommerce.CustomerReviews.Web.csproj" />
   </ItemGroup>
 </Project>
