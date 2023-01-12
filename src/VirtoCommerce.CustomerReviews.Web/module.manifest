@@ -1,35 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <id>VirtoCommerce.CustomerReviews</id>
-    <version>3.209.0</version>
-    <version-tag />
-
-    <platformVersion>3.200.0</platformVersion>
-    <dependencies>
-        <dependency id="VirtoCommerce.Catalog" version="3.200.0" />
-        <dependency id="VirtoCommerce.Customer" version="3.200.0" />
-        <dependency id="VirtoCommerce.ExperienceApi" version="3.244.0" />
-        <dependency id="VirtoCommerce.Notifications" version="3.200.0" />
-        <dependency id="VirtoCommerce.Orders" version="3.200.0" />
-        <dependency id="VirtoCommerce.Store" version="3.200.0" />
-    </dependencies>
-
-    <title>Rating and Reviews</title>
-    <description>Rating and Reviews</description>
-    <authors>
-        <author>Egidijus Mazeika</author>
-        <author>Andrew Nikutin</author>
-        <author>Evgeny Gusev</author>
-        <author>Aleksandr Vishniakov</author>
-    </authors>
-    <owners>
-        <owner>Virto Commerce</owner>
-    </owners>
-    <iconUrl>Modules/$(VirtoCommerce.CustomerReviews)/Content/logo.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>Copyright © 2022–2023 Virto Commerce. All rights reserved</copyright>
-    <tags>customer review</tags>
-    <assemblyFile>VirtoCommerce.CustomerReviews.Web.dll</assemblyFile>
-    <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>
-    <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
+  <id>VirtoCommerce.CustomerReviews</id>
+  <version>3.210.0</version>
+  <version-tag />
+  <platformVersion>3.200.0</platformVersion>
+  <title>Rating and Reviews</title>
+  <description>Rating and Reviews</description>
+  <authors>
+    <author>Egidijus Mazeika</author>
+    <author>Andrew Nikutin</author>
+    <author>Evgeny Gusev</author>
+    <author>Aleksandr Vishniakov</author>
+  </authors>
+  <owners>
+    <owner>Virto Commerce</owner>
+  </owners>
+  <iconUrl>Modules/$(VirtoCommerce.CustomerReviews)/Content/logo.png</iconUrl>
+  <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  <copyright>Copyright © 2022–2023 Virto Commerce. All rights reserved</copyright>
+  <tags>customer review</tags>
+  <assemblyFile>VirtoCommerce.CustomerReviews.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>
+  <dependencies>
+    <dependency id="VirtoCommerce.Catalog" version="3.200.0" />
+    <dependency id="VirtoCommerce.Customer" version="3.200.0" />
+    <dependency id="VirtoCommerce.ExperienceApi" version="3.244.0" />
+    <dependency id="VirtoCommerce.Notifications" version="3.200.0" />
+    <dependency id="VirtoCommerce.Orders" version="3.200.0" />
+    <dependency id="VirtoCommerce.Store" version="3.200.0" />
+  </dependencies>
+  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>
