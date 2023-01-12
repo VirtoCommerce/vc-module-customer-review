@@ -8,25 +8,25 @@ using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Events;
 using VirtoCommerce.CustomerReviews.Core.Models;
+using VirtoCommerce.CustomerReviews.Core.Notifications;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.BackgroundJobs;
 using VirtoCommerce.CustomerReviews.Data.Handlers;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.CustomerReviews.Data.Services;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
-using VirtoCommerce.CustomerReviews.Core.Notifications;
-using VirtoCommerce.OrdersModule.Core.Events;
-using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
@@ -76,7 +76,7 @@ namespace VirtoCommerce.CustomerReviews.Web
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
-			var jobsettings = ModuleConstants.Settings.JobSettings.Select(s => s.Name).ToList();
+            var jobsettings = ModuleConstants.Settings.JobSettings.Select(s => s.Name).ToList();
             var storeSettings = settingsRegistrar.AllRegisteredSettings.Where(x => x.ModuleId.EqualsInvariant(ModuleInfo.Id) && !jobsettings.Contains(x.Name)).ToList();
             storeSettings.Add(GetCalculatorStoreSetting());
             settingsRegistrar.RegisterSettingsForType(storeSettings, nameof(Store));
