@@ -15,7 +15,7 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
             set { EntityIds = value; EntityType = "Product"; }
         }
 
-        public int[] ReviewStatus { get; set; }
+        public CustomerReviewStatus[] ReviewStatus { get; set; }
 
         public string StoreId { get; set; }
 

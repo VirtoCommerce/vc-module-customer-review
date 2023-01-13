@@ -5,5 +5,4 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Schemas;
 
 public class CustomerReviewStatusType: EnumerationGraphType<CustomerReviewStatus>
 {
-    
 }

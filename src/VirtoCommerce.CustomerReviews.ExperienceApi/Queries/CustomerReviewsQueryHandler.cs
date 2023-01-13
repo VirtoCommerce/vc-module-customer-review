@@ -58,28 +58,28 @@ public class CustomerReviewsQueryHandler: IQueryHandler<CustomerReviewsQuery, Cu
             {
                 if (DateTime.TryParse(modifiedDateRange.Lower, out var startDate))
                 {
-                    criteria.StartDate = startDate;
+                    criteria.StartDate = startDate + (modifiedDateRange.IncludeLower ? TimeSpan.Zero : TimeSpan.MinValue);
                 }
 
                 if (DateTime.TryParse(modifiedDateRange.Upper, out var endDate))
                 {
-                    criteria.EndDate = endDate;
+                    criteria.EndDate = endDate - (modifiedDateRange.IncludeUpper ? TimeSpan.Zero : TimeSpan.MinValue);
                 }
             }
 
-            // Custom ModifiedDate filter
+            // Custom Rating filter
             var ratingRangeFilter = parseResult.Filters.OfType<RangeFilter>().FirstOrDefault(x => x.FieldName.EqualsInvariant("Rating"));
             var ratingRange = ratingRangeFilter?.Values?.FirstOrDefault();
             if (ratingRange != null)
             {
                 if (int.TryParse(ratingRange.Lower, out var startRating))
                 {
-                    criteria.StartRating = startRating;
+                    criteria.StartRating = startRating + (ratingRange.IncludeLower ? 0 : 1);
                 }
 
                 if (int.TryParse(ratingRange.Upper, out var endRating))
                 {
-                    criteria.EndRating = endRating;
+                    criteria.EndRating = endRating - (ratingRange.IncludeUpper ? 0 : 1);
                 }
             }
         }
