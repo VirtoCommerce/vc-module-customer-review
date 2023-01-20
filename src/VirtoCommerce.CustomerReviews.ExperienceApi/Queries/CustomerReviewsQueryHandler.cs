@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using VirtoCommerce.CustomerReviews.Core.Models;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 using VirtoCommerce.ExperienceApiModule.Core.Index;
 using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
 using VirtoCommerce.Platform.Core.Common;
@@ -46,42 +47,17 @@ public class CustomerReviewsQueryHandler: IQueryHandler<CustomerReviewsQuery, Cu
 
             criteria.Keyword = parseResult.Keyword;
 
+            // Term filters
             foreach (var term in parseResult.Filters.OfType<TermFilter>())
             {
                 term.MapTo(criteria);
             }
 
             // Custom ModifiedDate filter
-            var modifiedDateRangeFilter = parseResult.Filters.OfType<RangeFilter>().FirstOrDefault(x => x.FieldName.EqualsInvariant("ModifiedDate"));
-            var modifiedDateRange = modifiedDateRangeFilter?.Values?.FirstOrDefault();
-            if (modifiedDateRange != null)
-            {
-                if (DateTime.TryParse(modifiedDateRange.Lower, out var startDate))
-                {
-                    criteria.StartDate = startDate + (modifiedDateRange.IncludeLower ? TimeSpan.Zero : TimeSpan.MinValue);
-                }
-
-                if (DateTime.TryParse(modifiedDateRange.Upper, out var endDate))
-                {
-                    criteria.EndDate = endDate - (modifiedDateRange.IncludeUpper ? TimeSpan.Zero : TimeSpan.MinValue);
-                }
-            }
+            parseResult.Filters.Get<RangeFilter>("ModifiedDate").MapTo(x => criteria.StartDate = x, x => criteria.EndDate = x);
 
             // Custom Rating filter
-            var ratingRangeFilter = parseResult.Filters.OfType<RangeFilter>().FirstOrDefault(x => x.FieldName.EqualsInvariant("Rating"));
-            var ratingRange = ratingRangeFilter?.Values?.FirstOrDefault();
-            if (ratingRange != null)
-            {
-                if (int.TryParse(ratingRange.Lower, out var startRating))
-                {
-                    criteria.StartRating = startRating + (ratingRange.IncludeLower ? 0 : 1);
-                }
-
-                if (int.TryParse(ratingRange.Upper, out var endRating))
-                {
-                    criteria.EndRating = endRating - (ratingRange.IncludeUpper ? 0 : 1);
-                }
-            }
+            parseResult.Filters.Get<RangeFilter>("Rating").MapTo(x => criteria.StartRating = x, x => criteria.EndRating = x);
         }
 
         return criteria;
