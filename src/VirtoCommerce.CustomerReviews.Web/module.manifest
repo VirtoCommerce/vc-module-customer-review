@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.CustomerReviews</id>
-  <version>3.209.0</version>
+  <version>3.210.0</version>
   <version-tag />
   <platformVersion>3.200.0</platformVersion>
   <title>Rating and Reviews</title>
@@ -17,7 +17,7 @@
   </owners>
   <iconUrl>Modules/$(VirtoCommerce.CustomerReviews)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
-  <copyright>Copyright © 2022 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2022–2023 Virto Commerce. All rights reserved</copyright>
   <tags>customer review</tags>
   <assemblyFile>VirtoCommerce.CustomerReviews.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.CustomerReviews.Web.Module, VirtoCommerce.CustomerReviews.Web</moduleType>

@@ -14,12 +14,4 @@
     <ItemGroup>
         <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Core\VirtoCommerce.CustomerReviews.Core.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Mapping\" />
-      <Folder Include="Extensions\" />
-      <Folder Include="Commands\" />
-      <Folder Include="Authorization\" />
-      <Folder Include="Queries\" />
-      <Folder Include="Schemas\" />
-    </ItemGroup>
 </Project>
