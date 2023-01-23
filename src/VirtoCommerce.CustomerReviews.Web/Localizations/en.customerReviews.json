@@ -45,7 +45,7 @@
 		},
 		"widgets": {
 			"item-detail": {
-				"title": "Product Reviews"
+				"title": "Reviews"
 			},
 			"product-rating": {
 				"title": "Rating"
