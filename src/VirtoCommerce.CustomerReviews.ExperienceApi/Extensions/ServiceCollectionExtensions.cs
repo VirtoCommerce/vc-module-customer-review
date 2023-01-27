@@ -26,10 +26,10 @@ public static class ServiceCollectionExtensions
             builder.AddMiddleware(typeof(EvalProductVendorRatingMiddleware));
         });
 
-        serviceCollection.AddPipeline<VendorAggregate>(builder =>
-        {
-            builder.AddMiddleware(typeof(EvalVendorRatingMiddleware));
-        });
+        //serviceCollection.AddPipeline<VendorAggregate>(builder =>
+        //{
+        //    builder.AddMiddleware(typeof(EvalVendorRatingMiddleware));
+        //});
         return serviceCollection;
     }
 }
