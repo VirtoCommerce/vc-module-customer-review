@@ -15,9 +15,21 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
             set { EntityIds = value; EntityType = "Product"; }
         }
 
-        public int[] ReviewStatus { get; set; }
+        public CustomerReviewStatus[] ReviewStatus { get; set; }
+
         public string StoreId { get; set; }
+
+        [Obsolete("Use StartDate and EndDate instead")]
         public DateTime? ModifiedDate { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public int? StartRating { get; set; }
+
+        public int? EndRating { get; set; }
+
         public string UserId { get; set; }
     }
 }

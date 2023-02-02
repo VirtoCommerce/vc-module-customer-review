@@ -57,7 +57,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
             if (!criteria.ReviewStatus.IsNullOrEmpty())
             {
-                query = query.Where(r => criteria.ReviewStatus.Contains(r.ReviewStatus));
+                query = query.Where(r => criteria.ReviewStatus.Contains((CustomerReviewStatus)r.ReviewStatus));
             }
 
             if (!criteria.SearchPhrase.IsNullOrEmpty())
@@ -75,9 +75,24 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 query = query.Where(x => x.UserId == criteria.UserId);
             }
 
-            if (criteria.ModifiedDate.HasValue)
+            if (criteria.StartDate != null)
             {
-                query = query.Where(x => x.ModifiedDate >= criteria.ModifiedDate.Value);
+                query = query.Where(x => x.ModifiedDate >= criteria.StartDate);
+            }
+
+            if (criteria.EndDate != null)
+            {
+                query = query.Where(x => x.ModifiedDate <= criteria.EndDate);
+            }
+
+            if (criteria.StartRating != null)
+            {
+                query = query.Where(x => x.Rating >= criteria.StartRating);
+            }
+
+            if (criteria.EndRating != null)
+            {
+                query = query.Where(x => x.Rating <= criteria.EndRating);
             }
 
             return query;
@@ -88,8 +103,13 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             var sortInfos = criteria.SortInfos;
             if (sortInfos.IsNullOrEmpty())
             {
-                sortInfos = new[] {
-                    new SortInfo { SortColumn = nameof(CustomerReview.CreatedDate), SortDirection = SortDirection.Descending },
+                sortInfos = new[]
+                {
+                    new SortInfo
+                    {
+                        SortColumn = nameof(CustomerReview.ModifiedDate),
+                        SortDirection = SortDirection.Descending
+                    }
                 };
             }
             return sortInfos;

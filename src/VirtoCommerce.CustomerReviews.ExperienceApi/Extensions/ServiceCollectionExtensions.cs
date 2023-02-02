@@ -7,6 +7,7 @@ using VirtoCommerce.ExperienceApiModule.Core.Extensions;
 using VirtoCommerce.XDigitalCatalog.Queries;
 using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
 using VirtoCommerce.ExperienceApiModule.Core.Pipelines;
+using VirtoCommerce.ProfileExperienceApiModule.Data.Aggregates.Vendor;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 
@@ -23,6 +24,11 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddPipeline<SearchProductResponse>(builder =>
         {
             builder.AddMiddleware(typeof(EvalProductVendorRatingMiddleware));
+        });
+
+        serviceCollection.AddPipeline<VendorAggregate>(builder =>
+        {
+            builder.AddMiddleware(typeof(EvalVendorRatingMiddleware));
         });
         return serviceCollection;
     }
