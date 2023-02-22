@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace VirtoCommerce.CustomerReviews.Data.Migrations
+namespace VirtoCommerce.CustomerReviews.Data.SqlServer.Migrations
 {
     public partial class EntityIdInReview : Migration
     {

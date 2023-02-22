@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.CustomerReviews.Data.Migrations
+namespace VirtoCommerce.CustomerReviews.Data.SqlServer.Migrations
 {
     public partial class UpdateCustomerReviewsV2 : Migration
     {
