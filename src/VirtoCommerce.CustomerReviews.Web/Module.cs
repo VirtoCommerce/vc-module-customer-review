@@ -12,8 +12,11 @@ using VirtoCommerce.CustomerReviews.Core.Notifications;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.BackgroundJobs;
 using VirtoCommerce.CustomerReviews.Data.Handlers;
+using VirtoCommerce.CustomerReviews.Data.MySql;
+using VirtoCommerce.CustomerReviews.Data.PostgreSql;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.CustomerReviews.Data.Services;
+using VirtoCommerce.CustomerReviews.Data.SqlServer;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Events;
@@ -30,19 +33,34 @@ using VirtoCommerce.StoreModule.Core.Model;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
-    public class Module : IModule
+    public class Module : IModule, IHasConfiguration
     {
         private IApplicationBuilder _applicationBuilder;
         private const string ConfigStoreModuleId = "VirtoCommerce.Store";
         public ManifestModuleInfo ModuleInfo { get; set; }
+        public IConfiguration Configuration { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
         {
             serviceCollection.AddDbContext<CustomerReviewsDbContext>((provider, options) =>
             {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+                var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
+
+                switch (databaseProvider)
+                {
+                    case "MySql":
+                        options.UseMySqlDatabase(connectionString);
+                        break;
+                    case "PostgreSql":
+                        options.UsePostgreSqlDatabase(connectionString);
+                        break;
+                    default:
+                        options.UseSqlServerDatabase(connectionString);
+                        break;
+                }
             });
+
 
             serviceCollection.AddTransient<ICustomerReviewRepository, CustomerReviewRepository>();
             serviceCollection.AddSingleton<Func<ICustomerReviewRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<ICustomerReviewRepository>());
@@ -105,9 +123,12 @@ namespace VirtoCommerce.CustomerReviews.Web
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<CustomerReviewsDbContext>();
-                dbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
-                dbContext.Database.EnsureCreated();
+                if (databaseProvider == "SqlServer")
+                {
+                    dbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
+                }
                 dbContext.Database.Migrate();
             }
         }
