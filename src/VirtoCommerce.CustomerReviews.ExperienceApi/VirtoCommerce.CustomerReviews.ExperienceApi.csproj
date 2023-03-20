@@ -8,8 +8,8 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="VirtoCommerce.ExperienceApiModule.Core" Version="3.300.0" />
-        <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.235" />
-        <PackageReference Include="VirtoCommerce.XDigitalCatalog" Version="3.254" />
+        <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.300.0" />
+        <PackageReference Include="VirtoCommerce.XDigitalCatalog" Version="3.300.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Core\VirtoCommerce.CustomerReviews.Core.csproj" />
