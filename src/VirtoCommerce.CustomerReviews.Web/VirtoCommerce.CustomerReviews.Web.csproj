@@ -23,6 +23,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Core\VirtoCommerce.CustomerReviews.Core.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Data.MySql\VirtoCommerce.CustomerReviews.Data.MySql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Data.PostgreSql\VirtoCommerce.CustomerReviews.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Data.SqlServer\VirtoCommerce.CustomerReviews.Data.SqlServer.csproj" />
     <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Data\VirtoCommerce.CustomerReviews.Data.csproj" />
     <ProjectReference Include="..\VirtoCommerce.CustomerReviews.ExperienceApi\VirtoCommerce.CustomerReviews.ExperienceApi.csproj" />
   </ItemGroup>
