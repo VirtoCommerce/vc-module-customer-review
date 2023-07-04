@@ -1,25 +1,23 @@
 using System.Linq;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using VirtoCommerce.CustomerReviews.Core.Models;
+using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 using VirtoCommerce.ExperienceApiModule.Core.Index;
 using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
-using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
 
-public class CustomerReviewsQueryHandler: IQueryHandler<CustomerReviewsQuery, CustomerReviewSearchResult>
+public class CustomerReviewsQueryHandler : IQueryHandler<CustomerReviewsQuery, CustomerReviewSearchResult>
 {
-    private readonly ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> _customerReviewSearchService;
+    private readonly ICustomerReviewSearchService _customerReviewSearchService;
     private readonly ISearchPhraseParser _phraseParser;
 
     public CustomerReviewsQueryHandler(
-        ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> customerReviewSearchService,
+        ICustomerReviewSearchService customerReviewSearchService,
         ISearchPhraseParser phraseParser)
     {
         _customerReviewSearchService = customerReviewSearchService;

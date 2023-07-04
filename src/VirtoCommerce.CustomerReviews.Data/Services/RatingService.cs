@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Model.Search;
+using VirtoCommerce.StoreModule.Core.Services;
+using ReviewSettings = VirtoCommerce.CustomerReviews.Core.ModuleConstants.Settings.General;
 
 namespace VirtoCommerce.CustomerReviews.Data.Services
 {
@@ -19,14 +19,15 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
     {
         private readonly Func<ICustomerReviewRepository> _repositoryFactory;
         private readonly IEnumerable<IRatingCalculator> _ratingCalculators;
-        private readonly ICrudService<Store> _storeService;
-        private readonly ISearchService<StoreSearchCriteria, StoreSearchResult, Store> _storeSearchService;
+        private readonly IStoreService _storeService;
+        private readonly IStoreSearchService _storeSearchService;
         private readonly ISettingsManager _settingsManager;
 
-        public RatingService(Func<ICustomerReviewRepository> repositoryFactory,
+        public RatingService(
+            Func<ICustomerReviewRepository> repositoryFactory,
             IEnumerable<IRatingCalculator> ratingCalculators,
-            ICrudService<Store> storeService,
-            ISearchService<StoreSearchCriteria, StoreSearchResult, Store> storeSearchService,
+            IStoreService storeService,
+            IStoreSearchService storeSearchService,
             ISettingsManager settingsManager)
 
         {
@@ -126,7 +127,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                     ProductId = x.EntityId,
                     ReviewCount = x.ReviewCount,
                 }).ToArray();
-
             }
         }
 
@@ -143,7 +143,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                     EntityType = entityType,
                     ReviewCount = x.ReviewCount,
                 }).ToArray();
-
             }
         }
 
@@ -152,7 +151,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             var storeSearchCriteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
             storeSearchCriteria.Take = int.MaxValue;
 
-            var storeSearchResult = await _storeSearchService.SearchAsync(storeSearchCriteria);
+            var storeSearchResult = await _storeSearchService.SearchNoCloneAsync(storeSearchCriteria);
 
             var result = new List<RatingStoreDto>();
 
@@ -189,7 +188,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             var storeSearchCriteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
             storeSearchCriteria.Take = int.MaxValue;
 
-            var storeSearchResult = await _storeSearchService.SearchAsync(storeSearchCriteria);
+            var storeSearchResult = await _storeSearchService.SearchNoCloneAsync(storeSearchCriteria);
 
             var result = new List<RatingEntityStoreDto>();
 
@@ -234,27 +233,23 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
         private async Task<IRatingCalculator> GetCalculatorAsync(string storeId)
         {
-            var settings = await _settingsManager.GetObjectSettingsAsync(new[] { ModuleConstants.Settings.General.RequestReviewDaysInState.Name, ModuleConstants.Settings.General.RequestReviewMaxRequests.Name });
-
-            var calculatorName = settings.GetSettingValue(
-                ModuleConstants.Settings.General.CalculationMethod.Name,
-                ModuleConstants.Settings.General.CalculationMethod.DefaultValue.ToString());
+            var calculatorName = await _settingsManager.GetValueAsync<string>(ReviewSettings.CalculationMethod);
 
             if (!string.IsNullOrEmpty(storeId))
             {
-                var store = await _storeService.GetByIdAsync(storeId, StoreResponseGroup.Full.ToString());
+                var store = await _storeService.GetNoCloneAsync(storeId, StoreResponseGroup.Full.ToString());
 
                 if (store != null)
                 {
                     calculatorName = store.Settings.GetSettingValue(
-                        ModuleConstants.Settings.General.CalculationMethod.Name,
-                        ModuleConstants.Settings.General.CalculationMethod.DefaultValue.ToString());
+                        ReviewSettings.CalculationMethod.Name,
+                        ReviewSettings.CalculationMethod.DefaultValue.ToString());
                 }
             }
 
             if (string.IsNullOrWhiteSpace(calculatorName))
             {
-                throw new KeyNotFoundException($"Settings not found: {ModuleConstants.Settings.General.CalculationMethod.Name}");
+                throw new KeyNotFoundException($"Setting not found: {ReviewSettings.CalculationMethod.Name}");
             }
 
             var ratingCalculator = _ratingCalculators.FirstOrDefault(c => c.Name == calculatorName);

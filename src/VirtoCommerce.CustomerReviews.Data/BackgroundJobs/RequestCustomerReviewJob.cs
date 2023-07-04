@@ -4,137 +4,128 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.Extensions.Logging;
+using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CatalogModule.Core.Services;
 using VirtoCommerce.CustomerModule.Core.Model;
 using VirtoCommerce.CustomerModule.Core.Services;
-using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
-using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
-using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Model;
+using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.StoreModule.Core.Services;
+using ReviewSettings = VirtoCommerce.CustomerReviews.Core.ModuleConstants.Settings.General;
 
 namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
 {
     public class RequestCustomerReviewJob
     {
-        private readonly ILogger<RequestCustomerReviewJob> _log;
-        private readonly INotificationSender _notificationSender;
-        private readonly INotificationSearchService _notificationSearchService;
-        private readonly IMemberResolver _memberResolver;
-        private readonly ICrudService<Store> _storeService;
-        private readonly ICrudService<CustomerOrder> _customerOrderService;
-        private readonly Func<ICustomerReviewRepository> _customerReviewRepository;
         private readonly ISettingsManager _settingsManager;
         private readonly IItemService _itemService;
+        private readonly IStoreService _storeService;
+        private readonly ICustomerOrderService _customerOrderService;
+        private readonly Func<ICustomerReviewRepository> _customerReviewRepositoryFactory;
+        private readonly ILogger<RequestCustomerReviewJob> _log;
+        private readonly INotificationSearchService _notificationSearchService;
+        private readonly INotificationSender _notificationSender;
+        private readonly IMemberResolver _memberResolver;
 
-        public RequestCustomerReviewJob(ISettingsManager settingsManager, IItemService pItemService, ICrudService<Store> pStoreService, ICrudService<CustomerOrder> pCustomerOrderService, Func<ICustomerReviewRepository> pCustomerReviewRepository, ILogger<RequestCustomerReviewJob> pLog, INotificationSearchService pNotificationSearchService, INotificationSender pNotificationSender, IMemberResolver pMemberResolver)
+        public RequestCustomerReviewJob(
+            ISettingsManager settingsManager,
+            IItemService itemService,
+            IStoreService storeService,
+            ICustomerOrderService customerOrderService,
+            Func<ICustomerReviewRepository> customerReviewRepositoryFactory,
+            ILogger<RequestCustomerReviewJob> log,
+            INotificationSearchService notificationSearchService,
+            INotificationSender notificationSender,
+            IMemberResolver memberResolver)
         {
             _settingsManager = settingsManager;
-            _log = pLog;
-            _notificationSearchService = pNotificationSearchService;
-            _notificationSender = pNotificationSender;
-            _memberResolver = pMemberResolver;
-            _storeService = pStoreService;
-            _customerOrderService = pCustomerOrderService;
-            _customerReviewRepository = pCustomerReviewRepository;
-            _itemService = pItemService;
+            _itemService = itemService;
+            _storeService = storeService;
+            _customerOrderService = customerOrderService;
+            _customerReviewRepositoryFactory = customerReviewRepositoryFactory;
+            _log = log;
+            _notificationSearchService = notificationSearchService;
+            _notificationSender = notificationSender;
+            _memberResolver = memberResolver;
         }
-
 
         [DisableConcurrentExecution(10)]
         public async Task Process()
         {
-            _log.LogTrace($"Start processing CustomerReviewJob job");
-            int countDays;
-            int maxRequests;
-            GetParameters(out countDays, out maxRequests);
+            _log.LogTrace($"Start processing {nameof(RequestCustomerReviewJob)} job");
 
-            using (var repository = _customerReviewRepository())
+            var maxRequests = await _settingsManager.GetValueAsync<int>(ReviewSettings.RequestReviewMaxRequests);
+            var daysInState = await _settingsManager.GetValueAsync<int>(ReviewSettings.RequestReviewDaysInState);
+            var maxModifiedDate = DateTime.Now.AddDays(-daysInState);
+
+            using (var repository = _customerReviewRepositoryFactory())
             {
-                var RequestReviews = GetReviewsList(countDays, maxRequests);
+                var reviews = await repository.GetReviewsWithEmptyAccessDate(maxModifiedDate, maxRequests);
+                var productIds = reviews.Select(x => x.EntityId).Distinct().ToArray();
+                var productsById = (await _itemService.GetNoCloneAsync(productIds, ItemResponseGroup.ItemInfo.ToString())).ToDictionary(x => x.Id);
+                var notificationParameters = new List<NotificationParameters>();
 
-                var items = (await _itemService.GetByIdsAsync(RequestReviews.Select(i => i.EntityId).Distinct().ToArray(), CatalogModule.Core.Model.ItemResponseGroup.ItemInfo.ToString())).ToDictionary(i => i.Id).WithDefaultValue(null);
-
-                List<OrderNotificationJobArgument> ordeMail = new List<OrderNotificationJobArgument>();
-                foreach (var RequestReview in RequestReviews)
+                foreach (var review in reviews)
                 {
-                    var item = items[RequestReview.EntityId];
-                    if (item != null && item.EnableReview.GetValueOrDefault(true))
+                    if (productsById.TryGetValue(review.EntityId, out var product) && (product.EnableReview ?? true))
                     {
-                        RequestReview.ModifiedDate = DateTime.Now;
-                        RequestReview.ReviewsRequest++;
-                        repository.Update(RequestReview);
+                        review.ModifiedDate = DateTime.Now;
+                        review.ReviewsRequest++;
+                        repository.Update(review);
 
-                        ordeMail.Add(new OrderNotificationJobArgument()
+                        notificationParameters.Add(new NotificationParameters
                         {
-                            RequestId = RequestReview.Id,
-                            EntityId = RequestReview.EntityId,
-                            EntityType = RequestReview.EntityType,
-                            CustomerId = RequestReview.UserId,
-                            CustomerOrderId = RequestReview.CustomerOrderId,
-                            StoreId = RequestReview.StoreId,
-                            NotificationTypeName = nameof(CustomerReviewEmailNotification)
+                            RequestId = review.Id,
+                            EntityId = review.EntityId,
+                            EntityType = review.EntityType,
+                            CustomerId = review.UserId,
+                            CustomerOrderId = review.CustomerOrderId,
+                            StoreId = review.StoreId,
+                            NotificationTypeName = nameof(CustomerReviewEmailNotification),
                         });
                     }
                 }
-                if (ordeMail.Any())
+
+                if (notificationParameters.Any())
                 {
                     await repository.UnitOfWork.CommitAsync();
-
-                    await TryToSendOrderNotificationsAsync(ordeMail.ToArray());
+                    await SendNotificationsAsync(notificationParameters);
                 }
             }
 
-            _log.LogTrace($"Complete processing CustomerReviewJob job");
+            _log.LogTrace($"Complete processing {nameof(RequestCustomerReviewJob)} job");
         }
 
-        private void GetParameters(out int countDays, out int maxRequests)
-        {
-            var settings = _settingsManager.GetObjectSettingsAsync(new[] { ModuleConstants.Settings.General.RequestReviewDaysInState.Name, ModuleConstants.Settings.General.RequestReviewMaxRequests.Name }).GetAwaiter().GetResult();
 
-            countDays = settings.GetSettingValue(ModuleConstants.Settings.General.RequestReviewDaysInState.Name, (int)ModuleConstants.Settings.General.RequestReviewDaysInState.DefaultValue);
-            maxRequests = settings.GetSettingValue(ModuleConstants.Settings.General.RequestReviewMaxRequests.Name, (int)ModuleConstants.Settings.General.RequestReviewMaxRequests.DefaultValue);
-        }
-
-        private List<RequestReviewEntity> GetReviewsList(int countDays, int maxRequests)
+        protected virtual async Task SendNotificationsAsync(IList<NotificationParameters> notificationParameters)
         {
-            using (var repository = _customerReviewRepository())
+            var orderIds = notificationParameters.Select(x => x.CustomerOrderId).Distinct().ToList();
+            var ordersById = (await _customerOrderService.GetAsync(orderIds)).ToDictionary(x => x.Id);
+
+            foreach (var parameters in notificationParameters)
             {
-                return repository.RequestReview
-                    .Where(r =>
-                        r.AccessDate == null && r.ModifiedDate < DateTime.Now.AddDays(-countDays) && r.ReviewsRequest < maxRequests
-                        && !repository.CustomerReviews.Any(cr => r.StoreId == cr.StoreId && r.EntityId == cr.EntityId && r.EntityType == "Product" && cr.UserId == r.UserId))
-                    .ToList();
-            }
-        }
-
-        public virtual async Task TryToSendOrderNotificationsAsync(OrderNotificationJobArgument[] jobArguments)
-        {
-            var ordersByIdDict = (await _customerOrderService.GetAsync(jobArguments.Select(x => x.CustomerOrderId).Distinct().ToList()))
-                                .ToDictionary(x => x.Id)
-                                .WithDefaultValue(null);
-            foreach (var jobArgument in jobArguments)
-            {
-                var notification = await _notificationSearchService.GetNotificationAsync(jobArgument.NotificationTypeName, new TenantIdentity(jobArgument.StoreId, nameof(Store)));
-                if (notification != null)
+                if (ordersById.TryGetValue(parameters.CustomerOrderId, out var order))
                 {
-                    var order = ordersByIdDict[jobArgument.CustomerOrderId];
+                    var notification = await _notificationSearchService.GetNotificationAsync(
+                        parameters.NotificationTypeName,
+                        new TenantIdentity(parameters.StoreId, nameof(Store)))
+                        as CustomerReviewEmailNotification;
 
-                    if (order != null && notification is CustomerReviewEmailNotification orderNotification)
+                    if (notification != null)
                     {
-                        var customer = await _memberResolver.ResolveMemberByIdAsync(jobArgument.CustomerId);
+                        var customer = await _memberResolver.ResolveMemberByIdAsync(parameters.CustomerId);
 
-                        orderNotification.Item = order.Items.FirstOrDefault(i => i.ProductId == jobArgument.EntityId);
-                        orderNotification.Customer = customer;
-                        orderNotification.RequestId = jobArgument.RequestId;
-                        orderNotification.LanguageCode = order.LanguageCode;
+                        notification.Item = order.Items.FirstOrDefault(i => i.ProductId == parameters.EntityId);
+                        notification.Customer = customer;
+                        notification.RequestId = parameters.RequestId;
+                        notification.LanguageCode = order.LanguageCode;
 
                         await SetNotificationParametersAsync(notification, order, customer);
                         await _notificationSender.ScheduleSendNotificationAsync(notification);
@@ -143,31 +134,21 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
             }
         }
 
-        protected virtual async Task SetNotificationParametersAsync(Notification pNotification, CustomerOrder pOrder, Member pCustomer)
+        protected virtual async Task SetNotificationParametersAsync(CustomerReviewEmailNotification notification, CustomerOrder order, Member customer)
         {
-            var store = await _storeService.GetByIdAsync(pOrder.StoreId, StoreResponseGroup.StoreInfo.ToString());
-
-            if (pNotification is EmailNotification emailNotification)
-            {
-                emailNotification.From = store.EmailWithName;
-                emailNotification.To = GetOrderRecipientEmail(pOrder, pCustomer);
-            }
+            var store = await _storeService.GetNoCloneAsync(order.StoreId, StoreResponseGroup.StoreInfo.ToString());
+            notification.From = store.EmailWithName;
+            notification.To = GetOrderRecipientEmail(order, customer);
 
             // Allow to filter notification log either by customer order or by subscription
-            if (string.IsNullOrEmpty(pOrder.SubscriptionId))
-            {
-                pNotification.TenantIdentity = new TenantIdentity(pOrder.Id, nameof(CustomerOrder));
-            }
-            else
-            {
-                pNotification.TenantIdentity = new TenantIdentity(pOrder.SubscriptionId, "Subscription");
-            }
+            notification.TenantIdentity = string.IsNullOrEmpty(order.SubscriptionId)
+                ? new TenantIdentity(order.Id, nameof(CustomerOrder))
+                : new TenantIdentity(order.SubscriptionId, "Subscription");
         }
 
-        protected virtual string GetOrderRecipientEmail(CustomerOrder order, Member pCustomer)
+        protected virtual string GetOrderRecipientEmail(CustomerOrder order, Member customer)
         {
-
-            var email = GetOrderAddressEmail(order) ?? pCustomer?.Emails?.FirstOrDefault();
+            var email = GetOrderAddressEmail(order) ?? customer?.Emails?.FirstOrDefault();
             return email;
         }
 
@@ -178,7 +159,7 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
         }
     }
 
-    public class OrderNotificationJobArgument
+    public class NotificationParameters
     {
         public string NotificationTypeName { get; set; }
         public string CustomerId { get; set; }
