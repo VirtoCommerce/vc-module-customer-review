@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.Models;
@@ -18,9 +19,18 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 {
     public class CustomerReviewSearchService : SearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview, CustomerReviewEntity>, ICustomerReviewSearchService
     {
-        public CustomerReviewSearchService(Func<ICustomerReviewRepository> repositoryFactory, IPlatformMemoryCache platformMemoryCache, ICustomerReviewService customerReviewService)
-            : base(repositoryFactory, platformMemoryCache, (ICrudService<CustomerReview>)customerReviewService)
+        private readonly Func<ICustomerReviewRepository> _repositoryFactory;
+        private readonly IPlatformMemoryCache _platformMemoryCache;
+
+        public CustomerReviewSearchService(
+            Func<ICustomerReviewRepository> repositoryFactory,
+            IPlatformMemoryCache platformMemoryCache,
+            ICustomerReviewService crudService,
+            IOptions<CrudOptions> crudOptions)
+            : base(repositoryFactory, platformMemoryCache, crudService, crudOptions)
         {
+            _repositoryFactory = repositoryFactory;
+            _platformMemoryCache = platformMemoryCache;
         }
 
         public Task<string[]> GetProductIdsOfModifiedReviewsAsync(ChangedReviewsQuery criteria)
@@ -31,7 +41,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                 cacheEntry.AddExpirationToken(GenericCachingRegion<CustomerReview>.CreateChangeToken());
                 using (var repository = _repositoryFactory())
                 {
-                    var ids = await ((ICustomerReviewRepository)repository).CustomerReviews
+                    var ids = await repository.CustomerReviews
                         .Where(r => r.ModifiedDate >= criteria.ModifiedDate)
                         .GroupBy(r => r.EntityId)
                         .Select(x => x.Key)

@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
-using VirtoCommerce.Platform.Core.GenericCrud;
-using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
 {
@@ -16,14 +16,15 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
     [ApiController]
     public class CustomerReviewsModuleController : Controller
     {
-        private readonly ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> _customerReviewSearchService;
-        private readonly ICrudService<CustomerReview> _customerReviewService;
-        private readonly ICrudService<Store> _storeService;
+        private readonly ICustomerReviewSearchService _customerReviewSearchService;
+        private readonly ICustomerReviewService _customerReviewService;
+        private readonly IStoreService _storeService;
         private readonly IRequestReviewService _requestReviewService;
 
-        public CustomerReviewsModuleController(ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> customerReviewSearchService,
-            ICrudService<CustomerReview> customerReviewService,
-            ICrudService<Store> storeService,
+        public CustomerReviewsModuleController(
+            ICustomerReviewSearchService customerReviewSearchService,
+            ICustomerReviewService customerReviewService,
+            IStoreService storeService,
             IRequestReviewService requestReviewService)
         {
             _customerReviewSearchService = customerReviewSearchService;
@@ -45,7 +46,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
             var reviews = await _customerReviewSearchService.SearchAsync(criteria);
 
             var storeIds = reviews.Results.Select(r => r.StoreId).Distinct().ToList();
-            var stores = await _storeService.GetAsync(storeIds);
+            var stores = await _storeService.GetNoCloneAsync(storeIds);
 
             foreach (var review in reviews.Results)
             {
@@ -70,7 +71,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.CustomerReviewRead)]
         public async Task<ActionResult<CustomerReviewSearchResult>> SearchCustomerReviews([FromBody] CustomerReviewSearchCriteria criteria)
         {
-            var reviews = await _customerReviewSearchService.SearchAsync(criteria);
+            var reviews = await _customerReviewSearchService.SearchNoCloneAsync(criteria);
             return Ok(reviews);
         }
 
@@ -81,7 +82,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [Route("changes")]
         public async Task<ActionResult<string[]>> GetProductIdsOfModifiedReviews([FromBody] ChangedReviewsQuery query)
         {
-            var productIds = await ((ICustomerReviewSearchService)_customerReviewSearchService).GetProductIdsOfModifiedReviewsAsync(query);
+            var productIds = await _customerReviewSearchService.GetProductIdsOfModifiedReviewsAsync(query);
             return Ok(productIds);
         }
 
@@ -96,7 +97,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ApproveReview(string[] customerReviewsIds)
         {
-            await ((ICustomerReviewService)_customerReviewService).ApproveReviewAsync(customerReviewsIds);
+            await _customerReviewService.ApproveReviewAsync(customerReviewsIds);
             return NoContent();
         }
 
@@ -111,7 +112,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> RejectReview(string[] customerReviewsIds)
         {
-            await ((ICustomerReviewService)_customerReviewService).RejectReviewAsync(customerReviewsIds);
+            await _customerReviewService.RejectReviewAsync(customerReviewsIds);
             return NoContent();
         }
 
@@ -126,7 +127,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> ResetReviewStatus(string[] customerReviewsIds)
         {
-            await ((ICustomerReviewService)_customerReviewService).ResetReviewStatusAsync(customerReviewsIds);
+            await _customerReviewService.ResetReviewStatusAsync(customerReviewsIds);
             return NoContent();
         }
 
@@ -156,7 +157,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete([FromQuery] string[] ids)
         {
-            await ((ICustomerReviewService)_customerReviewService).DeleteReviews(ids);
+            await _customerReviewService.DeleteAsync(ids);
             return NoContent();
         }
 

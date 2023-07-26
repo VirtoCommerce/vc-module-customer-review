@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Events;
-using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.BackgroundJobs;
@@ -22,7 +21,6 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -30,19 +28,22 @@ using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
+using OrderSettings = VirtoCommerce.OrdersModule.Core.ModuleConstants.Settings;
+using ReviewSettings = VirtoCommerce.CustomerReviews.Core.ModuleConstants.Settings;
 
 namespace VirtoCommerce.CustomerReviews.Web
 {
     public class Module : IModule, IHasConfiguration
     {
         private IApplicationBuilder _applicationBuilder;
-        private const string ConfigStoreModuleId = "VirtoCommerce.Store";
+        private const string _storeModuleId = "VirtoCommerce.Store";
+
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddDbContext<CustomerReviewsDbContext>((provider, options) =>
+            serviceCollection.AddDbContext<CustomerReviewsDbContext>(options =>
             {
                 var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
@@ -65,11 +66,8 @@ namespace VirtoCommerce.CustomerReviews.Web
             serviceCollection.AddTransient<ICustomerReviewRepository, CustomerReviewRepository>();
             serviceCollection.AddSingleton<Func<ICustomerReviewRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<ICustomerReviewRepository>());
 
-            serviceCollection.AddTransient<ICrudService<CustomerReview>, CustomerReviewService>();
-            serviceCollection.AddTransient(x => (ICustomerReviewService)x.GetRequiredService<ICrudService<CustomerReview>>());
-
-            serviceCollection.AddTransient<ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview>, CustomerReviewSearchService>();
-            serviceCollection.AddTransient(x => (ICustomerReviewSearchService)x.GetRequiredService<ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview>>());
+            serviceCollection.AddTransient<ICustomerReviewService, CustomerReviewService>();
+            serviceCollection.AddTransient<ICustomerReviewSearchService, CustomerReviewSearchService>();
 
             serviceCollection.AddTransient<IRatingCalculator, AverageRatingCalculator>();
             serviceCollection.AddTransient<IRatingCalculator, WilsonRatingCalculator>();
@@ -88,62 +86,58 @@ namespace VirtoCommerce.CustomerReviews.Web
             _applicationBuilder = appBuilder;
 
             var settingsManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
-            var order_status = settingsManager.GetObjectSettingAsync(VirtoCommerce.OrdersModule.Core.ModuleConstants.Settings.General.OrderStatus.Name).GetAwaiter().GetResult().AllowedValues;
-            ModuleConstants.Settings.AllSettings.First(x => x.Name == ModuleConstants.Settings.General.RequestReviewOrderInState.Name).AllowedValues = order_status;
+            var orderStatuses = settingsManager.GetObjectSettingAsync(OrderSettings.General.OrderStatus.Name).GetAwaiter().GetResult().AllowedValues;
+            ReviewSettings.General.RequestReviewOrderInState.AllowedValues = orderStatuses;
 
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
-            settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
+            settingsRegistrar.RegisterSettings(ReviewSettings.AllSettings, ModuleInfo.Id);
 
-            var jobsettings = ModuleConstants.Settings.JobSettings.Select(s => s.Name).ToList();
-            var storeSettings = settingsRegistrar.AllRegisteredSettings.Where(x => x.ModuleId.EqualsInvariant(ModuleInfo.Id) && !jobsettings.Contains(x.Name)).ToList();
+            var jobSettings = ReviewSettings.JobSettings.Select(s => s.Name).ToList();
+            var storeSettings = settingsRegistrar.AllRegisteredSettings.Where(x => x.ModuleId.EqualsInvariant(ModuleInfo.Id) && !jobSettings.Contains(x.Name)).ToList();
             storeSettings.Add(GetCalculatorStoreSetting());
             settingsRegistrar.RegisterSettingsForType(storeSettings, nameof(Store));
-            settingsRegistrar.RegisterSettings(storeSettings, ConfigStoreModuleId);
+            settingsRegistrar.RegisterSettings(storeSettings, _storeModuleId);
 
-            var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
-                new Permission() { GroupName = "CustomerReviews", Name = x }).ToArray());
+            var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
+            permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "CustomerReviews", ModuleConstants.Security.Permissions.AllPermissions);
 
             var notificationRegistrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             notificationRegistrar.RegisterNotification<CustomerReviewEmailNotification>();
 
-
-            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            inProcessBus.RegisterHandler<ReviewStatusChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<ReviewStatusChangedEventHandler>().Handle(message));
-            inProcessBus.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<OrderChangedEventHandler>().Handle(message));
+            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            handlerRegistrar.RegisterHandler<ReviewStatusChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<ReviewStatusChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<OrderChangedEventHandler>().Handle(message));
 
             var recurringJobManager = appBuilder.ApplicationServices.GetService<IRecurringJobManager>();
             recurringJobManager.WatchJobSetting(
                settingsManager,
                new SettingCronJobBuilder()
-                   .SetEnablerSetting(ModuleConstants.Settings.General.RequestReviewEnableJob)
-                   .SetCronSetting(ModuleConstants.Settings.General.RequestReviewCronJob)
+                   .SetEnablerSetting(ReviewSettings.General.RequestReviewEnableJob)
+                   .SetCronSetting(ReviewSettings.General.RequestReviewCronJob)
                    .ToJob<RequestCustomerReviewJob>(x => x.Process())
                    .Build());
 
-            using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
+            using var serviceScope = appBuilder.ApplicationServices.CreateScope();
+            var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+            var dbContext = serviceScope.ServiceProvider.GetRequiredService<CustomerReviewsDbContext>();
+            if (databaseProvider == "SqlServer")
             {
-                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<CustomerReviewsDbContext>();
-                if (databaseProvider == "SqlServer")
-                {
-                    dbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
-                }
-                dbContext.Database.Migrate();
+                dbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
             }
+            dbContext.Database.Migrate();
         }
 
         public void Uninstall()
         {
+            // Nothing to do here
         }
 
         private SettingDescriptor GetCalculatorStoreSetting()
         {
-            var calculatorsNames = _applicationBuilder.ApplicationServices.GetServices<IRatingCalculator>()
-                                             .Select(x => x.Name)
-                                             .ToArray();
-            var result = ModuleConstants.Settings.General.CalculationMethod;
-            result.AllowedValues = calculatorsNames;
+            var result = ReviewSettings.General.CalculationMethod;
+            result.AllowedValues = _applicationBuilder.ApplicationServices.GetServices<IRatingCalculator>()
+                .Select(x => x.Name)
+                .ToArray<object>();
             return result;
         }
     }

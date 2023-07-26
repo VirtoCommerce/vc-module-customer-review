@@ -17,49 +17,57 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 {
     public class CustomerReviewService : CrudService<CustomerReview, CustomerReviewEntity, CustomerReviewChangeEvent, CustomerReviewChangedEvent>, ICustomerReviewService
     {
+        private readonly Func<ICustomerReviewRepository> _repositoryFactory;
+        private readonly IEventPublisher _eventPublisher;
 
-        public CustomerReviewService(Func<ICustomerReviewRepository> repositoryFactory, IPlatformMemoryCache platformMemoryCache, IEventPublisher eventPublisher) :
-            base(repositoryFactory, platformMemoryCache, eventPublisher)
+        public CustomerReviewService(
+            Func<ICustomerReviewRepository> repositoryFactory,
+            IPlatformMemoryCache platformMemoryCache,
+            IEventPublisher eventPublisher)
+            : base(repositoryFactory, platformMemoryCache, eventPublisher)
         {
+            _repositoryFactory = repositoryFactory;
+            _eventPublisher = eventPublisher;
         }
 
-        protected override Task<IEnumerable<CustomerReviewEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
+        protected override Task<IList<CustomerReviewEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
         {
             return ((ICustomerReviewRepository)repository).GetByIdsAsync(ids);
         }
 
-        public Task ApproveReviewAsync(string[] customerReviewsIds)
+        public Task ApproveReviewAsync(IList<string> customerReviewsIds)
         {
             return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.Approved);
         }
 
-        public Task RejectReviewAsync(string[] customerReviewsIds)
+        public Task RejectReviewAsync(IList<string> customerReviewsIds)
         {
             return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.Rejected);
         }
 
-        public Task ResetReviewStatusAsync(string[] customerReviewsIds)
+        public Task ResetReviewStatusAsync(IList<string> customerReviewsIds)
         {
             return ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.New);
         }
 
-        public async Task DeleteReviews(string[] customerReviewsIds)
+        public override async Task DeleteAsync(IList<string> ids, bool softDelete = false)
         {
-            if (!customerReviewsIds.Any())
+            if (ids.IsNullOrEmpty())
             {
                 return;
             }
 
-            await ChangeReviewStatusAsync(customerReviewsIds, CustomerReviewStatus.New);
+            await ChangeReviewStatusAsync(ids, CustomerReviewStatus.New);
 
             GenericCachingRegion<CustomerReview>.ExpireRegion();
 
-            await DeleteAsync(customerReviewsIds);
+            await base.DeleteAsync(ids, softDelete);
         }
 
-        private async Task ChangeReviewStatusAsync(string[] ids, CustomerReviewStatus status)
+
+        private async Task ChangeReviewStatusAsync(IList<string> ids, CustomerReviewStatus status)
         {
-            if (!ids.Any())
+            if (ids.IsNullOrEmpty())
             {
                 return;
             }
@@ -68,7 +76,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
             using (var repository = _repositoryFactory())
             {
-                var reviews = await ((ICustomerReviewRepository)repository).GetByIdsAsync(ids);
+                var reviews = await repository.GetByIdsAsync(ids);
 
                 foreach (var customerReviewEntity in reviews)
                 {

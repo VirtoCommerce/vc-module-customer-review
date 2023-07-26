@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,12 +10,14 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
     public interface ICustomerReviewRepository : IRepository
     {
         #region CustomerReviews
+
         IQueryable<CustomerReviewEntity> CustomerReviews { get; }
 
-        Task<IEnumerable<CustomerReviewEntity>> GetByIdsAsync(IEnumerable<string> ids);
-        Task DeleteCustomerReviewsAsync(IEnumerable<string> ids);
+        Task<IList<CustomerReviewEntity>> GetByIdsAsync(IList<string> ids);
+        Task DeleteCustomerReviewsAsync(IList<string> ids);
 
-        Task<ReviewRatingCalculateDto[]> GetCustomerReviewsByStoreProductAsync(string storeId, IEnumerable<string> entityIds, string entityType, IEnumerable<int> reviewStatuses);
+        Task<IList<ReviewRatingCalculateDto>> GetCustomerReviewsByStoreProductAsync(string storeId, IList<string> entityIds, string entityType, IList<int> reviewStatuses);
+        Task<IList<RequestReviewEntity>> GetReviewsWithEmptyAccessDate(DateTime maxModifiedDate, int maxRequests);
 
         #endregion
 
@@ -31,12 +34,11 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         #region RequestReview
 
         IQueryable<RequestReviewEntity> RequestReview { get; }
-        Task<RequestReviewEntity> GetRequestReviewByIdAsync(string Id);
-        Task<RequestReviewEntity[]> GetRequestReviewByIdAsync(IEnumerable<string> Ids);
+        Task<RequestReviewEntity> GetRequestReviewByIdAsync(string id);
+        Task<RequestReviewEntity[]> GetRequestReviewByIdAsync(IEnumerable<string> ids);
         Task<RequestReviewEntity> GetRequestReviewAsync(string entityId, string entityType, string userId);
         void Delete(RequestReviewEntity entity);
 
         #endregion
-
     }
 }

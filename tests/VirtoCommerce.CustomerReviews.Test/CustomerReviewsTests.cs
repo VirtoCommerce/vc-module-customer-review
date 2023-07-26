@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using VirtoCommerce.CustomerReviews.Core.Models;
-using VirtoCommerce.CustomerReviews.Data.Models;
+using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.Services;
 using VirtoCommerce.Platform.Core.Caching;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using Xunit;
 
 namespace VirtoCommerce.CustomerReviews.Test
@@ -18,15 +16,15 @@ namespace VirtoCommerce.CustomerReviews.Test
     [Trait("Category", "IntegrationTest")]
     public class CustomerReviewsTests
     {
-        private const string EntityId = "TestProductId";
-        private const string EntityType = "Product";
-        private const string EntityName = "Test product";
-        private const string CustomerReviewId = "TestId";
+        private const string _entityId = "TestProductId";
+        private const string _entityType = "Product";
+        private const string _entityName = "Test product";
+        private const string _customerReviewId = "TestId";
 
         private readonly Mock<IPlatformMemoryCache> _platformMemoryCacheMock;
         private readonly Mock<ICacheEntry> _cacheEntryMock;
-        private ICrudService<CustomerReview> _customerReviewService;
-        private ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview> _customerReviewSearchService;
+        private ICustomerReviewService _customerReviewService;
+        private ICustomerReviewSearchService _customerReviewSearchService;
 
         public CustomerReviewsTests()
         {
@@ -34,28 +32,26 @@ namespace VirtoCommerce.CustomerReviews.Test
             _cacheEntryMock.SetupGet(c => c.ExpirationTokens).Returns(new List<IChangeToken>());
             _platformMemoryCacheMock = new Mock<IPlatformMemoryCache>();
             _platformMemoryCacheMock.Setup(x => x.GetDefaultCacheEntryOptions()).Returns(() => new MemoryCacheEntryOptions());
-            var cacheKeyCRUD = CacheKey.With(typeof(CustomerReviewService), "GetAsync", string.Join("-", CustomerReviewId), null);
-            _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKeyCRUD)).Returns(_cacheEntryMock.Object);
+            var cacheKeyCrud = CacheKey.With(typeof(CustomerReviewService), "GetAsync", string.Join("-", _customerReviewId), null);
+            _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKeyCrud)).Returns(_cacheEntryMock.Object);
         }
 
         [Fact]
-        public async Task CanDoCRUDandSearch()
+        public async Task CanDoCrudAndSearch()
         {
-            MockServices(CustomerReviewId, EntityId, EntityType);
-
-            IEnumerable<CustomerReview> result;
+            MockServices(_customerReviewId, _entityId, _entityType);
 
             // Create
             var item = new CustomerReview
             {
-                Id = CustomerReviewId,
-                EntityId = EntityId,
-                EntityType = EntityType,
-                EntityName = EntityName,
+                Id = _customerReviewId,
+                EntityId = _entityId,
+                EntityType = _entityType,
+                EntityName = _entityName,
                 CreatedDate = DateTime.Now,
                 CreatedBy = "initial data seed",
                 UserName = "John Doe",
-                UserId = "dsdsd12dfsd",
+                UserId = "TestUserId",
                 Review = "Liked that",
                 Rating = 5,
                 StoreId = "Electronics",
@@ -65,10 +61,10 @@ namespace VirtoCommerce.CustomerReviews.Test
 
             await _customerReviewService.SaveChangesAsync(new[] { item });
 
-            result = await _customerReviewService.GetAsync(new List<string>() { CustomerReviewId });
+            var result = await _customerReviewService.GetAsync(new[] { _customerReviewId });
             Assert.Single(result);
             item = result.First();
-            Assert.Equal(CustomerReviewId, item.Id);
+            Assert.Equal(_customerReviewId, item.Id);
 
             // Update
             var updatedContent = "Updated content";
@@ -77,13 +73,13 @@ namespace VirtoCommerce.CustomerReviews.Test
             item.Review = updatedContent;
             await _customerReviewService.SaveChangesAsync(new[] { item });
 
-            result = await _customerReviewService.GetAsync(new List<string>() { CustomerReviewId });
+            result = await _customerReviewService.GetAsync(new[] { _customerReviewId });
             Assert.Single(result);
 
             item = result.First();
             Assert.Equal(updatedContent, item.Review);
 
-            var criteria = new CustomerReviewSearchCriteria { EntityIds = new[] { EntityId }, EntityType = EntityType };
+            var criteria = new CustomerReviewSearchCriteria { EntityIds = new[] { _entityId }, EntityType = _entityType };
             var cacheKeySearch = CacheKey.With(typeof(CustomerReviewSearchService), "SearchAsync", criteria.GetCacheKey());
             _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKeySearch)).Returns(_cacheEntryMock.Object);
 
@@ -93,22 +89,21 @@ namespace VirtoCommerce.CustomerReviews.Test
             Assert.Single(searchResult.Results);
 
             // Delete
-            await _customerReviewService.DeleteAsync(new[] { CustomerReviewId });
+            await _customerReviewService.DeleteAsync(new[] { _customerReviewId });
 
-            var getByIdsResult = await _customerReviewService.GetAsync(new List<string>() { CustomerReviewId });
+            var getByIdsResult = await _customerReviewService.GetAsync(new[] { _customerReviewId });
             Assert.NotNull(getByIdsResult);
         }
 
         private void MockServices(string customerReviewId, string entityId, string entityType)
         {
-            var customerReviewService = new Mock<ICrudService<CustomerReview>>();
+            var customerReviewService = new Mock<ICustomerReviewService>();
 
-            CustomerReview[] customerReviews = TestHelper.LoadFromJsonFile<CustomerReview[]>(@"customerReviews.json");
-            RatingEntity[] ratings = TestHelper.LoadFromJsonFile<RatingEntity[]>(@"ratings.json");
+            var customerReviews = TestHelper.LoadFromJsonFile<CustomerReview[]>(@"customerReviews.json");
 
             customerReviewService
-                .Setup(x => x.GetAsync(new List<string> { customerReviewId }, It.IsAny<string>()))
-                .Returns(Task.FromResult((IReadOnlyCollection<CustomerReview>)new ReadOnlyCollection<CustomerReview>(customerReviews.Where(x => x.Id == customerReviewId).ToList())));
+                .Setup(x => x.GetAsync(new[] { customerReviewId }, It.IsAny<string>(), It.IsAny<bool>()))
+                .Returns(Task.FromResult((IList<CustomerReview>)customerReviews.Where(x => x.Id == customerReviewId).ToList()));
 
             customerReviewService
                 .Setup(x => x.SaveChangesAsync(It.IsAny<CustomerReview[]>()))
@@ -120,14 +115,14 @@ namespace VirtoCommerce.CustomerReviews.Test
 
             _customerReviewService = customerReviewService.Object;
 
-            var customerReviewSearchService = new Mock<ISearchService<CustomerReviewSearchCriteria, CustomerReviewSearchResult, CustomerReview>>();
+            var customerReviewSearchService = new Mock<ICustomerReviewSearchService>();
 
             customerReviewSearchService
-                .Setup(x => x.SearchAsync(new CustomerReviewSearchCriteria { EntityIds = new[] { entityId }, EntityType = entityType }))
+                .Setup(x => x.SearchAsync(new CustomerReviewSearchCriteria { EntityIds = new[] { entityId }, EntityType = entityType }, It.IsAny<bool>()))
                 .Returns(Task.FromResult(new CustomerReviewSearchResult
                 {
                     Results = customerReviews.Where(x => x.EntityId == entityId && x.EntityType == entityType).ToList(),
-                    TotalCount = customerReviews.Where(x => x.EntityId == entityId && x.EntityType == entityType).Count()
+                    TotalCount = customerReviews.Count(x => x.EntityId == entityId && x.EntityType == entityType)
                 }));
 
             _customerReviewSearchService = customerReviewSearchService.Object;

@@ -8,18 +8,18 @@ using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
 using VirtoCommerce.ExperienceApiModule.Core;
 using VirtoCommerce.Platform.Core;
-using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Security;
-using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Authorization;
 
-public class CustomerReviewAuthorizationHandler: AuthorizationHandler<CustomerReviewAuthorizationRequirement>
+public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerReviewAuthorizationRequirement>
 {
     private readonly Func<UserManager<ApplicationUser>> _userManagerFactory;
-    private readonly ICrudService<Store> _storeService;
+    private readonly IStoreService _storeService;
 
-    public CustomerReviewAuthorizationHandler(Func<UserManager<ApplicationUser>> userManagerFactory, ICrudService<Store> storeService)
+    public CustomerReviewAuthorizationHandler(Func<UserManager<ApplicationUser>> userManagerFactory, IStoreService storeService)
     {
         _userManagerFactory = userManagerFactory;
         _storeService = storeService;
@@ -38,7 +38,7 @@ public class CustomerReviewAuthorizationHandler: AuthorizationHandler<CustomerRe
                 case CreateCustomerReviewCommand command:
                     var userManager = _userManagerFactory();
                     var currentUser = await userManager.FindByIdAsync(currentUserId);
-                    var store = await _storeService.GetByIdAsync(command.StoreId);
+                    var store = await _storeService.GetNoCloneAsync(command.StoreId);
                     var allowedStoreIds = new List<string>(store.TrustedGroups) { store.Id };
                     result = allowedStoreIds.Contains(currentUser.StoreId) && command.UserId == currentUserId;
                     break;
