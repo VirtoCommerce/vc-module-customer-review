@@ -1,11 +1,11 @@
 using System.Reflection;
-using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CustomerReviews.Data.Models;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.CustomerReviews.Data.Repositories
 {
-    public class CustomerReviewsDbContext : DbContextWithTriggers
+    public class CustomerReviewsDbContext : DbContextBase
     {
 #pragma warning disable S109
         public CustomerReviewsDbContext(DbContextOptions<CustomerReviewsDbContext> options)
