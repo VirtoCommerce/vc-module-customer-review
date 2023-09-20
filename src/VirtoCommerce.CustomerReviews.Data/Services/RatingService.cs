@@ -241,9 +241,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
                 if (store != null)
                 {
-                    calculatorName = store.Settings.GetSettingValue(
-                        ReviewSettings.CalculationMethod.Name,
-                        ReviewSettings.CalculationMethod.DefaultValue.ToString());
+                    calculatorName = store.Settings.GetValue<string>(ReviewSettings.CalculationMethod);
                 }
             }
 
