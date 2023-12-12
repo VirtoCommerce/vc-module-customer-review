@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Project is not a test project -->
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="VirtoCommerce.ExperienceApiModule.Core" Version="3.400.0" />
-    <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.400.0" />
-    <PackageReference Include="VirtoCommerce.XDigitalCatalog" Version="3.400.0" />
+    <PackageReference Include="VirtoCommerce.ExperienceApiModule.Core" Version="3.800.0-alpha.1309-pt-14740-net8" />
+    <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.800.0-alpha.190-pt-14740-net8" />
+    <PackageReference Include="VirtoCommerce.XDigitalCatalog" Version="3.800.0-alpha.1309-pt-14740-net8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Core\VirtoCommerce.CustomerReviews.Core.csproj" />
