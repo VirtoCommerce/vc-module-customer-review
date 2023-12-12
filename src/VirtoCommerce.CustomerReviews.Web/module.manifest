@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.CustomerReviews</id>
   <version>3.800.0</version>
@@ -7,7 +7,7 @@
   <dependencies>
     <dependency id="VirtoCommerce.Catalog" version="3.800.0-alpha.2182-pt-14740-net8" />
     <dependency id="VirtoCommerce.Customer" version="3.800.0-alpha.805-pt-14740-net8" />
-    <dependency id="VirtoCommerce.ExperienceApi" version="3.800.0-alpha.1306-pt-14740-net8" />
+    <dependency id="VirtoCommerce.ExperienceApi" version="3.800.0-alpha.1309-pt-14740-net8" />
     <dependency id="VirtoCommerce.Notifications" version="3.800.0-alpha.357-pt-14740-net8" />
     <dependency id="VirtoCommerce.Orders" version="3.800.0-alpha.1200-pt-14740-net8" />
     <dependency id="VirtoCommerce.ProfileExperienceApiModule" version="3.800.0-alpha.190-pt-14740-net8" />
