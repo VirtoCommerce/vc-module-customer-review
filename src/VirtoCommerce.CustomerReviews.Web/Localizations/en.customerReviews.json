@@ -76,7 +76,7 @@
 	"notificationTypes": {
 		"CustomerReviewEmailNotification": {
 			"displayName": "Order request review notification",
-			"description": "This notification sends by email to client when order is compled and customer not review a product order. One email by item in order."
+			"description": "The customer will get an email notification when the order is completed and the customer does not leave any product feedback."
 		}
 	},
 	"settings": {
