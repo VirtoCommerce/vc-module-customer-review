@@ -36,7 +36,6 @@ namespace VirtoCommerce.CustomerReviews.Web
     public class Module : IModule, IHasConfiguration
     {
         private IApplicationBuilder _applicationBuilder;
-        private const string _storeModuleId = "VirtoCommerce.Store";
 
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
