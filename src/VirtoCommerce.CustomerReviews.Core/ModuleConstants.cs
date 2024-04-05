@@ -102,18 +102,27 @@ namespace VirtoCommerce.CustomerReviews.Core
                 {
                     get
                     {
-                        return new List<SettingDescriptor>
-                               {
-                                   CustomerReviewsEnabled,
-                                   CustomerReviewsEnabledForAnonymous,
-                                   CanSubmitReviewWhenHasOrder,
-                                   RequestReviewEnableJob,
-                                   RequestReviewCronJob,
-                                   RequestReviewDaysInState,
-                                   RequestReviewOrderInState,
-                                   RequestReviewMaxRequests
-                               };
+                        yield return CustomerReviewsEnabled;
+                        yield return CustomerReviewsEnabledForAnonymous;
+                        yield return CanSubmitReviewWhenHasOrder;
+                        yield return RequestReviewEnableJob;
+                        yield return RequestReviewCronJob;
+                        yield return RequestReviewDaysInState;
+                        yield return RequestReviewOrderInState;
+                        yield return RequestReviewMaxRequests;
+                        yield return CalculationMethod;
                     }
+                }
+            }
+
+            public static IEnumerable<SettingDescriptor> StoreSettings
+            {
+                get
+                {
+                    yield return General.CustomerReviewsEnabled;
+                    yield return General.CustomerReviewsEnabledForAnonymous;
+                    yield return General.CanSubmitReviewWhenHasOrder;
+                    yield return General.CalculationMethod;
                 }
             }
 
