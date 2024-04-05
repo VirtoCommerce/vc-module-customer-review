@@ -96,7 +96,6 @@ namespace VirtoCommerce.CustomerReviews.Web
             var storeSettings = settingsRegistrar.AllRegisteredSettings.Where(x => x.ModuleId.EqualsInvariant(ModuleInfo.Id) && !jobSettings.Contains(x.Name)).ToList();
             storeSettings.Add(GetCalculatorStoreSetting());
             settingsRegistrar.RegisterSettingsForType(storeSettings, nameof(Store));
-            settingsRegistrar.RegisterSettings(storeSettings, _storeModuleId);
 
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "CustomerReviews", ModuleConstants.Security.Permissions.AllPermissions);
