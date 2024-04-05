@@ -68,7 +68,8 @@ namespace VirtoCommerce.CustomerReviews.Core
                     Name = "CustomerReviews.CustomerReviewsEnabled",
                     GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
-                    DefaultValue = false
+                    DefaultValue = false,
+                    IsPublic = true,
                 };
 
                 public static readonly SettingDescriptor CustomerReviewsEnabledForAnonymous = new SettingDescriptor
@@ -76,7 +77,8 @@ namespace VirtoCommerce.CustomerReviews.Core
                     Name = "CustomerReviews.CustomerReviewsEnabledForAnonymous",
                     GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
-                    DefaultValue = false
+                    DefaultValue = false,
+                    IsPublic = true,
                 };
 
                 public static readonly SettingDescriptor CanSubmitReviewWhenHasOrder = new SettingDescriptor
@@ -85,6 +87,7 @@ namespace VirtoCommerce.CustomerReviews.Core
                     GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = true,
+                    IsPublic = true,
                 };
 
                 public static readonly SettingDescriptor CalculationMethod = new SettingDescriptor
