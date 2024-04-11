@@ -68,7 +68,8 @@ namespace VirtoCommerce.CustomerReviews.Core
                     Name = "CustomerReviews.CustomerReviewsEnabled",
                     GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
-                    DefaultValue = false
+                    DefaultValue = false,
+                    IsPublic = true,
                 };
 
                 public static readonly SettingDescriptor CustomerReviewsEnabledForAnonymous = new SettingDescriptor
@@ -76,7 +77,8 @@ namespace VirtoCommerce.CustomerReviews.Core
                     Name = "CustomerReviews.CustomerReviewsEnabledForAnonymous",
                     GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
-                    DefaultValue = false
+                    DefaultValue = false,
+                    IsPublic = true,
                 };
 
                 public static readonly SettingDescriptor CanSubmitReviewWhenHasOrder = new SettingDescriptor
@@ -85,12 +87,13 @@ namespace VirtoCommerce.CustomerReviews.Core
                     GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = true,
+                    IsPublic = true,
                 };
 
                 public static readonly SettingDescriptor CalculationMethod = new SettingDescriptor
                 {
                     Name = "CustomerReviews.Calculation.Method",
-                    GroupName = "Product Reviews|General",
+                    GroupName = "Store|Product Reviews",
                     ValueType = SettingValueType.ShortText,
                     DefaultValue = "Average",
                 };
@@ -99,18 +102,27 @@ namespace VirtoCommerce.CustomerReviews.Core
                 {
                     get
                     {
-                        return new List<SettingDescriptor>
-                               {
-                                   CustomerReviewsEnabled,
-                                   CustomerReviewsEnabledForAnonymous,
-                                   CanSubmitReviewWhenHasOrder,
-                                   RequestReviewEnableJob,
-                                   RequestReviewCronJob,
-                                   RequestReviewDaysInState,
-                                   RequestReviewOrderInState,
-                                   RequestReviewMaxRequests
-                               };
+                        yield return CustomerReviewsEnabled;
+                        yield return CustomerReviewsEnabledForAnonymous;
+                        yield return CanSubmitReviewWhenHasOrder;
+                        yield return RequestReviewEnableJob;
+                        yield return RequestReviewCronJob;
+                        yield return RequestReviewDaysInState;
+                        yield return RequestReviewOrderInState;
+                        yield return RequestReviewMaxRequests;
+                        yield return CalculationMethod;
                     }
+                }
+            }
+
+            public static IEnumerable<SettingDescriptor> StoreSettings
+            {
+                get
+                {
+                    yield return General.CustomerReviewsEnabled;
+                    yield return General.CustomerReviewsEnabledForAnonymous;
+                    yield return General.CanSubmitReviewWhenHasOrder;
+                    yield return General.CalculationMethod;
                 }
             }
 

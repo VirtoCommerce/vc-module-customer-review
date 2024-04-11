@@ -36,7 +36,6 @@ namespace VirtoCommerce.CustomerReviews.Web
     public class Module : IModule, IHasConfiguration
     {
         private IApplicationBuilder _applicationBuilder;
-        private const string _storeModuleId = "VirtoCommerce.Store";
 
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
@@ -92,11 +91,8 @@ namespace VirtoCommerce.CustomerReviews.Web
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ReviewSettings.AllSettings, ModuleInfo.Id);
 
-            var jobSettings = ReviewSettings.JobSettings.Select(s => s.Name).ToList();
-            var storeSettings = settingsRegistrar.AllRegisteredSettings.Where(x => x.ModuleId.EqualsInvariant(ModuleInfo.Id) && !jobSettings.Contains(x.Name)).ToList();
-            storeSettings.Add(GetCalculatorStoreSetting());
-            settingsRegistrar.RegisterSettingsForType(storeSettings, nameof(Store));
-            settingsRegistrar.RegisterSettings(storeSettings, _storeModuleId);
+            UpdateCalculationMethod();
+            settingsRegistrar.RegisterSettingsForType(ReviewSettings.StoreSettings, nameof(Store));
 
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "CustomerReviews", ModuleConstants.Security.Permissions.AllPermissions);
@@ -132,13 +128,11 @@ namespace VirtoCommerce.CustomerReviews.Web
             // Nothing to do here
         }
 
-        private SettingDescriptor GetCalculatorStoreSetting()
+        private void UpdateCalculationMethod()
         {
-            var result = ReviewSettings.General.CalculationMethod;
-            result.AllowedValues = _applicationBuilder.ApplicationServices.GetServices<IRatingCalculator>()
+            ReviewSettings.General.CalculationMethod.AllowedValues = _applicationBuilder.ApplicationServices.GetServices<IRatingCalculator>()
                 .Select(x => x.Name)
                 .ToArray<object>();
-            return result;
         }
     }
 }
