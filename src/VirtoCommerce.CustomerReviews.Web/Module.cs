@@ -19,8 +19,8 @@ using VirtoCommerce.CustomerReviews.Data.SqlServer;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Events;
-using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -100,9 +100,8 @@ namespace VirtoCommerce.CustomerReviews.Web
             var notificationRegistrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             notificationRegistrar.RegisterNotification<CustomerReviewEmailNotification>();
 
-            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            handlerRegistrar.RegisterHandler<ReviewStatusChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<ReviewStatusChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<OrderChangedEventHandler>().Handle(message));
+            appBuilder.RegisterEventHandler<ReviewStatusChangedEvent, ReviewStatusChangedEventHandler>();
+            appBuilder.RegisterEventHandler<OrderChangedEvent, OrderChangedEventHandler>();
 
             var recurringJobManager = appBuilder.ApplicationServices.GetService<IRecurringJobManager>();
             recurringJobManager.WatchJobSetting(
