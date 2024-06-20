@@ -6,10 +6,9 @@ using AutoMapper;
 using PipelineNet.Middleware;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
-using VirtoCommerce.ExperienceApiModule.Core;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.XDigitalCatalog;
-using VirtoCommerce.XDigitalCatalog.Queries;
+using VirtoCommerce.Xapi.Core.Models;
+using VirtoCommerce.XCatalog.Core.Models;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 
@@ -23,7 +22,7 @@ public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductR
         _mapper = mapper;
         _ratingService = ratingService;
     }
-    
+
     public virtual async Task Run(SearchProductResponse parameter, Func<SearchProductResponse, Task> next)
     {
         if (parameter == null)
@@ -36,7 +35,7 @@ public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductR
         {
             throw new OperationCanceledException("Query must be set");
         }
-        
+
         var responseGroup = EnumUtility.SafeParse(query.GetResponseGroup(), ExpProductResponseGroup.None);
         if (responseGroup.HasFlag(ExpProductResponseGroup.LoadRating) && parameter.Results.Any())
         {

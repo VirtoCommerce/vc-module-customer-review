@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using GraphQL;
 using GraphQL.Types;
 using VirtoCommerce.CustomerReviews.Core.Models;
-using VirtoCommerce.ExperienceApiModule.Core.BaseQueries;
+using VirtoCommerce.Xapi.Core.BaseQueries;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
 

@@ -1,13 +1,12 @@
-using AutoMapper;
 using GraphQL.Server;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
-using VirtoCommerce.ExperienceApiModule.Core.Extensions;
-using VirtoCommerce.XDigitalCatalog.Queries;
-using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
-using VirtoCommerce.ExperienceApiModule.Core.Pipelines;
 using VirtoCommerce.ProfileExperienceApiModule.Data.Aggregates.Vendor;
+using VirtoCommerce.Xapi.Core.Extensions;
+using VirtoCommerce.Xapi.Core.Infrastructure;
+using VirtoCommerce.Xapi.Core.Pipelines;
+using VirtoCommerce.XCatalog.Core.Models;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 
