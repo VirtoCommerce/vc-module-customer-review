@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
-using VirtoCommerce.ExperienceApiModule.Core.Index;
-using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
+using VirtoCommerce.Xapi.Core.Index;
+using VirtoCommerce.Xapi.Core.Infrastructure;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 

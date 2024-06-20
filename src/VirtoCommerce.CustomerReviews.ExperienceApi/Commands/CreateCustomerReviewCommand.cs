@@ -1,9 +1,9 @@
 using VirtoCommerce.CustomerReviews.Core.Models;
-using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
+using VirtoCommerce.Xapi.Core.Infrastructure;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
-public class CreateCustomerReviewCommand: ICommand<CustomerReview>
+public class CreateCustomerReviewCommand : ICommand<CustomerReview>
 {
     public string StoreId { get; set; }
 

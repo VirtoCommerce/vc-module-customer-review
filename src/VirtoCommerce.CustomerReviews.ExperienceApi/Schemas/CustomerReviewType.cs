@@ -1,5 +1,5 @@
 using VirtoCommerce.CustomerReviews.Core.Models;
-using VirtoCommerce.ExperienceApiModule.Core.Schemas;
+using VirtoCommerce.Xapi.Core.Schemas;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Schemas;
 
