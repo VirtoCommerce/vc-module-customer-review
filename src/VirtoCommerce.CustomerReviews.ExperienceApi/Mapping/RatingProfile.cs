@@ -2,12 +2,12 @@ using AutoMapper;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.ExperienceApiModule.Core;
 using VirtoCommerce.ProfileExperienceApiModule.Data;
+using VirtoCommerce.Xapi.Core.Models;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 
-public class RatingProfile: Profile
+public class RatingProfile : Profile
 {
     public RatingProfile()
     {

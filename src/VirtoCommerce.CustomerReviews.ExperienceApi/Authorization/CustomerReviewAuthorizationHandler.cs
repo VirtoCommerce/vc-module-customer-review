@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
-using VirtoCommerce.ExperienceApiModule.Core;
 using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.StoreModule.Core.Services;
+using static VirtoCommerce.Xapi.Core.ModuleConstants;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Authorization;
 

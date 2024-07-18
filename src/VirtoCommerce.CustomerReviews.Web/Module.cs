@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +25,6 @@ using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Hangfire;
-using VirtoCommerce.Platform.Hangfire.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
 using OrderSettings = VirtoCommerce.OrdersModule.Core.ModuleConstants.Settings;
 using ReviewSettings = VirtoCommerce.CustomerReviews.Core.ModuleConstants.Settings;
@@ -103,9 +101,8 @@ namespace VirtoCommerce.CustomerReviews.Web
             appBuilder.RegisterEventHandler<ReviewStatusChangedEvent, ReviewStatusChangedEventHandler>();
             appBuilder.RegisterEventHandler<OrderChangedEvent, OrderChangedEventHandler>();
 
-            var recurringJobManager = appBuilder.ApplicationServices.GetService<IRecurringJobManager>();
-            recurringJobManager.WatchJobSetting(
-               settingsManager,
+            var recurringJobService = appBuilder.ApplicationServices.GetService<IRecurringJobService>();
+            recurringJobService.WatchJobSetting(
                new SettingCronJobBuilder()
                    .SetEnablerSetting(ReviewSettings.General.RequestReviewEnableJob)
                    .SetCronSetting(ReviewSettings.General.RequestReviewCronJob)
