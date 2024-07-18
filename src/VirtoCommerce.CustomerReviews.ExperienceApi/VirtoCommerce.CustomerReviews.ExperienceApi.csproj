@@ -7,9 +7,9 @@
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="VirtoCommerce.Xapi.Core" Version="3.800.0-alpha.5-vcst-1352" />
-    <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.807.0-alpha.219-vcst-1352" />
-    <PackageReference Include="VirtoCommerce.XCatalog.Core" Version="3.800.0-alpha.6-vcst-1352" />
+    <PackageReference Include="VirtoCommerce.Xapi.Core" Version="3.800.0" />
+    <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.809.0" />
+    <PackageReference Include="VirtoCommerce.XCatalog.Core" Version="3.800.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Core\VirtoCommerce.CustomerReviews.Core.csproj" />
