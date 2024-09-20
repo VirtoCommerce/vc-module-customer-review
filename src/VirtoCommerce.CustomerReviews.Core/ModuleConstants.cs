@@ -3,6 +3,11 @@ using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.CustomerReviews.Core
 {
+    public static class ReviewEntityTypes
+    {
+        public const string Product = "Product";
+    }
+
     public static class ModuleConstants
     {
         public static class Security

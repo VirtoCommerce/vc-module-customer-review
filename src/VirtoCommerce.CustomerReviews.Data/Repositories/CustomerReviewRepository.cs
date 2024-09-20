@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
@@ -70,7 +71,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
                     !CustomerReviews.Any(cr =>
                         r.StoreId == cr.StoreId &&
                         r.EntityId == cr.EntityId &&
-                        r.EntityType == "Product" &&
+                        r.EntityType == ReviewEntityTypes.Product &&
                         cr.UserId == r.UserId))
                 .ToListAsync();
         }

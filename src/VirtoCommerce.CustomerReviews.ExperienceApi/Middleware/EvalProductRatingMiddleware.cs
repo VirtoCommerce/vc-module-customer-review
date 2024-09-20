@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PipelineNet.Middleware;
+using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
@@ -13,12 +14,12 @@ using VirtoCommerce.XDigitalCatalog.Queries;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 
-public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductResponse>
+public class EvalProductRatingMiddleware : IAsyncMiddleware<SearchProductResponse>
 {
     private readonly IMapper _mapper;
     private readonly IRatingService _ratingService;
 
-    public EvalProductVendorRatingMiddleware(IMapper mapper, IRatingService ratingService)
+    public EvalProductRatingMiddleware(IMapper mapper, IRatingService ratingService)
     {
         _mapper = mapper;
         _ratingService = ratingService;
@@ -40,38 +41,32 @@ public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductR
         var responseGroup = EnumUtility.SafeParse(query.GetResponseGroup(), ExpProductResponseGroup.None);
         if (responseGroup.HasFlag(ExpProductResponseGroup.LoadRating) && parameter.Results.Any())
         {
-            await LoadVendorRaiting(parameter, query);
+            await LoadProductRaiting(parameter, query);
         }
 
         await next(parameter);
     }
 
-    protected virtual async Task LoadVendorRaiting(SearchProductResponse parameter, SearchProductQuery query)
+    protected virtual async Task LoadProductRaiting(SearchProductResponse parameter, SearchProductQuery query)
     {
-        var vendors = parameter.Results.Where(product => product.Vendor != null).Select(product => product.Vendor).ToArray();
+        var productIds = parameter.Results.Select(product => product.Id).ToArray();
+        var ratings = await _ratingService.GetForStoreAsync(query.StoreId, productIds, ReviewEntityTypes.Product);
 
-        var ratingByIds = new Dictionary<(string, string), RatingEntityDto>();
-
-        foreach (var vendorsByType in vendors.GroupBy(vendor => vendor.Type))
+        var ratingByIds = new Dictionary<string, RatingEntityDto>();
+        foreach (var rating in ratings)
         {
-            var vendorType = vendorsByType.Key;
-            var vendorIds = vendorsByType.Select(vendor => vendor.Id).Distinct().ToArray();
-            var ratings = await _ratingService.GetForStoreAsync(query.StoreId, vendorIds, vendorType);
-
-            foreach (var rating in ratings)
-            {
-                ratingByIds.Add((rating.EntityId, rating.EntityType), rating);
-            }
+            ratingByIds.Add(rating.EntityId, rating);
         }
 
-        if (ratingByIds.Any())
+        if (ratingByIds.Count != 0)
         {
             parameter.Results
-                .Where(product => product.Vendor != null)
                 .Apply(product =>
                 {
-                    ratingByIds.TryGetValue((product.Vendor.Id, product.Vendor.Type), out var rating);
-                    product.Vendor.Rating = _mapper.Map<ExpRating>(rating);
+                    if (ratingByIds.TryGetValue(product.Id, out var rating))
+                    {
+                        product.Rating = _mapper.Map<ExpRating>(rating);
+                    }
                 });
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.Data.Models;
@@ -40,7 +41,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
         public Task CalculateAsync(string storeId)
         {
-            return Calculate(storeId, null, "Product");
+            return Calculate(storeId, null, ReviewEntityTypes.Product);
         }
 
         public async Task CalculateAsync(ReviewStatusChangeData[] data)
@@ -119,7 +120,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
-                var ratings = await repository.GetAsync(storeId, productIds, "Product");
+                var ratings = await repository.GetAsync(storeId, productIds, ReviewEntityTypes.Product);
 
                 return ratings.Select(x => new RatingProductDto
                 {
@@ -165,7 +166,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
                 foreach (var store in stores)
                 {
-                    var ratings = await repository.GetAsync(store.Id, productIds, "Product");
+                    var ratings = await repository.GetAsync(store.Id, productIds, ReviewEntityTypes.Product);
                     if (ratings.Any())
                     {
                         result.AddRange(ratings.Select(x => new RatingStoreDto
