@@ -15,7 +15,7 @@
     <dependency id="VirtoCommerce.Store" version="3.800.0" />
   </dependencies>
   <title>Rating and Reviews</title>
-  <description>Rating and Reviews</description>
+  <description>Enables customers to share their feedback on products and vendors after making a purchase, helping others make informed decisions.</description>
   <authors>
     <author>Egidijus Mazeika</author>
     <author>Andrew Nikutin</author>

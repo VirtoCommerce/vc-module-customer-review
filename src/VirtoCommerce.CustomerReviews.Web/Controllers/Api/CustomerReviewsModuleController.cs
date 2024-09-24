@@ -51,7 +51,7 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
             foreach (var review in reviews.Results)
             {
                 var listItem = new CustomerReviewListItem(review);
-                if (review.EntityType == "Product")
+                if (review.EntityType == ReviewEntityTypes.Product)
                 {
                     listItem.StoreName = stores.FirstOrDefault(s => s.Id == review.StoreId)?.Name;
                 }

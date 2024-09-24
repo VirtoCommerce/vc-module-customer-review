@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddSchemaBuilders(assemblyMarker);
         serviceCollection.AddPipeline<SearchProductResponse>(builder =>
         {
+            builder.AddMiddleware(typeof(EvalProductRatingMiddleware));
             builder.AddMiddleware(typeof(EvalProductVendorRatingMiddleware));
         });
 

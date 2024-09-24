@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
+using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.OrdersModule.Core.Events;
@@ -82,7 +83,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Handlers
                                 CustomerOrderId = jobArgument.CustomerOrderId,
                                 ModifiedDate = DateTime.Now,
                                 EntityId = item.ProductId,
-                                EntityType = "Product",
+                                EntityType = ReviewEntityTypes.Product,
                                 ReviewsRequest = 0,
                                 StoreId = jobArgument.StoreId,
                                 UserId = jobArgument.CustomerId
