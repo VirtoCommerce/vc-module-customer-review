@@ -26,10 +26,7 @@ public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductR
 
     public virtual async Task Run(SearchProductResponse parameter, Func<SearchProductResponse, Task> next)
     {
-        if (parameter == null)
-        {
-            throw new ArgumentNullException(nameof(parameter));
-        }
+        ArgumentNullException.ThrowIfNull(parameter);
 
         var query = parameter.Query;
         if (query == null)

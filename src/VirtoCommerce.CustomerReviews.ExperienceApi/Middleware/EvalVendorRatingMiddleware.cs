@@ -22,12 +22,9 @@ public class EvalVendorRatingMiddleware : IAsyncMiddleware<VendorAggregate>
 
     public virtual async Task Run(VendorAggregate parameter, Func<VendorAggregate, Task> next)
     {
-        if (parameter == null)
-        {
-            throw new ArgumentNullException(nameof(parameter));
-        }
+        ArgumentNullException.ThrowIfNull(parameter);
 
-        var ratings = await _ratingService.GetRatingsAsync(new [] { parameter.Member.Id }, parameter.Member.MemberType);
+        var ratings = await _ratingService.GetRatingsAsync(new[] { parameter.Member.Id }, parameter.Member.MemberType);
         parameter.Ratings = ratings.Select(rating => _mapper.Map<ExpVendorRating>(rating)).ToArray();
 
         await next(parameter);
