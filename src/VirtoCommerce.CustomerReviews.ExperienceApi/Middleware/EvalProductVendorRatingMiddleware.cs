@@ -47,6 +47,11 @@ public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductR
     {
         var vendors = parameter.Results.Where(product => product.Vendor != null).Select(product => product.Vendor).ToArray();
 
+        if (vendors.Length == 0)
+        {
+            return;
+        }
+
         var ratingByIds = new Dictionary<(string, string), RatingEntityDto>();
 
         foreach (var vendorsByType in vendors.GroupBy(vendor => vendor.Type))
@@ -61,7 +66,7 @@ public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductR
             }
         }
 
-        if (ratingByIds.Any())
+        if (ratingByIds.Count != 0)
         {
             parameter.Results
                 .Where(product => product.Vendor != null)

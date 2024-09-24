@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PipelineNet.Middleware;
 using VirtoCommerce.CustomerReviews.Core;
-using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Xapi.Core.Models;
@@ -47,16 +45,17 @@ public class EvalProductRatingMiddleware : IAsyncMiddleware<SearchProductRespons
     protected virtual async Task LoadProductRaiting(SearchProductResponse parameter, SearchProductQuery query)
     {
         var productIds = parameter.Results.Select(product => product.Id).ToArray();
-        var ratings = await _ratingService.GetForStoreAsync(query.StoreId, productIds, ReviewEntityTypes.Product);
-
-        var ratingByIds = new Dictionary<string, RatingEntityDto>();
-        foreach (var rating in ratings)
+        if (productIds.Length == 0)
         {
-            ratingByIds.Add(rating.EntityId, rating);
+            return;
         }
 
-        if (ratingByIds.Count != 0)
+        var ratings = await _ratingService.GetForStoreAsync(query.StoreId, productIds, ReviewEntityTypes.Product);
+
+        if (ratings.Length != 0)
         {
+            var ratingByIds = ratings.ToDictionary(x => x.EntityId);
+
             parameter.Results
                 .Apply(product =>
                 {
