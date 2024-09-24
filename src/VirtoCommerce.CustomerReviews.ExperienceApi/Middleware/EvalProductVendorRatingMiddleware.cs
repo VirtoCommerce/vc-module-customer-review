@@ -70,8 +70,10 @@ public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductR
                 .Where(product => product.Vendor != null)
                 .Apply(product =>
                 {
-                    ratingByIds.TryGetValue((product.Vendor.Id, product.Vendor.Type), out var rating);
-                    product.Vendor.Rating = _mapper.Map<ExpRating>(rating);
+                    if (ratingByIds.TryGetValue((product.Vendor.Id, product.Vendor.Type), out var rating))
+                    {
+                        product.Vendor.Rating = _mapper.Map<ExpRating>(rating);
+                    }
                 });
         }
     }
