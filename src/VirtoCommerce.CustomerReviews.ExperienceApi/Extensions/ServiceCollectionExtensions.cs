@@ -1,6 +1,8 @@
 using GraphQL.Server;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.CustomerReviews.Data.Services;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 using VirtoCommerce.ProfileExperienceApiModule.Data.Aggregates.Vendor;
@@ -32,6 +34,7 @@ public static class ServiceCollectionExtensions
             builder.AddMiddleware(typeof(EvalVendorRatingMiddleware));
         });
         serviceCollection.AddTransient<CustomerReviewValidator>();
+        serviceCollection.AddTransient<ICustomerOrderProductSearchService, CustomerOrderProductSearchService>();
 
         return serviceCollection;
     }
