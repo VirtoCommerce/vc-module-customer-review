@@ -9,12 +9,14 @@ using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Models;
 using VirtoCommerce.Platform.Core.Common;
-using static VirtoCommerce.CustomerReviews.Core.Models.Search.CustomerOrderProductSearchCriteria;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 
 public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCommand>
 {
+    private const int minRatingValue = 1;
+    private const int maxRatingValue = 5;
+
     private readonly ICustomerReviewSearchService _customerReviewSearchService;
     private readonly ICustomerOrderProductSearchService _customerOrderProductSearchService;
 
@@ -54,15 +56,15 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
         NotEmptyString(nameof(command.EntityName), command.EntityName, context);
         NotEmptyString(nameof(command.Review), command.Review, context);
 
-        if (command.Rating < 1 || command.Rating > 5)
+        if (command.Rating < minRatingValue || command.Rating > maxRatingValue)
         {
-            context.AddFailure(new CustomerReviewValidationError(nameof(command.Rating), "Rating should be in the range from 1 to 5.", "OUT_OF_RANGE")
+            context.AddFailure(new CustomerReviewValidationError(nameof(command.Rating), $"Rating should be in the range from {minRatingValue} to {maxRatingValue}.", "OUT_OF_RANGE")
             {
                 FormattedMessagePlaceholderValues = new Dictionary<string, object>
                 {
                     ["rating"] = command.Rating,
-                    ["minRating"] = 1,
-                    ["maxRating"] = 5,
+                    ["minRating"] = minRatingValue,
+                    ["maxRating"] = maxRatingValue,
                 }
             });
         }

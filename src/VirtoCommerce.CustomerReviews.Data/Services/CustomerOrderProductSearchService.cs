@@ -32,9 +32,14 @@ public class CustomerOrderProductSearchService : CustomerOrderSearchService, ICu
         if (criteria is CustomerOrderProductSearchCriteria customerOrderProductSearchCriteria)
         {
             if (!string.IsNullOrEmpty(customerOrderProductSearchCriteria.ProductId))
+            {
                 query = query.Where(o => o.Items.Any(i => i.ProductId == customerOrderProductSearchCriteria.ProductId));
+            }
+
             if (!string.IsNullOrEmpty(customerOrderProductSearchCriteria.ProductType))
+            {
                 query = query.Where(o => o.Items.Any(i => i.ProductType == customerOrderProductSearchCriteria.ProductType));
+            }
         }
 
         return query;
