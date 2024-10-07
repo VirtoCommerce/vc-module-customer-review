@@ -6,7 +6,7 @@ using VirtoCommerce.CustomerReviews.ExperienceApi.Models;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
-public class CreateCustomerReviewCommandBuilder: CommandBuilder<CreateCustomerReviewCommand, CreateCustomerReviewPayload, CreateCustomerReviewCommandType, CustomerReviewType>
+public class CreateCustomerReviewCommandBuilder: CommandBuilder<CreateCustomerReviewCommand, CreateCustomerReviewPayload, CreateCustomerReviewCommandType, CreateCustomerReviewType>
 {
     protected override string Name => "createCustomerReview";
 
