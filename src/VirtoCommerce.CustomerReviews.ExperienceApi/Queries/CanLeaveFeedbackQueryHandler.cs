@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Models.Search;
 using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Xapi.Core.Infrastructure;
 
@@ -10,18 +11,18 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
 public class CanLeaveFeedbackQueryHandler : IQueryHandler<CanLeaveFeedbackQuery, bool>
 {
     private readonly ICustomerReviewSearchService _customerReviewSearchService;
-    private readonly ICustomerOrderProductSearchService _customerOrderProductSearchService;
+    private readonly ICustomerOrderSearchService _customerOrderSearchService;
 
-    public CanLeaveFeedbackQueryHandler(ICustomerReviewSearchService customerReviewSearchService, ICustomerOrderProductSearchService customerOrderProductSearchService)
+    public CanLeaveFeedbackQueryHandler(ICustomerReviewSearchService customerReviewSearchService, ICustomerOrderSearchService customerOrderSearchService)
     {
         _customerReviewSearchService = customerReviewSearchService;
-        _customerOrderProductSearchService = customerOrderProductSearchService;
+        _customerOrderSearchService = customerOrderSearchService;
     }
 
     public async Task<bool> Handle(CanLeaveFeedbackQuery request, CancellationToken cancellationToken)
     {
         var orderProductSearchCriteria = GetOrderProductSearchCriteria(request);
-        var orderSearchResult = await _customerOrderProductSearchService.SearchAsync(orderProductSearchCriteria);
+        var orderSearchResult = await _customerOrderSearchService.SearchAsync(orderProductSearchCriteria);
         var reviewSearchCriteria = GetReviewSearchCriteria(request);
         var reviewSearchResult = await _customerReviewSearchService.SearchAsync(reviewSearchCriteria);
 

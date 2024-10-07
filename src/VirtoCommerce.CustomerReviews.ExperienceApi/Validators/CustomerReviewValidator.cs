@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -8,6 +6,7 @@ using VirtoCommerce.CustomerReviews.Core.Models.Search;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Models;
+using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
@@ -18,12 +17,12 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
     private const int maxRatingValue = 5;
 
     private readonly ICustomerReviewSearchService _customerReviewSearchService;
-    private readonly ICustomerOrderProductSearchService _customerOrderProductSearchService;
+    private readonly ICustomerOrderSearchService _customerOrderSearchService;
 
-    public CustomerReviewValidator(ICustomerReviewSearchService customerReviewSearchService, ICustomerOrderProductSearchService customerOrderProductSearchService)
+    public CustomerReviewValidator(ICustomerReviewSearchService customerReviewSearchService, ICustomerOrderSearchService customerOrderSearchService)
     {
         _customerReviewSearchService = customerReviewSearchService;
-        _customerOrderProductSearchService = customerOrderProductSearchService;
+        _customerOrderSearchService = customerOrderSearchService;
 
         RuleFor(x => x).CustomAsync(Validate);
     }
@@ -31,7 +30,7 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
     private async Task Validate(CreateCustomerReviewCommand command, ValidationContext<CreateCustomerReviewCommand> context, CancellationToken token = default)
     {
         var orderProductSearchCriteria = GetOrderProductSearchCriteria(command);
-        var orderSearchResult = await _customerOrderProductSearchService.SearchAsync(orderProductSearchCriteria);
+        var orderSearchResult = await _customerOrderSearchService.SearchAsync(orderProductSearchCriteria);
 
         if (orderSearchResult.Results.Count <= 0)
         {
@@ -43,13 +42,7 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
 
         if (reviewSearchResult.Results.Count > 0)
         {
-            context.AddFailure(new CustomerReviewValidationError(nameof(CustomerReview), "User has already left a review for this product.", "DUPLICATE_REVIEW")
-            {
-                FormattedMessagePlaceholderValues = new Dictionary<string, object>
-                {
-                    ["reviewId"] = reviewSearchResult.Results.First().Id
-                }
-            });
+            context.AddFailure(new CustomerReviewValidationError(nameof(CustomerReview), "User has already left a review for this product.", "DUPLICATE_REVIEW"));
         }
 
         NotEmptyString(nameof(command.UserName), command.UserName, context);
@@ -58,15 +51,7 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
 
         if (command.Rating < minRatingValue || command.Rating > maxRatingValue)
         {
-            context.AddFailure(new CustomerReviewValidationError(nameof(command.Rating), $"Rating should be in the range from {minRatingValue} to {maxRatingValue}.", "OUT_OF_RANGE")
-            {
-                FormattedMessagePlaceholderValues = new Dictionary<string, object>
-                {
-                    ["rating"] = command.Rating,
-                    ["minRating"] = minRatingValue,
-                    ["maxRating"] = maxRatingValue,
-                }
-            });
+            context.AddFailure(new CustomerReviewValidationError(nameof(command.Rating), $"Rating should be in the range from {minRatingValue} to {maxRatingValue}.", "OUT_OF_RANGE"));
         }
     }
 

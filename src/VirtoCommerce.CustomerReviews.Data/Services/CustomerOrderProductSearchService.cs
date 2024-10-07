@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.CustomerReviews.Core.Models.Search;
-using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Model.Search;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.OrdersModule.Data.Model;
@@ -14,7 +13,7 @@ using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.CustomerReviews.Data.Services;
 
-public class CustomerOrderProductSearchService : CustomerOrderSearchService, ICustomerOrderProductSearchService
+public class CustomerOrderProductSearchService : CustomerOrderSearchService
 {
     public CustomerOrderProductSearchService(
         Func<IOrderRepository> repositoryFactory,
