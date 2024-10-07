@@ -36,8 +36,10 @@ public class CustomerReviewsQueryHandler : IQueryHandler<CustomerReviewsQuery, C
     {
         var criteria = request.GetSearchCriteria<CustomerReviewSearchCriteria>();
         criteria.StoreId = request.StoreId;
-        criteria.EntityIds = new[] { request.EntityId };
+        criteria.EntityIds = [request.EntityId];
         criteria.EntityType = request.EntityType;
+        // XAPI only operates with approved reviews
+        criteria.ReviewStatus = [CustomerReviewStatus.Approved];
 
         if (!string.IsNullOrEmpty(request.Filter))
         {
