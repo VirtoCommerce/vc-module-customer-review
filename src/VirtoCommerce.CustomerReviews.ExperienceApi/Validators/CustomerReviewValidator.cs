@@ -32,7 +32,7 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
         var orderProductSearchCriteria = GetOrderProductSearchCriteria(command);
         var orderSearchResult = await _customerOrderSearchService.SearchAsync(orderProductSearchCriteria);
 
-        if (orderSearchResult.Results.Count <= 0)
+        if (orderSearchResult.TotalCount <= 0)
         {
             context.AddFailure(new CustomerReviewValidationError(nameof(CustomerReview), "Only users who have purchased the product can leave a review.", "PRODUCT_MUST_BE_PURCHASED"));
         }
@@ -40,7 +40,7 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
         var reviewSearchCriteria = GetReviewSearchCriteria(command);
         var reviewSearchResult = await _customerReviewSearchService.SearchAsync(reviewSearchCriteria);
 
-        if (reviewSearchResult.Results.Count > 0)
+        if (reviewSearchResult.TotalCount > 0)
         {
             context.AddFailure(new CustomerReviewValidationError(nameof(CustomerReview), "User has already left a review for this product.", "DUPLICATE_REVIEW"));
         }
@@ -71,6 +71,7 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
         reviewSearchCriteria.EntityType = command.EntityType;
         reviewSearchCriteria.EntityIds = [command.EntityId];
         reviewSearchCriteria.StoreId = command.StoreId;
+        reviewSearchCriteria.Take = 0;
 
         return reviewSearchCriteria;
     }
@@ -84,6 +85,7 @@ public class CustomerReviewValidator : AbstractValidator<CreateCustomerReviewCom
         orderProductSearchCriteria.CustomerId = command.UserId;
         orderProductSearchCriteria.ProductId = command.EntityId;
         orderProductSearchCriteria.ProductType = command.EntityType;
+        orderProductSearchCriteria.Take = 0;
 
         return orderProductSearchCriteria;
     }

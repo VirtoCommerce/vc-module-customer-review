@@ -27,7 +27,7 @@ public class CanLeaveFeedbackQueryHandler : IQueryHandler<CanLeaveFeedbackQuery,
         var reviewSearchResult = await _customerReviewSearchService.SearchAsync(reviewSearchCriteria);
 
         // Users can only leave reviews if they have purchased the product and haven't yet left a review.
-        return reviewSearchResult.Results.Count <= 0 && orderSearchResult.Results.Count > 0;
+        return reviewSearchResult.TotalCount <= 0 && orderSearchResult.TotalCount > 0;
     }
 
     private CustomerReviewSearchCriteria GetReviewSearchCriteria(CanLeaveFeedbackQuery request)
@@ -38,6 +38,7 @@ public class CanLeaveFeedbackQueryHandler : IQueryHandler<CanLeaveFeedbackQuery,
         reviewSearchCriteria.EntityType = request.EntityType;
         reviewSearchCriteria.EntityIds = [request.EntityId];
         reviewSearchCriteria.StoreId = request.StoreId;
+        reviewSearchCriteria.Take = 0;
 
         return reviewSearchCriteria;
     }
@@ -51,6 +52,7 @@ public class CanLeaveFeedbackQueryHandler : IQueryHandler<CanLeaveFeedbackQuery,
         orderProductSearchCriteria.CustomerId = request.UserId;
         orderProductSearchCriteria.ProductId = request.EntityId;
         orderProductSearchCriteria.ProductType = request.EntityType;
+        orderProductSearchCriteria.Take = 0;
 
         return orderProductSearchCriteria;
     }
