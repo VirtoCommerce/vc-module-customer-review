@@ -13,7 +13,7 @@ public class CreateCustomerReviewCommandType: InputObjectGraphType<CreateCustome
         Field(x => x.EntityId);
         Field(x => x.EntityType);
         Field(x => x.EntityName);
-        Field(x => x.Title);
+        Field(x => x.Title, nullable: true);
         Field(x => x.Review);
         Field(x => x.Rating);
     }

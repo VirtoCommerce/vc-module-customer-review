@@ -1,12 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Schemas;
 using VirtoCommerce.Xapi.Core.BaseQueries;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Models;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
-public class CreateCustomerReviewCommandBuilder: CommandBuilder<CreateCustomerReviewCommand, CustomerReview, CreateCustomerReviewCommandType, CustomerReviewType>
+public class CreateCustomerReviewCommandBuilder: CommandBuilder<CreateCustomerReviewCommand, CreateReviewResult, CreateCustomerReviewCommandType, CreateReviewResultType>
 {
     protected override string Name => "createCustomerReview";
 
