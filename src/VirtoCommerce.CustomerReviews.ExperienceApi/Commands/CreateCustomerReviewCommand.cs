@@ -3,7 +3,7 @@ using VirtoCommerce.Xapi.Core.Infrastructure;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
-public class CreateCustomerReviewCommand : ICommand<CreateCustomerReviewPayload>
+public class CreateCustomerReviewCommand : ICommand<CreateReviewResult>
 {
     public string StoreId { get; set; }
 

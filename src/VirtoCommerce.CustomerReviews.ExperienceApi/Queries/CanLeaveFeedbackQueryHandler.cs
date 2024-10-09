@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using VirtoCommerce.CustomerReviews.Core.Models;
-using VirtoCommerce.CustomerReviews.Core.Models.Search;
 using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.OrdersModule.Core.Model.Search;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Xapi.Core.Infrastructure;
@@ -21,6 +21,9 @@ public class CanLeaveFeedbackQueryHandler : IQueryHandler<CanLeaveFeedbackQuery,
 
     public async Task<bool> Handle(CanLeaveFeedbackQuery request, CancellationToken cancellationToken)
     {
+        if (request.EntityType != "Product")
+            return false;
+
         var orderProductSearchCriteria = GetOrderProductSearchCriteria(request);
         var orderSearchResult = await _customerOrderSearchService.SearchAsync(orderProductSearchCriteria);
         var reviewSearchCriteria = GetReviewSearchCriteria(request);
@@ -43,15 +46,14 @@ public class CanLeaveFeedbackQueryHandler : IQueryHandler<CanLeaveFeedbackQuery,
         return reviewSearchCriteria;
     }
 
-    private CustomerOrderProductSearchCriteria GetOrderProductSearchCriteria(CanLeaveFeedbackQuery request)
+    private CustomerOrderSearchCriteria GetOrderProductSearchCriteria(CanLeaveFeedbackQuery request)
     {
-        var orderProductSearchCriteria = AbstractTypeFactory<CustomerOrderProductSearchCriteria>.TryCreateInstance();
+        var orderProductSearchCriteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
 
         orderProductSearchCriteria.Status = "Completed";
         orderProductSearchCriteria.StoreIds = [request.StoreId];
         orderProductSearchCriteria.CustomerId = request.UserId;
         orderProductSearchCriteria.ProductId = request.EntityId;
-        orderProductSearchCriteria.ProductType = request.EntityType;
         orderProductSearchCriteria.Take = 0;
 
         return orderProductSearchCriteria;

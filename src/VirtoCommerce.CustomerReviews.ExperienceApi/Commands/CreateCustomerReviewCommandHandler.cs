@@ -11,30 +11,30 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
-public class CreateCustomerReviewCommandHandler : IRequestHandler<CreateCustomerReviewCommand, CreateCustomerReviewPayload>
+public class CreateCustomerReviewCommandHandler : IRequestHandler<CreateCustomerReviewCommand, CreateReviewResult>
 {
     private readonly ICustomerReviewService _customerReviewService;
     private readonly IMapper _mapper;
-    private readonly CustomerReviewValidator _customerReviewValidator;
+    private readonly ReviewValidator _reviewValidator;
 
-    public CreateCustomerReviewCommandHandler(ICustomerReviewService customerReviewService, IMapper mapper, CustomerReviewValidator customerReviewValidator)
+    public CreateCustomerReviewCommandHandler(ICustomerReviewService customerReviewService, IMapper mapper, ReviewValidator reviewValidator)
     {
         _customerReviewService = customerReviewService;
         _mapper = mapper;
-        _customerReviewValidator = customerReviewValidator;
+        _reviewValidator = reviewValidator;
     }
 
-    public async Task<CreateCustomerReviewPayload> Handle(CreateCustomerReviewCommand request, CancellationToken cancellationToken)
+    public async Task<CreateReviewResult> Handle(CreateCustomerReviewCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await _customerReviewValidator.ValidateAsync(request);
+        var validationResult = await _reviewValidator.ValidateAsync(request);
         var customerReview = _mapper.Map<CustomerReview>(request);
-        var response = AbstractTypeFactory<CreateCustomerReviewPayload>.TryCreateInstance();
+        var response = AbstractTypeFactory<CreateReviewResult>.TryCreateInstance();
 
-        response.CustomerReview = customerReview;
+        response.Review = customerReview;
 
         if (!validationResult.IsValid)
         {
-            response.ValidationErrors.AddRange(validationResult.Errors.OfType<CustomerReviewValidationError>());
+            response.ValidationErrors.AddRange(validationResult.Errors.OfType<ReviewValidationError>());
         }
         else
         {
