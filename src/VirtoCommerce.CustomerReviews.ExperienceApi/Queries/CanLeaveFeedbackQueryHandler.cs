@@ -22,7 +22,9 @@ public class CanLeaveFeedbackQueryHandler : IQueryHandler<CanLeaveFeedbackQuery,
     public async Task<bool> Handle(CanLeaveFeedbackQuery request, CancellationToken cancellationToken)
     {
         if (request.EntityType != "Product")
+        {
             return false;
+        }
 
         var orderProductSearchCriteria = GetOrderProductSearchCriteria(request);
         var orderSearchResult = await _customerOrderSearchService.SearchAsync(orderProductSearchCriteria);
