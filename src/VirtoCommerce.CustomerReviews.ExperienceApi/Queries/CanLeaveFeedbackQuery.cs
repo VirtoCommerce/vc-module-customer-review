@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using GraphQL;
 using GraphQL.Types;
 using VirtoCommerce.Xapi.Core.BaseQueries;
+using VirtoCommerce.Xapi.Core.Extensions;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
 
@@ -20,7 +21,6 @@ public class CanLeaveFeedbackQuery : Query<bool>
         yield return Argument<NonNullGraphType<StringGraphType>>(nameof(StoreId));
         yield return Argument<NonNullGraphType<StringGraphType>>(nameof(EntityId));
         yield return Argument<NonNullGraphType<StringGraphType>>(nameof(EntityType));
-        yield return Argument<NonNullGraphType<StringGraphType>>(nameof(UserId));
     }
 
     public override void Map(IResolveFieldContext context)
@@ -28,6 +28,6 @@ public class CanLeaveFeedbackQuery : Query<bool>
         StoreId = context.GetArgument<string>(nameof(StoreId));
         EntityId = context.GetArgument<string>(nameof(EntityId));
         EntityType = context.GetArgument<string>(nameof(EntityType));
-        UserId = context.GetArgument<string>(nameof(UserId));
+        UserId = context.GetCurrentUserId();
     }
 }

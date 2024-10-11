@@ -3,7 +3,7 @@ using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Schemas;
 
-public class CreateCustomerReviewCommandType: InputObjectGraphType<CreateCustomerReviewCommand>
+public class CreateCustomerReviewCommandType : InputObjectGraphType<CreateCustomerReviewCommand>
 {
     public CreateCustomerReviewCommandType()
     {

@@ -4,10 +4,10 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Models;
 
 public class ReviewValidationError : ValidationFailure
 {
-    public ReviewValidationError(string type, string error, string errorCode = null)
-        : base(type, error)
+    public ReviewValidationError(string propertyName, string errorMessage, string errorCode)
+        : base(propertyName, errorMessage)
     {
-        ErrorMessage = error;
+        ErrorMessage = errorMessage;
         ErrorCode = errorCode;
     }
 }

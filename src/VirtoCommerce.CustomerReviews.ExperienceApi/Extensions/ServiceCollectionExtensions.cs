@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddMediatR(assemblyMarker);
         serviceCollection.AddAutoMapper(assemblyMarker);
         serviceCollection.AddSchemaBuilders(assemblyMarker);
+
         serviceCollection.AddPipeline<SearchProductResponse>(builder =>
         {
             builder.AddMiddleware(typeof(EvalProductRatingMiddleware));
@@ -31,6 +32,7 @@ public static class ServiceCollectionExtensions
         {
             builder.AddMiddleware(typeof(EvalVendorRatingMiddleware));
         });
+
         serviceCollection.AddTransient<ReviewValidator>();
 
         return serviceCollection;

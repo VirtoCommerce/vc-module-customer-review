@@ -26,11 +26,10 @@ public class CreateCustomerReviewCommandHandler : IRequestHandler<CreateCustomer
 
     public async Task<CreateReviewResult> Handle(CreateCustomerReviewCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await _reviewValidator.ValidateAsync(request);
-        var customerReview = _mapper.Map<CustomerReview>(request);
         var response = AbstractTypeFactory<CreateReviewResult>.TryCreateInstance();
+        response.Review = _mapper.Map<CustomerReview>(request);
 
-        response.Review = customerReview;
+        var validationResult = await _reviewValidator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -38,7 +37,7 @@ public class CreateCustomerReviewCommandHandler : IRequestHandler<CreateCustomer
         }
         else
         {
-            await _customerReviewService.SaveChangesAsync([customerReview]);
+            await _customerReviewService.SaveChangesAsync([response.Review]);
         }
 
         return response;

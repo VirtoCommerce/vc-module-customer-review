@@ -1,63 +1,69 @@
 using System.Threading;
 using System.Threading.Tasks;
+using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Model.Search;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Xapi.Core.Infrastructure;
+using static VirtoCommerce.OrdersModule.Core.ModuleConstants;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
+
 public class CanLeaveFeedbackQueryHandler : IQueryHandler<CanLeaveFeedbackQuery, bool>
 {
-    private readonly ICustomerReviewSearchService _customerReviewSearchService;
-    private readonly ICustomerOrderSearchService _customerOrderSearchService;
+    private readonly ICustomerReviewSearchService _reviewSearchService;
+    private readonly ICustomerOrderSearchService _orderSearchService;
 
-    public CanLeaveFeedbackQueryHandler(ICustomerReviewSearchService customerReviewSearchService, ICustomerOrderSearchService customerOrderSearchService)
+    public CanLeaveFeedbackQueryHandler(
+        ICustomerReviewSearchService reviewSearchService,
+        ICustomerOrderSearchService orderSearchService)
     {
-        _customerReviewSearchService = customerReviewSearchService;
-        _customerOrderSearchService = customerOrderSearchService;
+        _reviewSearchService = reviewSearchService;
+        _orderSearchService = orderSearchService;
     }
 
     public async Task<bool> Handle(CanLeaveFeedbackQuery request, CancellationToken cancellationToken)
     {
-        if (request.EntityType != "Product")
-        {
-            return false;
-        }
-
-        var orderProductSearchCriteria = GetOrderProductSearchCriteria(request);
-        var orderSearchResult = await _customerOrderSearchService.SearchAsync(orderProductSearchCriteria);
-        var reviewSearchCriteria = GetReviewSearchCriteria(request);
-        var reviewSearchResult = await _customerReviewSearchService.SearchAsync(reviewSearchCriteria);
-
         // Users can only leave reviews if they have purchased the product and haven't yet left a review.
-        return reviewSearchResult.TotalCount <= 0 && orderSearchResult.TotalCount > 0;
+        return IsProductReview(request) &&
+               !await ReviewExists(request) &&
+               await OrderExists(request);
     }
 
-    private CustomerReviewSearchCriteria GetReviewSearchCriteria(CanLeaveFeedbackQuery request)
+    private static bool IsProductReview(CanLeaveFeedbackQuery request)
     {
-        var reviewSearchCriteria = AbstractTypeFactory<CustomerReviewSearchCriteria>.TryCreateInstance();
-
-        reviewSearchCriteria.UserId = request.UserId;
-        reviewSearchCriteria.EntityType = request.EntityType;
-        reviewSearchCriteria.EntityIds = [request.EntityId];
-        reviewSearchCriteria.StoreId = request.StoreId;
-        reviewSearchCriteria.Take = 0;
-
-        return reviewSearchCriteria;
+        return request.EntityType == ReviewEntityTypes.Product;
     }
 
-    private CustomerOrderSearchCriteria GetOrderProductSearchCriteria(CanLeaveFeedbackQuery request)
+    private async Task<bool> ReviewExists(CanLeaveFeedbackQuery request)
     {
-        var orderProductSearchCriteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
+        var criteria = AbstractTypeFactory<CustomerReviewSearchCriteria>.TryCreateInstance();
 
-        orderProductSearchCriteria.Status = "Completed";
-        orderProductSearchCriteria.StoreIds = [request.StoreId];
-        orderProductSearchCriteria.CustomerId = request.UserId;
-        orderProductSearchCriteria.ProductId = request.EntityId;
-        orderProductSearchCriteria.Take = 0;
+        criteria.UserId = request.UserId;
+        criteria.EntityType = request.EntityType;
+        criteria.EntityIds = [request.EntityId];
+        criteria.StoreId = request.StoreId;
+        criteria.Take = 0;
 
-        return orderProductSearchCriteria;
+        var searchResult = await _reviewSearchService.SearchAsync(criteria);
+
+        return searchResult.TotalCount > 0;
+    }
+
+    private async Task<bool> OrderExists(CanLeaveFeedbackQuery request)
+    {
+        var criteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
+
+        criteria.Status = CustomerOrderStatus.Completed;
+        criteria.StoreIds = [request.StoreId];
+        criteria.CustomerId = request.UserId;
+        criteria.ProductId = request.EntityId;
+        criteria.Take = 0;
+
+        var orderSearchResult = await _orderSearchService.SearchAsync(criteria);
+
+        return orderSearchResult.TotalCount > 0;
     }
 }

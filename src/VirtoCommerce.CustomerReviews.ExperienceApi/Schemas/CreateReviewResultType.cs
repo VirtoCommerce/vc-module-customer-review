@@ -23,6 +23,7 @@ public class CreateReviewResultType : ExtendableGraphType<CreateReviewResult>
         Field(x => x.Review.Review);
         Field(x => x.Review.Rating);
         Field<CustomerReviewStatusType>("reviewStatus", resolve: context => context.Source.Review.ReviewStatus);
+
         Field<NonNullGraphType<ListGraphType<NonNullGraphType<ReviewValidationErrorType>>>>("validationErrors",
             "A set of errors in case the review is invalid",
             resolve: context => context.Source.ValidationErrors);
