@@ -43,8 +43,8 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
                 case CreateCustomerReviewCommand command:
                     result = isAuthenticated && command.UserId == currentUserId && await IsStoreAvailable(command.StoreId, currentUserId);
                     break;
-                case CustomerReviewsQuery query:
-                    result = await IsStoreAvailable(query.StoreId, currentUserId);
+                case CustomerReviewsQuery:
+                    result = true;
                     break;
                 case CreateReviewCommand command:
                     result = isAuthenticated && await IsStoreAvailable(command.StoreId, currentUserId);
