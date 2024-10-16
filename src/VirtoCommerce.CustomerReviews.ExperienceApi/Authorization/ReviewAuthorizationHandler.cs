@@ -14,18 +14,22 @@ using static VirtoCommerce.Xapi.Core.ModuleConstants;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Authorization;
 
-public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerReviewAuthorizationRequirement>
+public class ReviewAuthorizationRequirement : IAuthorizationRequirement
+{
+}
+
+public class ReviewAuthorizationHandler : AuthorizationHandler<ReviewAuthorizationRequirement>
 {
     private readonly Func<UserManager<ApplicationUser>> _userManagerFactory;
     private readonly IStoreService _storeService;
 
-    public CustomerReviewAuthorizationHandler(Func<UserManager<ApplicationUser>> userManagerFactory, IStoreService storeService)
+    public ReviewAuthorizationHandler(Func<UserManager<ApplicationUser>> userManagerFactory, IStoreService storeService)
     {
         _userManagerFactory = userManagerFactory;
         _storeService = storeService;
     }
 
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerReviewAuthorizationRequirement requirement)
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ReviewAuthorizationRequirement requirement)
     {
         var result = context.User.IsInRole(PlatformConstants.Security.SystemRoles.Administrator);
 
@@ -36,14 +40,16 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
             switch (context.Resource)
             {
                 case CreateCustomerReviewCommand command:
-                    var userManager = _userManagerFactory();
-                    var currentUser = await userManager.FindByIdAsync(currentUserId);
-                    var store = await _storeService.GetNoCloneAsync(command.StoreId);
-                    var allowedStoreIds = new List<string>(store.TrustedGroups) { store.Id };
-                    result = allowedStoreIds.Contains(currentUser.StoreId) && command.UserId == currentUserId;
+                    result = context.User.Identity.IsAuthenticated && command.UserId == currentUserId && await IsStoreAvailable(currentUserId, command.StoreId);
                     break;
                 case CustomerReviewsQuery:
                     result = true;
+                    break;
+                case CreateReviewCommand createCommand:
+                    result = context.User.Identity.IsAuthenticated && await IsStoreAvailable(currentUserId, createCommand.StoreId);
+                    break;
+                case CanLeaveFeedbackQuery query:
+                    result = context.User.Identity.IsAuthenticated && await IsStoreAvailable(currentUserId, query.StoreId);
                     break;
             }
         }
@@ -64,5 +70,19 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
             context.User.FindFirstValue(ClaimTypes.NameIdentifier) ??
             context.User.FindFirstValue("name") ??
             AnonymousUser.UserName;
+    }
+
+    private async Task<bool> IsStoreAvailable(string userId, string storeId)
+    {
+        var store = await _storeService.GetNoCloneAsync(storeId);
+
+        if (store == null)
+            return false;
+
+        var allowedStoreIds = new List<string>(store.TrustedGroups) { store.Id };
+        var userManager = _userManagerFactory();
+        var currentUser = await userManager.FindByIdAsync(userId);
+
+        return allowedStoreIds.Contains(currentUser?.StoreId);
     }
 }

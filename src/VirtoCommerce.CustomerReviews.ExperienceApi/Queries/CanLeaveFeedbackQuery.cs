@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using GraphQL;
 using GraphQL.Types;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 using VirtoCommerce.Xapi.Core.BaseQueries;
 using VirtoCommerce.Xapi.Core.Extensions;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
 
-public class CanLeaveFeedbackQuery : Query<bool>
+public class CanLeaveFeedbackQuery : Query<bool>, ICreationValidation
 {
     public string StoreId { get; set; }
 

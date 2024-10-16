@@ -9,8 +9,10 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
     public class CustomerReviewEntity : AuditableEntity, IDataEntity<CustomerReviewEntity, CustomerReview>
     {
         public string Title { get; set; }
+
         [Required]
         public string Review { get; set; }
+
         [Required]
         public int Rating { get; set; }
 
@@ -28,10 +30,10 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
         [StringLength(128)]
         public string EntityType { get; set; }
 
-        [Required]
         [StringLength(1024)]
         public string EntityName { get; set; }
 
+        [Required]
         [StringLength(128)]
         public string StoreId { get; set; }
 

@@ -1,6 +1,8 @@
 using GraphQL.Server;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Authorization;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 using VirtoCommerce.ProfileExperienceApiModule.Data.Aggregates.Vendor;
@@ -21,6 +23,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddMediatR(assemblyMarker);
         serviceCollection.AddAutoMapper(assemblyMarker);
         serviceCollection.AddSchemaBuilders(assemblyMarker);
+        serviceCollection.AddSingleton<IAuthorizationHandler, ReviewAuthorizationHandler>();
 
         serviceCollection.AddPipeline<SearchProductResponse>(builder =>
         {

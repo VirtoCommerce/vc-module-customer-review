@@ -29,5 +29,6 @@ public class RatingProfile : Profile
         });
 
         CreateMap<CreateCustomerReviewCommand, CustomerReview>();
+        CreateMap<CreateReviewCommand, CustomerReview>();
     }
 }

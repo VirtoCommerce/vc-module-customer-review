@@ -13,7 +13,7 @@ using static VirtoCommerce.OrdersModule.Core.ModuleConstants;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 
-public class ReviewValidator : AbstractValidator<CreateCustomerReviewCommand>
+public class ReviewValidator : AbstractValidator<CreateReviewCommand>
 {
     private const int _minRatingValue = 1;
     private const int _maxRatingValue = 5;
@@ -30,14 +30,14 @@ public class ReviewValidator : AbstractValidator<CreateCustomerReviewCommand>
     }
 
     private async Task Validate(
-        CreateCustomerReviewCommand command,
-        ValidationContext<CreateCustomerReviewCommand> context,
+        CreateReviewCommand command,
+        ValidationContext<CreateReviewCommand> context,
         CancellationToken token = default)
     {
         if (!IsProductReview(command))
         {
             context.AddFailure(new ReviewValidationError(nameof(command.EntityType),
-                $"Reviews can only be left for products (EntityType={ReviewEntityTypes.Product}).", "WRONG_VALUE"));
+                $"Reviews can only be left for products (EntityType={ReviewEntityTypes.Product}).", "INVALID_ENTITY_TYPE"));
         }
 
         if (!await OrderExists(command))
@@ -52,31 +52,25 @@ public class ReviewValidator : AbstractValidator<CreateCustomerReviewCommand>
                 "User has already left a review for this product.", "DUPLICATE_REVIEW"));
         }
 
-        NotEmptyString(nameof(command.UserName), command.UserName, context);
-        NotEmptyString(nameof(command.EntityName), command.EntityName, context);
-        NotEmptyString(nameof(command.Review), command.Review, context);
+        if (string.IsNullOrEmpty(command.Review) || string.IsNullOrWhiteSpace(command.Review))
+        {
+            context.AddFailure(new ReviewValidationError(nameof(command.Rating),
+                $"Property '{nameof(command.Review)}' must be filled in.", "REVIEW_IS_EMPTY"));
+        }
 
         if (command.Rating < _minRatingValue || command.Rating > _maxRatingValue)
         {
             context.AddFailure(new ReviewValidationError(nameof(command.Rating),
-                $"Rating should be in the range from {_minRatingValue} to {_maxRatingValue}.", "OUT_OF_RANGE"));
+                $"Rating should be in the range from {_minRatingValue} to {_maxRatingValue}.", "INVALID_RATING"));
         }
     }
 
-    private static void NotEmptyString(string propertyName, string value, ValidationContext<CreateCustomerReviewCommand> context)
-    {
-        if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
-        {
-            context.AddFailure(new ReviewValidationError(propertyName, $"Property '{propertyName}' must be filled in.", "EMPTY_FIELD"));
-        }
-    }
-
-    private static bool IsProductReview(CreateCustomerReviewCommand command)
+    public bool IsProductReview(ICreationValidation command)
     {
         return command.EntityType == ReviewEntityTypes.Product;
     }
 
-    private async Task<bool> ReviewExists(CreateCustomerReviewCommand command)
+    public async Task<bool> ReviewExists(ICreationValidation command)
     {
         var criteria = AbstractTypeFactory<CustomerReviewSearchCriteria>.TryCreateInstance();
 
@@ -91,7 +85,7 @@ public class ReviewValidator : AbstractValidator<CreateCustomerReviewCommand>
         return searchResult.TotalCount > 0;
     }
 
-    private async Task<bool> OrderExists(CreateCustomerReviewCommand command)
+    public async Task<bool> OrderExists(ICreationValidation command)
     {
         var criteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
 
