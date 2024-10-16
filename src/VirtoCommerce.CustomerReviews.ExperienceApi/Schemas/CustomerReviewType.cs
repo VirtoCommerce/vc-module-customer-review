@@ -3,7 +3,7 @@ using VirtoCommerce.Xapi.Core.Schemas;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Schemas;
 
-public class CustomerReviewType: ExtendableGraphType<CustomerReview>
+public class CustomerReviewType : ExtendableGraphType<CustomerReview>
 {
     public CustomerReviewType()
     {
@@ -18,9 +18,9 @@ public class CustomerReviewType: ExtendableGraphType<CustomerReview>
         Field(x => x.EntityId);
         Field(x => x.EntityType);
         Field(x => x.EntityName);
-        Field(x => x.Title);
+        Field(x => x.Title, nullable: true);
         Field(x => x.Review);
         Field(x => x.Rating);
         Field<CustomerReviewStatusType>("reviewStatus", resolve: context => context.Source.ReviewStatus);
-}
+    }
 }

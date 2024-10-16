@@ -6,7 +6,7 @@ using VirtoCommerce.Xapi.Core.BaseQueries;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
 
-public class CustomerReviewQueryBuilder: SearchQueryBuilder<CustomerReviewsQuery, CustomerReviewSearchResult, CustomerReview, CustomerReviewType>
+public class CustomerReviewQueryBuilder : SearchQueryBuilder<CustomerReviewsQuery, CustomerReviewSearchResult, CustomerReview, CustomerReviewType>
 {
     protected override string Name => "customerReviews";
 
