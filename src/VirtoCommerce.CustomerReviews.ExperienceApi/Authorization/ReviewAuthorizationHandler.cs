@@ -77,7 +77,9 @@ public class ReviewAuthorizationHandler : AuthorizationHandler<ReviewAuthorizati
         var store = await _storeService.GetNoCloneAsync(storeId);
 
         if (store == null)
+        {
             return false;
+        }
 
         var allowedStoreIds = new List<string>(store.TrustedGroups) { store.Id };
         var userManager = _userManagerFactory();
