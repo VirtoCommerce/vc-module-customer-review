@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -40,16 +41,16 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
             switch (context.Resource)
             {
                 case CreateCustomerReviewCommand command:
-                    result = isAuthenticated && command.UserId == currentUserId && await IsStoreAvailable(currentUserId, command.StoreId);
+                    result = isAuthenticated && command.UserId == currentUserId && await IsStoreAvailable(command.StoreId, currentUserId);
                     break;
                 case CustomerReviewsQuery:
                     result = true;
                     break;
                 case CreateReviewCommand command:
-                    result = isAuthenticated && await IsStoreAvailable(currentUserId, command.StoreId);
+                    result = isAuthenticated && await IsStoreAvailable(command.StoreId, currentUserId);
                     break;
                 case CanLeaveFeedbackQuery query:
-                    result = isAuthenticated && await IsStoreAvailable(currentUserId, query.StoreId);
+                    result = isAuthenticated && await IsStoreAvailable(query.StoreId, currentUserId);
                     break;
             }
         }
@@ -72,7 +73,7 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
             AnonymousUser.UserName;
     }
 
-    private async Task<bool> IsStoreAvailable(string userId, string storeId)
+    private async Task<bool> IsStoreAvailable(string storeId, string userId)
     {
         var store = await _storeService.GetNoCloneAsync(storeId);
 
@@ -89,6 +90,7 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
             return false;
         }
 
-        return user.StoreId == store.Id || store.TrustedGroups?.Contains(user.StoreId) == true;
+        return store.Id.EqualsIgnoreCase(user.StoreId) ||
+               store.TrustedGroups?.Any(x => x.EqualsIgnoreCase(user.StoreId)) == true;
     }
 }
