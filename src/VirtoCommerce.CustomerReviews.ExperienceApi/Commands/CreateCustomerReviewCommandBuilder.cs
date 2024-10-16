@@ -21,6 +21,6 @@ public class CreateCustomerReviewCommandBuilder : CommandBuilder<CreateCustomerR
     protected override async Task BeforeMediatorSend(IResolveFieldContext<object> context, CreateCustomerReviewCommand request)
     {
         await base.BeforeMediatorSend(context, request);
-        await Authorize(context, request, new ReviewAuthorizationRequirement());
+        await Authorize(context, request, new CustomerReviewAuthorizationRequirement());
     }
 }

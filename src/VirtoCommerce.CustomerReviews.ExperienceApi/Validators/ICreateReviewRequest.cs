@@ -1,6 +1,6 @@
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 
-public interface ICreationValidation
+public interface ICreateReviewRequest
 {
     string StoreId { get; set; }
 

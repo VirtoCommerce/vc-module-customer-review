@@ -52,9 +52,12 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
             var review = _mapper.Map<CustomerReview>(request);
             var userManager = _userManagerFactory();
             var currentUser = await userManager.FindByIdAsync(request.UserId);
-            var customer = await _memberService.GetByIdAsync(currentUser.MemberId) as Contact;
 
-            review.UserName = customer?.FullName ?? currentUser.UserName;
+            if (!string.IsNullOrEmpty(currentUser?.MemberId))
+            {
+                var contact = await _memberService.GetByIdAsync(currentUser.MemberId) as Contact;
+                review.UserName = contact?.FullName ?? currentUser.UserName;
+            }
 
             await _reviewService.SaveChangesAsync([review]);
 

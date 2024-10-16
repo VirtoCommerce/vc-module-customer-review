@@ -20,6 +20,6 @@ public class CanLeaveFeedbackQueryBuilder : QueryBuilder<CanLeaveFeedbackQuery, 
     protected override async Task BeforeMediatorSend(IResolveFieldContext<object> context, CanLeaveFeedbackQuery request)
     {
         await base.BeforeMediatorSend(context, request);
-        await Authorize(context, request, new ReviewAuthorizationRequirement());
+        await Authorize(context, request, new CustomerReviewAuthorizationRequirement());
     }
 }

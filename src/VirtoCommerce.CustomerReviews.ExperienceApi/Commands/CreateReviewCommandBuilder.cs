@@ -24,6 +24,6 @@ public class CreateReviewCommandBuilder : CommandBuilder<CreateReviewCommand, Cr
         request.UserId = context.GetCurrentUserId();
 
         await base.BeforeMediatorSend(context, request);
-        await Authorize(context, request, new ReviewAuthorizationRequirement());
+        await Authorize(context, request, new CustomerReviewAuthorizationRequirement());
     }
 }

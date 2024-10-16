@@ -23,7 +23,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddMediatR(assemblyMarker);
         serviceCollection.AddAutoMapper(assemblyMarker);
         serviceCollection.AddSchemaBuilders(assemblyMarker);
-        serviceCollection.AddSingleton<IAuthorizationHandler, ReviewAuthorizationHandler>();
 
         serviceCollection.AddPipeline<SearchProductResponse>(builder =>
         {
@@ -37,6 +36,7 @@ public static class ServiceCollectionExtensions
         });
 
         serviceCollection.AddTransient<ReviewValidator>();
+        serviceCollection.AddSingleton<IAuthorizationHandler, CustomerReviewAuthorizationHandler>();
 
         return serviceCollection;
     }

@@ -65,19 +65,19 @@ public class ReviewValidator : AbstractValidator<CreateReviewCommand>
         }
     }
 
-    public bool IsProductReview(ICreationValidation command)
+    public bool IsProductReview(ICreateReviewRequest request)
     {
-        return command.EntityType == ReviewEntityTypes.Product;
+        return request.EntityType == ReviewEntityTypes.Product;
     }
 
-    public async Task<bool> ReviewExists(ICreationValidation command)
+    public async Task<bool> ReviewExists(ICreateReviewRequest request)
     {
         var criteria = AbstractTypeFactory<CustomerReviewSearchCriteria>.TryCreateInstance();
 
-        criteria.UserId = command.UserId;
-        criteria.EntityType = command.EntityType;
-        criteria.EntityIds = [command.EntityId];
-        criteria.StoreId = command.StoreId;
+        criteria.UserId = request.UserId;
+        criteria.EntityType = request.EntityType;
+        criteria.EntityIds = [request.EntityId];
+        criteria.StoreId = request.StoreId;
         criteria.Take = 0;
 
         var searchResult = await _reviewSearchService.SearchAsync(criteria);
@@ -85,14 +85,14 @@ public class ReviewValidator : AbstractValidator<CreateReviewCommand>
         return searchResult.TotalCount > 0;
     }
 
-    public async Task<bool> OrderExists(ICreationValidation command)
+    public async Task<bool> OrderExists(ICreateReviewRequest request)
     {
         var criteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
 
         criteria.Status = CustomerOrderStatus.Completed;
-        criteria.StoreIds = [command.StoreId];
-        criteria.CustomerId = command.UserId;
-        criteria.ProductId = command.EntityId;
+        criteria.StoreIds = [request.StoreId];
+        criteria.CustomerId = request.UserId;
+        criteria.ProductId = request.EntityId;
         criteria.Take = 0;
 
         var orderSearchResult = await _orderSearchService.SearchAsync(criteria);

@@ -4,15 +4,15 @@ using VirtoCommerce.Xapi.Core.Infrastructure;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
-public class CreateReviewCommand : ICommand<CreateReviewResult>, ICreationValidation
+public class CreateReviewCommand : ICommand<CreateReviewResult>, ICreateReviewRequest
 {
     public string StoreId { get; set; }
-
-    public string UserId { get; set; }
 
     public string EntityId { get; set; }
 
     public string EntityType { get; set; }
+
+    public string UserId { get; set; }
 
     public string Review { get; set; }
 

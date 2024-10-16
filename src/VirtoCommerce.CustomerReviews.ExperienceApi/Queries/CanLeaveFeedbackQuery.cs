@@ -7,7 +7,7 @@ using VirtoCommerce.Xapi.Core.Extensions;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
 
-public class CanLeaveFeedbackQuery : Query<bool>, ICreationValidation
+public class CanLeaveFeedbackQuery : Query<bool>, ICreateReviewRequest
 {
     public string StoreId { get; set; }
 
