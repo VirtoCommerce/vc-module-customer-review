@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +13,10 @@ using VirtoCommerce.StoreModule.Core.Services;
 using static VirtoCommerce.Xapi.Core.ModuleConstants;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Authorization;
+
+public class CustomerReviewAuthorizationRequirement : IAuthorizationRequirement
+{
+}
 
 public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerReviewAuthorizationRequirement>
 {
@@ -31,19 +35,22 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
 
         if (!result)
         {
+            var isAuthenticated = context.User.Identity?.IsAuthenticated ?? false;
             var currentUserId = GetUserId(context);
 
             switch (context.Resource)
             {
                 case CreateCustomerReviewCommand command:
-                    var userManager = _userManagerFactory();
-                    var currentUser = await userManager.FindByIdAsync(currentUserId);
-                    var store = await _storeService.GetNoCloneAsync(command.StoreId);
-                    var allowedStoreIds = new List<string>(store.TrustedGroups) { store.Id };
-                    result = allowedStoreIds.Contains(currentUser.StoreId) && command.UserId == currentUserId;
+                    result = isAuthenticated && command.UserId == currentUserId && await IsStoreAvailable(command.StoreId, currentUserId);
                     break;
                 case CustomerReviewsQuery:
                     result = true;
+                    break;
+                case CreateReviewCommand command:
+                    result = isAuthenticated && await IsStoreAvailable(command.StoreId, currentUserId);
+                    break;
+                case CanLeaveFeedbackQuery query:
+                    result = isAuthenticated && await IsStoreAvailable(query.StoreId, currentUserId);
                     break;
             }
         }
@@ -64,5 +71,26 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
             context.User.FindFirstValue(ClaimTypes.NameIdentifier) ??
             context.User.FindFirstValue("name") ??
             AnonymousUser.UserName;
+    }
+
+    private async Task<bool> IsStoreAvailable(string storeId, string userId)
+    {
+        var store = await _storeService.GetNoCloneAsync(storeId);
+
+        if (store == null)
+        {
+            return false;
+        }
+
+        var userManager = _userManagerFactory();
+        var user = await userManager.FindByIdAsync(userId);
+
+        if (string.IsNullOrEmpty(user?.StoreId))
+        {
+            return false;
+        }
+
+        return store.Id.EqualsIgnoreCase(user.StoreId) ||
+               store.TrustedGroups?.Any(x => x.EqualsIgnoreCase(user.StoreId)) == true;
     }
 }
