@@ -9,7 +9,7 @@
     <dependency id="VirtoCommerce.Catalog" version="3.822.0" />
     <dependency id="VirtoCommerce.Customer" version="3.817.0" />
     <dependency id="VirtoCommerce.Notifications" version="3.809.0" />
-    <dependency id="VirtoCommerce.Orders" version="3.831.0" />
+    <dependency id="VirtoCommerce.Orders" version="3.832.0" />
     <dependency id="VirtoCommerce.ProfileExperienceApiModule" version="3.817.0" />
     <dependency id="VirtoCommerce.Store" version="3.809.0" />
     <dependency id="VirtoCommerce.Xapi" version="3.809.0" />
