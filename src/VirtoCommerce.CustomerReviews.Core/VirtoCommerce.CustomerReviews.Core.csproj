@@ -17,6 +17,6 @@
     <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.817.0" />
     <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.809.0" />
     <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.832.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.853.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.861.0-alpha.12998-vcst-2048" />
   </ItemGroup>
 </Project>
