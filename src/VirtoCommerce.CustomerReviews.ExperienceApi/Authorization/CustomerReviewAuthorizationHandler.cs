@@ -35,7 +35,7 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
         if (!result)
         {
             var isAuthenticated = context.User.Identity?.IsAuthenticated ?? false;
-            var currentUserId = GetCurrentUserId(context);
+            var currentUserId = GetUserId(context);
 
             switch (context.Resource)
             {
@@ -64,7 +64,7 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
         }
     }
 
-    private static string GetCurrentUserId(AuthorizationHandlerContext context)
+    private static string GetUserId(AuthorizationHandlerContext context)
     {
         return context.User.GetUserId() ?? AnonymousUser.UserName;
     }
