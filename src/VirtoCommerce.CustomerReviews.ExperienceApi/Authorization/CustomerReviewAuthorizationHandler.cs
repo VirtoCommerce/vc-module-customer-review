@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -67,10 +66,7 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
 
     private static string GetUserId(AuthorizationHandlerContext context)
     {
-        return
-            context.User.FindFirstValue(ClaimTypes.NameIdentifier) ??
-            context.User.FindFirstValue("name") ??
-            AnonymousUser.UserName;
+        return context.User.GetUserId() ?? AnonymousUser.UserName;
     }
 
     private async Task<bool> IsStoreAvailable(string storeId, string userId)
