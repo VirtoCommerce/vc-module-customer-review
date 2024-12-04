@@ -24,6 +24,8 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddAutoMapper(assemblyMarker);
         serviceCollection.AddSchemaBuilders(assemblyMarker);
 
+        serviceCollection.AddSingleton<ScopedSchemaFactory<AssemblyMarker>>();
+
         serviceCollection.AddPipeline<SearchProductResponse>(builder =>
         {
             builder.AddMiddleware(typeof(EvalProductRatingMiddleware));
