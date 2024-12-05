@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Events;
 using VirtoCommerce.CustomerReviews.Core.Notifications;
@@ -15,6 +16,7 @@ using VirtoCommerce.CustomerReviews.Data.PostgreSql;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.CustomerReviews.Data.Services;
 using VirtoCommerce.CustomerReviews.Data.SqlServer;
+using VirtoCommerce.CustomerReviews.ExperienceApi;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Events;
@@ -26,6 +28,9 @@ using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.StoreModule.Core.Model;
+using VirtoCommerce.Xapi.Core.Extensions;
+using VirtoCommerce.Xapi.Core.Infrastructure;
+using VirtoCommerce.Xapi.Core.Models;
 using OrderSettings = VirtoCommerce.OrdersModule.Core.ModuleConstants.Settings;
 using ReviewSettings = VirtoCommerce.CustomerReviews.Core.ModuleConstants.Settings;
 
@@ -81,6 +86,9 @@ namespace VirtoCommerce.CustomerReviews.Web
         public void PostInitialize(IApplicationBuilder appBuilder)
         {
             _applicationBuilder = appBuilder;
+
+            var playgroundOptions = appBuilder.ApplicationServices.GetService<IOptions<GraphQLPlaygroundOptions>>();
+            appBuilder.UseSchemaGraphQL<ScopedSchemaFactory<AssemblyMarker>>(playgroundOptions?.Value?.Enable ?? true, "customerReviews");
 
             var settingsManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
             var orderStatuses = settingsManager.GetObjectSettingAsync(OrderSettings.General.OrderStatus.Name).GetAwaiter().GetResult().AllowedValues;
