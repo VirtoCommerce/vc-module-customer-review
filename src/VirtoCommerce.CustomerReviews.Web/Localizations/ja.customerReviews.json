@@ -1,0 +1,122 @@
+{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "製品レビュー",
+        "labels": {
+          "title": "タイトル",
+          "rating": "評価",
+          "review": "レビュー",
+          "modifiedDate": "最終更新日",
+          "no-review": "レビューが見つかりません"
+        },
+        "placeholders": {
+          "select-review-Status": "レビューのステータスを選択",
+          "select-entity-type": "エンティティタイプを選択"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "製品評価を計算"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "タイトル",
+          "content": "内容",
+          "rating": "レビュー評価",
+          "productName": "製品",
+          "storeName": "店舗",
+          "createdBy": "作成者",
+          "createdDate": "作成日",
+          "review": "レビュー",
+          "status": "ステータス",
+          "average-rating": "平均評価"
+        },
+        "commands": {
+          "approve": "レビューを承認",
+          "reject": "レビューを拒否",
+          "resetReviewStatus": "レビューのステータスをリセット"
+        }
+      },
+      "product-detail": {
+        "description": "製品詳細"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "レビュー"
+      },
+      "product-rating": {
+        "title": "評価"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "変更を保存",
+        "message": "レビューが変更されました。変更を保存しますか？"
+      },
+      "unknown-entity-type": {
+        "title": "エンティティタイプの解決エラー",
+        "message": "不明なタイプを解決できません: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "レビューを削除",
+        "message": "この操作は評価の変更を引き起こす可能性があります。レビューを削除してもよろしいですか？"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "製品レビューを開く",
+    "customerReviews:update": "レビューを承認、拒否、ステータスをリセット",
+    "customerReviews:delete": "顧客レビュー関連データを削除",
+    "customerReviews:ratingRead": "評価を読む",
+    "customerReviews:ratingRecalc": "評価を再計算"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "注文リクエスト通知",
+      "description": "注文が完了し、顧客が製品のフィードバックを残さない場合、顧客はメール通知を受け取ります"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "製品レビューの有効化",
+        "description": "顧客が製品に対するフィードバックとレビューを提供することを許可/禁止するために有効/無効にします"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "匿名の製品レビュー",
+        "description": "登録されていないユーザーが製品レビューを送信する機能を有効/無効にします"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "製品を購入した人のみが新しいレビューを作成できます",
+        "description": "製品を購入した顧客にレビューの提出を制限するために有効にします"
+      },
+      "Calculation.Method": {
+        "title": "評価計算方法",
+        "description": "評価を決定する方法を選択します"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "レビューリクエストメールの自動有効化",
+        "description": "注文が特定の状態に一定の日数留まった後に顧客にレビューリクエストメールを送信するジョブを有効/無効にします"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "メールジョブ実行のためのCron式",
+        "description": "レビューリクエストメールジョブをスケジュールするために設定します。例:\n- X分ごとにタスクを実行: \"0/x * * * *\"\n- X時間ごとに00分に実行: \"0 */X * * *\"\n- 分を指定: \"15 */x * * *\"\n- X日ごとに真夜中に実行: \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "注文状態の遷移前の日数",
+        "description": "遷移がトリガーされる前に注文が状態に留まる日数を指定します"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "レビューリクエストのための注文状態",
+        "description": "顧客に自動的にレビューリクエストメールを送信する注文状態を指定します"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "顧客に送信される最大メール数",
+        "description": "指定された期間内に顧客に送信されるレビューリクエストメールの最大数を制限します"
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "Recensioni del prodotto",
+        "labels": {
+          "title": "Titolo",
+          "rating": "Valutazione",
+          "review": "Recensione",
+          "modifiedDate": "Ultimo aggiornamento",
+          "no-review": "Nessuna recensione trovata"
+        },
+        "placeholders": {
+          "select-review-Status": "Seleziona stato della recensione",
+          "select-entity-type": "Seleziona tipo di entità"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Calcola valutazione del prodotto"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "Titolo",
+          "content": "Contenuto",
+          "rating": "Valutazione della recensione",
+          "productName": "Prodotto",
+          "storeName": "Negozio",
+          "createdBy": "Creato da",
+          "createdDate": "Data di creazione",
+          "review": "Recensione",
+          "status": "Stato",
+          "average-rating": "Valutazione media"
+        },
+        "commands": {
+          "approve": "Approva recensione",
+          "reject": "Rifiuta recensione",
+          "resetReviewStatus": "Reimposta stato della recensione"
+        }
+      },
+      "product-detail": {
+        "description": "Dettaglio del prodotto"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Recensioni"
+      },
+      "product-rating": {
+        "title": "Valutazione"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Salva modifiche",
+        "message": "La recensione è stata modificata. Vuoi salvare le modifiche?"
+      },
+      "unknown-entity-type": {
+        "title": "Errore nella risoluzione del tipo di entità",
+        "message": "Impossibile risolvere un tipo sconosciuto: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Elimina recensione",
+        "message": "Questa azione potrebbe comportare un cambiamento di valutazione. Sei sicuro di voler eliminare la recensione?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Apri recensioni del prodotto",
+    "customerReviews:update": "Approva, rifiuta e reimposta stato della recensione",
+    "customerReviews:delete": "Elimina dati relativi alla recensione del cliente",
+    "customerReviews:ratingRead": "Leggi valutazione",
+    "customerReviews:ratingRecalc": "Ricalcola valutazione"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Notifica di richiesta ordine",
+      "description": "Il cliente riceve una notifica via email quando l'ordine è completato e non lascia alcun feedback sul prodotto"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Attivazione delle recensioni sui prodotti",
+        "description": "Abilita/disabilita per consentire/proibire ai clienti di fornire feedback e recensioni sui prodotti"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Recensioni anonime sui prodotti",
+        "description": "Abilita/disabilita la possibilità per gli utenti non registrati di inviare recensioni sui prodotti"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Solo gli acquirenti del prodotto possono creare nuove recensioni",
+        "description": "Abilita per limitare l'invio di recensioni ai clienti che hanno acquistato il prodotto"
+      },
+      "Calculation.Method": {
+        "title": "Metodo di calcolo della valutazione",
+        "description": "Seleziona il metodo per determinare le valutazioni"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Attivazione automatica delle email di richiesta recensione",
+        "description": "Abilita/disabilita il lavoro che invia email di richiesta recensione ai clienti dopo che il loro ordine rimane in uno stato specifico per un numero definito di giorni"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Espressione Cron per l'esecuzione del lavoro email",
+        "description": "Imposta per pianificare il lavoro email di richiesta recensione. Esempi:\n- Esegui il compito ogni X minuti: \"0/x * * * *\"\n- Eseguilo ogni X ore al minuto 00: \"0 */X * * *\"\n- Specifica i minuti: \"15 */x * * *\"\n- Eseguilo ogni X giorni a mezzanotte: \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Giorni prima della transizione dello stato dell'ordine",
+        "description": "Specifica il numero di giorni in cui un ordine rimane in uno stato prima che venga attivata una transizione"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "Stato dell'ordine per la richiesta di recensione",
+        "description": "Specifica lo stato dell'ordine che attiva automaticamente le email di richiesta recensione ai clienti"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Numero massimo di email inviate al cliente",
+        "description": "Limita il numero massimo di email di richiesta recensione inviate a un cliente entro un periodo di tempo specificato"
+      }
+    }
+  }
+}

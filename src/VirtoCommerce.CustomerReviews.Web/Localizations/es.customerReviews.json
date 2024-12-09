@@ -1,0 +1,122 @@
+{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "Reseñas de productos",
+        "labels": {
+          "title": "Título",
+          "rating": "Calificación",
+          "review": "Reseña",
+          "modifiedDate": "Última actualización",
+          "no-review": "No se encontraron reseñas"
+        },
+        "placeholders": {
+          "select-review-Status": "Seleccionar estado de la reseña",
+          "select-entity-type": "Seleccionar tipo de entidad"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Calcular calificación del producto"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "Título",
+          "content": "Contenido",
+          "rating": "Calificación de la reseña",
+          "productName": "Producto",
+          "storeName": "Tienda",
+          "createdBy": "Creado por",
+          "createdDate": "Fecha de creación",
+          "review": "Reseña",
+          "status": "Estado",
+          "average-rating": "Calificación promedio"
+        },
+        "commands": {
+          "approve": "Aprobar reseña",
+          "reject": "Rechazar reseña",
+          "resetReviewStatus": "Restablecer estado de la reseña"
+        }
+      },
+      "product-detail": {
+        "description": "Detalle del producto"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Reseñas"
+      },
+      "product-rating": {
+        "title": "Calificación"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Guardar cambios",
+        "message": "La reseña ha sido modificada. ¿Desea guardar los cambios?"
+      },
+      "unknown-entity-type": {
+        "title": "Error al resolver el tipo de entidad",
+        "message": "No se puede resolver un tipo desconocido: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Eliminar reseña",
+        "message": "Esta acción puede resultar en un cambio de calificación. ¿Está seguro de que desea eliminar la reseña?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Abrir reseñas de productos",
+    "customerReviews:update": "Aprobar, rechazar y restablecer estado de la reseña",
+    "customerReviews:delete": "Eliminar datos relacionados con la reseña del cliente",
+    "customerReviews:ratingRead": "Leer calificación",
+    "customerReviews:ratingRecalc": "Recalcular calificación"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Notificación de solicitud de pedido",
+      "description": "El cliente recibe una notificación por correo electrónico cuando el pedido se completa y el cliente no deja comentarios sobre el producto"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Activación de reseñas de productos",
+        "description": "Habilitar/deshabilitar para permitir/prohibir que los clientes proporcionen comentarios y reseñas de productos"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Reseñas de productos anónimas",
+        "description": "Habilitar/deshabilitar la capacidad de usuarios no registrados para enviar reseñas de productos"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Solo los compradores del producto pueden crear nuevas reseñas",
+        "description": "Habilitar para restringir el envío de reseñas a clientes que han comprado el producto"
+      },
+      "Calculation.Method": {
+        "title": "Método de cálculo de calificación",
+        "description": "Seleccione el método para determinar las calificaciones"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Activación automática de correos electrónicos de solicitud de reseña",
+        "description": "Habilitar/deshabilitar el trabajo que envía correos electrónicos de solicitud de reseña a los clientes después de que su pedido permanece en un estado específico durante un número definido de días"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Expresión Cron para la ejecución del trabajo de correo electrónico",
+        "description": "Configurar para programar el trabajo de correo electrónico de solicitud de reseña. Ejemplos:\n- Ejecutar la tarea cada X minutos: \"0/x * * * *\"\n- Ejecutarlo cada X horas en el minuto 00: \"0 */X * * *\"\n- Especificar minutos: \"15 */x * * *\"\n- Ejecutarlo cada X días a medianoche: \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Días antes de la transición del estado del pedido",
+        "description": "Especifique el número de días que un pedido permanece en un estado antes de que se active una transición"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "Estado del pedido para solicitud de reseña",
+        "description": "Especifique el estado del pedido que activa automáticamente los correos electrónicos de solicitud de reseña a los clientes"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Máximo de correos electrónicos enviados al cliente",
+        "description": "Limitar el número máximo de correos electrónicos de solicitud de reseña enviados a un cliente dentro de un período de tiempo especificado"
+      }
+    }
+  }
+}

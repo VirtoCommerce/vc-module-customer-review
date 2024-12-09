@@ -1,0 +1,122 @@
+{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "Avis sur le produit",
+        "labels": {
+          "title": "Titre",
+          "rating": "Évaluation",
+          "review": "Avis",
+          "modifiedDate": "Dernière mise à jour",
+          "no-review": "Aucun avis trouvé"
+        },
+        "placeholders": {
+          "select-review-Status": "Sélectionner le statut de l'avis",
+          "select-entity-type": "Sélectionner le type d'entité"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Calculer l'évaluation du produit"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "Titre",
+          "content": "Contenu",
+          "rating": "Évaluation de l'avis",
+          "productName": "Produit",
+          "storeName": "Magasin",
+          "createdBy": "Créé par",
+          "createdDate": "Date de création",
+          "review": "Avis",
+          "status": "Statut",
+          "average-rating": "Évaluation moyenne"
+        },
+        "commands": {
+          "approve": "Approuver l'avis",
+          "reject": "Rejeter l'avis",
+          "resetReviewStatus": "Réinitialiser le statut de l'avis"
+        }
+      },
+      "product-detail": {
+        "description": "Détail du produit"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Avis"
+      },
+      "product-rating": {
+        "title": "Évaluation"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Enregistrer les modifications",
+        "message": "L'avis a été modifié. Voulez-vous enregistrer les modifications ?"
+      },
+      "unknown-entity-type": {
+        "title": "Erreur de résolution du type d'entité",
+        "message": "Impossible de résoudre un type inconnu : '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Supprimer l'avis",
+        "message": "Cette action peut entraîner un changement d'évaluation. Êtes-vous sûr de vouloir supprimer l'avis ?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Ouvrir les avis sur le produit",
+    "customerReviews:update": "Approuver, rejeter et réinitialiser le statut de l'avis",
+    "customerReviews:delete": "Supprimer les données liées à l'avis client",
+    "customerReviews:ratingRead": "Lire l'évaluation",
+    "customerReviews:ratingRecalc": "Recalculer l'évaluation"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Notification de demande de commande",
+      "description": "Le client reçoit une notification par e-mail lorsque la commande est terminée et qu'il ne laisse aucun retour sur le produit"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Activation des avis sur les produits",
+        "description": "Activer/désactiver pour autoriser/interdire aux clients de fournir des commentaires et des avis sur les produits"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Avis sur les produits anonymes",
+        "description": "Activer/désactiver la possibilité pour les utilisateurs non enregistrés de soumettre des avis sur les produits"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Seuls les acheteurs du produit peuvent créer de nouveaux avis",
+        "description": "Activer pour restreindre la soumission d'avis aux clients qui ont acheté le produit"
+      },
+      "Calculation.Method": {
+        "title": "Méthode de calcul de l'évaluation",
+        "description": "Sélectionnez la méthode pour déterminer les évaluations"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Activation automatique des e-mails de demande d'avis",
+        "description": "Activer/désactiver le travail qui envoie des e-mails de demande d'avis aux clients après que leur commande reste dans un état spécifique pendant un nombre défini de jours"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Expression Cron pour l'exécution du travail d'e-mail",
+        "description": "Configurer pour planifier le travail d'e-mail de demande d'avis. Exemples :\n- Exécuter la tâche toutes les X minutes : \"0/x * * * *\"\n- L'exécuter toutes les X heures à la marque de 00 minute : \"0 */X * * *\"\n- Spécifier les minutes : \"15 */x * * *\"\n- L'exécuter tous les X jours à minuit : \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Jours avant la transition de l'état de la commande",
+        "description": "Spécifiez le nombre de jours pendant lesquels une commande reste dans un état avant qu'une transition ne soit déclenchée"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "État de la commande pour la demande d'avis",
+        "description": "Spécifiez l'état de la commande qui déclenche automatiquement les e-mails de demande d'avis aux clients"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Nombre maximum d'e-mails envoyés au client",
+        "description": "Limiter le nombre maximum d'e-mails de demande d'avis envoyés à un client dans un délai spécifié"
+      }
+    }
+  }
+}
