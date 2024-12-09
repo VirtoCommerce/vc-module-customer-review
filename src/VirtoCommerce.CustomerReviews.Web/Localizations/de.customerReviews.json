@@ -1,0 +1,122 @@
+{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "Produktbewertungen",
+        "labels": {
+          "title": "Titel",
+          "rating": "Bewertung",
+          "review": "Rezension",
+          "modifiedDate": "Zuletzt aktualisiert",
+          "no-review": "Keine Bewertungen gefunden"
+        },
+        "placeholders": {
+          "select-review-Status": "Bewertungsstatus auswählen",
+          "select-entity-type": "Entitätstyp auswählen"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Produktbewertung berechnen"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "Titel",
+          "content": "Inhalt",
+          "rating": "Bewertung",
+          "productName": "Produkt",
+          "storeName": "Shop",
+          "createdBy": "Erstellt von",
+          "createdDate": "Erstellungsdatum",
+          "review": "Rezension",
+          "status": "Status",
+          "average-rating": "Durchschnittliche Bewertung"
+        },
+        "commands": {
+          "approve": "Rezension genehmigen",
+          "reject": "Rezension ablehnen",
+          "resetReviewStatus": "Bewertungsstatus zurücksetzen"
+        }
+      },
+      "product-detail": {
+        "description": "Produktdetails"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Rezensionen"
+      },
+      "product-rating": {
+        "title": "Bewertung"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Änderungen speichern",
+        "message": "Die Rezension wurde geändert. Möchten Sie die Änderungen speichern?"
+      },
+      "unknown-entity-type": {
+        "title": "Fehler beim Auflösen des Entitätstyps",
+        "message": "Unbekannter Typ kann nicht aufgelöst werden: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Rezension löschen",
+        "message": "Diese Aktion kann zu einer Bewertungsänderung führen. Sind Sie sicher, dass Sie die Rezension löschen möchten?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Produktbewertungen öffnen",
+    "customerReviews:update": "Rezension genehmigen, ablehnen und Status zurücksetzen",
+    "customerReviews:delete": "Kundendaten zur Rezension löschen",
+    "customerReviews:ratingRead": "Bewertung lesen",
+    "customerReviews:ratingRecalc": "Bewertung neu berechnen"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Benachrichtigung zur Bestellanforderung",
+      "description": "Der Kunde erhält eine E-Mail-Benachrichtigung, wenn die Bestellung abgeschlossen ist und der Kunde kein Produktfeedback hinterlässt"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Aktivierung von Produktbewertungen",
+        "description": "Aktivieren/Deaktivieren, um Kunden zu erlauben/verbieten, Feedback und Bewertungen für Produkte abzugeben"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Anonyme Produktbewertungen",
+        "description": "Aktivieren/Deaktivieren der Möglichkeit für nicht registrierte Benutzer, Produktbewertungen abzugeben"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Nur Käufer des Produkts können neue Bewertungen erstellen",
+        "description": "Aktivieren, um die Abgabe von Bewertungen auf Kunden zu beschränken, die das Produkt gekauft haben"
+      },
+      "Calculation.Method": {
+        "title": "Methode zur Berechnung der Bewertung",
+        "description": "Wählen Sie die Methode zur Bestimmung der Bewertungen"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Automatische Aktivierung von Bewertungsanfrage-E-Mails",
+        "description": "Aktivieren/Deaktivieren des Jobs, der Bewertungsanfrage-E-Mails an Kunden sendet, nachdem ihre Bestellung für eine bestimmte Anzahl von Tagen in einem bestimmten Zustand verbleibt"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Cron-Ausdruck für die Ausführung des E-Mail-Jobs",
+        "description": "Festlegen, um den Bewertungsanfrage-E-Mail-Job zu planen. Beispiele:\n- Aufgabe alle X Minuten ausführen: \"0/x * * * *\"\n- Alle X Stunden zur 00-Minuten-Marke ausführen: \"0 */X * * *\"\n- Minuten angeben: \"15 */x * * *\"\n- Alle X Tage um Mitternacht ausführen: \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Tage vor dem Übergang des Bestellstatus",
+        "description": "Geben Sie die Anzahl der Tage an, die eine Bestellung in einem Zustand bleibt, bevor ein Übergang ausgelöst wird"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "Bestellstatus für Bewertungsanfrage",
+        "description": "Geben Sie den Bestellstatus an, der automatische Bewertungsanfrage-E-Mails an Kunden auslöst"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Maximale Anzahl an E-Mails an Kunden",
+        "description": "Begrenzen Sie die maximale Anzahl von Bewertungsanfrage-E-Mails, die innerhalb eines bestimmten Zeitraums an einen Kunden gesendet werden"
+      }
+    }
+  }
+}

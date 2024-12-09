@@ -1,0 +1,122 @@
+{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "Opinie o produkcie",
+        "labels": {
+          "title": "Tytuł",
+          "rating": "Ocena",
+          "review": "Recenzja",
+          "modifiedDate": "Ostatnia aktualizacja",
+          "no-review": "Nie znaleziono recenzji"
+        },
+        "placeholders": {
+          "select-review-Status": "Wybierz status recenzji",
+          "select-entity-type": "Wybierz typ jednostki"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Oblicz ocenę produktu"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "Tytuł",
+          "content": "Treść",
+          "rating": "Ocena recenzji",
+          "productName": "Produkt",
+          "storeName": "Sklep",
+          "createdBy": "Utworzone przez",
+          "createdDate": "Data utworzenia",
+          "review": "Recenzja",
+          "status": "Status",
+          "average-rating": "Średnia ocena"
+        },
+        "commands": {
+          "approve": "Zatwierdź recenzję",
+          "reject": "Odrzuć recenzję",
+          "resetReviewStatus": "Zresetuj status recenzji"
+        }
+      },
+      "product-detail": {
+        "description": "Szczegóły produktu"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Recenzje"
+      },
+      "product-rating": {
+        "title": "Ocena"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Zapisz zmiany",
+        "message": "Recenzja została zmodyfikowana. Czy chcesz zapisać zmiany?"
+      },
+      "unknown-entity-type": {
+        "title": "Błąd rozwiązywania typu jednostki",
+        "message": "Nie można rozwiązać nieznanego typu: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Usuń recenzję",
+        "message": "Ta akcja może spowodować zmianę oceny. Czy na pewno chcesz usunąć recenzję?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Otwórz opinie o produkcie",
+    "customerReviews:update": "Zatwierdź, odrzuć i zresetuj status recenzji",
+    "customerReviews:delete": "Usuń dane związane z recenzją klienta",
+    "customerReviews:ratingRead": "Odczytaj ocenę",
+    "customerReviews:ratingRecalc": "Przelicz ocenę"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Powiadomienie o prośbie o zamówienie",
+      "description": "Klient otrzymuje powiadomienie e-mail, gdy zamówienie zostanie zakończone i nie pozostawi żadnej opinii o produkcie"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Aktywacja opinii o produktach",
+        "description": "Włącz/wyłącz, aby zezwolić/zabronić klientom na udzielanie opinii i recenzji produktów"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Anonimowe opinie o produktach",
+        "description": "Włącz/wyłącz możliwość przesyłania recenzji produktów przez niezarejestrowanych użytkowników"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Tylko kupujący produkt mogą tworzyć nowe recenzje",
+        "description": "Włącz, aby ograniczyć przesyłanie recenzji do klientów, którzy kupili produkt"
+      },
+      "Calculation.Method": {
+        "title": "Metoda obliczania oceny",
+        "description": "Wybierz metodę określania ocen"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Automatyczna aktywacja e-maili z prośbą o recenzję",
+        "description": "Włącz/wyłącz zadanie wysyłające e-maile z prośbą o recenzję do klientów po tym, jak ich zamówienie pozostaje w określonym stanie przez zdefiniowaną liczbę dni"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Wyrażenie Cron dla wykonania zadania e-mail",
+        "description": "Ustaw, aby zaplanować zadanie e-mail z prośbą o recenzję. Przykłady:\n- Uruchom zadanie co X minut: \"0/x * * * *\"\n- Uruchom co X godzin o pełnej godzinie: \"0 */X * * *\"\n- Określ minuty: \"15 */x * * *\"\n- Uruchom co X dni o północy: \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Dni przed przejściem stanu zamówienia",
+        "description": "Określ liczbę dni, przez które zamówienie pozostaje w stanie przed wywołaniem przejścia"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "Stan zamówienia dla prośby o recenzję",
+        "description": "Określ stan zamówienia, który automatycznie wywołuje e-maile z prośbą o recenzję do klientów"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Maksymalna liczba e-maili wysyłanych do klienta",
+        "description": "Ogranicz maksymalną liczbę e-maili z prośbą o recenzję wysyłanych do klienta w określonym czasie"
+      }
+    }
+  }
+}

@@ -2,13 +2,13 @@
   "customerReviews": {
     "blades": {
       "review-list": {
-        "title": "Product Reviews",
+        "title": "Product reviews",
         "labels": {
           "title": "Title",
           "rating": "Rating",
           "review": "Review",
           "modifiedDate": "Last updated",
-          "no-review": "No Reviews found"
+          "no-review": "No reviews found"
         },
         "placeholders": {
           "select-review-Status": "Select review status",
@@ -34,8 +34,8 @@
           "average-rating": "Average rating"
         },
         "commands": {
-          "approve": "Approve Review",
-          "reject": "Reject Review",
+          "approve": "Approve review",
+          "reject": "Reject review",
           "resetReviewStatus": "Reset review status"
         }
       },
@@ -68,7 +68,7 @@
   },
   "permissions": {
     "customerReviews:read": "Open product reviews",
-    "customerReviews:update": "Approve, reject and reset review status",
+    "customerReviews:update": "Approve, reject, and reset review status",
     "customerReviews:delete": "Delete customer review related data",
     "customerReviews:ratingRead": "Read rating",
     "customerReviews:ratingRecalc": "Recalculate rating"
@@ -76,48 +76,47 @@
   "notificationTypes": {
     "CustomerReviewEmailNotification": {
       "displayName": "Order request review notification",
-      "description": "The customer will get an email notification when the order is completed and the customer does not leave any product feedback."
+      "description": "The customer gets an email notification when the order is completed and the customer does not leave any product feedback"
     }
   },
   "settings": {
     "CustomerReviews": {
       "CustomerReviewsEnabled": {
-        "title": "Product reviews enabled",
-        "description": "When enabled, customers can provide feedback and reviews for products."
+        "title": "Product reviews activation",
+        "description": "Enable/ disable to allow/prohibit customers to provide feedback and reviews for products"
       },
       "CustomerReviewsEnabledForAnonymous": {
-        "title": "Allow anonymous to submit product reviews",
-        "description": "Enabling this option allows non-registered users to share their opinions on products."
+        "title": "Anonymous product reviews",
+        "description": "Enable/ disable the ability for non-registered users to submit product reviews"
       },
       "CanSubmitReviewWhenHasOrder": {
-        "title": "Only customer who bought product can create new review",
-        "description": "This restriction ensures that reviews are authored by genuine buyers."
+        "title": "Only buyers of the product can create new reviews",
+        "description": "Enable to restrict review submissions to customers who have bought the product"
       },
       "Calculation.Method": {
         "title": "Rating calculation method",
-        "description": "Defines the approach or algorithm employed to determine ratings based on specific criteria or parameters. "
+        "description": "Select the method to determine ratings"
       },
       "CustomerReviewsEnabledRequestReviewJob": {
-        "title": "Auto Review Email Enabled",
-        "description": "Enable job to send emails requesting a review to customer when order is in state after x days"
+        "title": "Automatic activation of review request emails",
+        "description": "Enable/ disable job that sends review request emails to customers after their order remains in a specific state for a defined number of days"
       },
       "CustomerReviewsRequestReviewCronJob": {
-        "title": "Cron expression for processing job execution",
-        "description": "The value is a regular CRON expression.\nTo run task every X minutes please use \"0/x * * * *\".\nTo run it every X hours at 00 minutes use \"0 */X * * *\". You can also specify minutes: \"15 */x * * *\"\nTo run it every X days at midnight use \"0 0 */x * *\""
+        "title": "Cron expression for email job execution",
+        "description": "Set to schedule review request email job. Examples:\n- Run the task every X minutes: \"0/x * * * *\"\n- Run it every X hours at the 00 minute mark: \"0 */X * * *\"\n- Specify minutes: \"15 */x * * *\"\n- Run it every X days at midnight: \"0 0 */x * *\""
       },
       "CustomerReviewsRequestReviewDaysInState": {
-        "title": "Order state at x days",
-        "description": "Specifies the duration in days after which an order transitions to a new state."
+        "title": "Days before transitioning order state",
+        "description": "Specify the number of days an order stays in a state before a transition is triggered"
       },
       "CustomerReviewsRequestReviewOrderInState": {
-        "title": "Order state to send mails",
-        "description": "Defines the order state at which emails are automatically sent to customers."
+        "title": "Order state for review request",
+        "description": "Specify the order state that triggers automatic review request emails to customers"
       },
       "CustomerReviewsRequestReviewMaxRequests": {
-        "title": "Max e-mails sent to customer",
-        "description": "Limits the maximum number of emails that can be sent to a customer within a specified timeframe."
+        "title": "Maximum e-mails sent to customer",
+        "description": "Limit the maximum number of review request emails sent to a customer within a specified timeframe"
       }
-
     }
   }
 }
