@@ -1,0 +1,122 @@
+{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "Avaliações de produtos",
+        "labels": {
+          "title": "Título",
+          "rating": "Classificação",
+          "review": "Avaliação",
+          "modifiedDate": "Última atualização",
+          "no-review": "Nenhuma avaliação encontrada"
+        },
+        "placeholders": {
+          "select-review-Status": "Selecionar status da avaliação",
+          "select-entity-type": "Selecionar tipo de entidade"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Calcular classificação do produto"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "Título",
+          "content": "Conteúdo",
+          "rating": "Classificação da avaliação",
+          "productName": "Produto",
+          "storeName": "Loja",
+          "createdBy": "Criado por",
+          "createdDate": "Data de criação",
+          "review": "Avaliação",
+          "status": "Status",
+          "average-rating": "Classificação média"
+        },
+        "commands": {
+          "approve": "Aprovar avaliação",
+          "reject": "Rejeitar avaliação",
+          "resetReviewStatus": "Redefinir status da avaliação"
+        }
+      },
+      "product-detail": {
+        "description": "Detalhe do produto"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Avaliações"
+      },
+      "product-rating": {
+        "title": "Classificação"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Salvar alterações",
+        "message": "A avaliação foi modificada. Deseja salvar as alterações?"
+      },
+      "unknown-entity-type": {
+        "title": "Erro ao resolver o tipo de entidade",
+        "message": "Não é possível resolver um tipo desconhecido: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Excluir avaliação",
+        "message": "Esta ação pode resultar em uma mudança de classificação. Tem certeza de que deseja excluir a avaliação?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Abrir avaliações de produtos",
+    "customerReviews:update": "Aprovar, rejeitar e redefinir status da avaliação",
+    "customerReviews:delete": "Excluir dados relacionados à avaliação do cliente",
+    "customerReviews:ratingRead": "Ler classificação",
+    "customerReviews:ratingRecalc": "Recalcular classificação"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Notificação de solicitação de pedido",
+      "description": "O cliente recebe uma notificação por e-mail quando o pedido é concluído e o cliente não deixa nenhum feedback sobre o produto"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Ativação de avaliações de produtos",
+        "description": "Ativar/desativar para permitir/proibir que os clientes forneçam feedback e avaliações de produtos"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Avaliações anônimas de produtos",
+        "description": "Ativar/desativar a capacidade de usuários não registrados enviarem avaliações de produtos"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Somente compradores do produto podem criar novas avaliações",
+        "description": "Ativar para restringir o envio de avaliações a clientes que compraram o produto"
+      },
+      "Calculation.Method": {
+        "title": "Método de cálculo da classificação",
+        "description": "Selecione o método para determinar as classificações"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Ativação automática de e-mails de solicitação de avaliação",
+        "description": "Ativar/desativar o trabalho que envia e-mails de solicitação de avaliação aos clientes após o pedido permanecer em um estado específico por um número definido de dias"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Expressão Cron para execução do trabalho de e-mail",
+        "description": "Configurar para agendar o trabalho de e-mail de solicitação de avaliação. Exemplos:\n- Executar a tarefa a cada X minutos: \"0/x * * * *\"\n- Executá-lo a cada X horas no minuto 00: \"0 */X * * *\"\n- Especificar minutos: \"15 */x * * *\"\n- Executá-lo a cada X dias à meia-noite: \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Dias antes da transição do estado do pedido",
+        "description": "Especifique o número de dias que um pedido permanece em um estado antes de uma transição ser acionada"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "Estado do pedido para solicitação de avaliação",
+        "description": "Especifique o estado do pedido que aciona automaticamente os e-mails de solicitação de avaliação aos clientes"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Número máximo de e-mails enviados ao cliente",
+        "description": "Limitar o número máximo de e-mails de solicitação de avaliação enviados a um cliente dentro de um período de tempo especificado"
+      }
+    }
+  }
+}

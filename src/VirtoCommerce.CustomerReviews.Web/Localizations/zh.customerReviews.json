@@ -1,0 +1,122 @@
+{
+  "customerReviews": {
+    "blades": {
+      "review-list": {
+        "title": "产品评论",
+        "labels": {
+          "title": "标题",
+          "rating": "评分",
+          "review": "评论",
+          "modifiedDate": "最后更新",
+          "no-review": "未找到评论"
+        },
+        "placeholders": {
+          "select-review-Status": "选择评论状态",
+          "select-entity-type": "选择实体类型"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "计算产品评分"
+        }
+      },
+      "review-detail": {
+        "labels": {
+          "title": "标题",
+          "content": "内容",
+          "rating": "评论评分",
+          "productName": "产品",
+          "storeName": "商店",
+          "createdBy": "创建者",
+          "createdDate": "创建日期",
+          "review": "评论",
+          "status": "状态",
+          "average-rating": "平均评分"
+        },
+        "commands": {
+          "approve": "批准评论",
+          "reject": "拒绝评论",
+          "resetReviewStatus": "重置评论状态"
+        }
+      },
+      "product-detail": {
+        "description": "产品详情"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "评论"
+      },
+      "product-rating": {
+        "title": "评分"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "保存更改",
+        "message": "评论已被修改。您要保存更改吗？"
+      },
+      "unknown-entity-type": {
+        "title": "解析实体类型错误",
+        "message": "无法解析未知类型：'{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "删除评论",
+        "message": "此操作可能导致评分更改。您确定要删除评论吗？"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "打开产品评论",
+    "customerReviews:update": "批准、拒绝和重置评论状态",
+    "customerReviews:delete": "删除与客户评论相关的数据",
+    "customerReviews:ratingRead": "读取评分",
+    "customerReviews:ratingRecalc": "重新计算评分"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "订单请求通知",
+      "description": "当订单完成且客户未留下产品反馈时，客户会收到电子邮件通知"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "产品评论激活",
+        "description": "启用/禁用以允许/禁止客户提供产品反馈和评论"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "匿名产品评论",
+        "description": "启用/禁用非注册用户提交产品评论的能力"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "只有购买产品的客户可以创建新评论",
+        "description": "启用以限制评论提交仅限于购买了产品的客户"
+      },
+      "Calculation.Method": {
+        "title": "评分计算方法",
+        "description": "选择确定评分的方法"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "自动激活评论请求电子邮件",
+        "description": "启用/禁用在订单保持特定状态一段定义的天数后向客户发送评论请求电子邮件的任务"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "电子邮件任务执行的Cron表达式",
+        "description": "设置以安排评论请求电子邮件任务。示例：\n- 每X分钟运行任务：\"0/x * * * *\"\n- 每X小时在00分钟标记运行：\"0 */X * * *\"\n- 指定分钟：\"15 */x * * *\"\n- 每X天在午夜运行：\"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "订单状态转换前的天数",
+        "description": "指定订单在触发转换之前保持在某个状态的天数"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "评论请求的订单状态",
+        "description": "指定自动向客户发送评论请求电子邮件的订单状态"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "发送给客户的最大电子邮件数量",
+        "description": "限制在指定时间内发送给客户的评论请求电子邮件的最大数量"
+      }
+    }
+  }
+}
