@@ -1,5 +1,6 @@
 {
   "customerReviews": {
+    "main-menu-title": "Рейтинг и отзывы",
     "blades": {
       "review-list": {
         "title": "Отзывы о продукте",
@@ -21,6 +22,7 @@
         }
       },
       "review-detail": {
+        "title": "Отзыв",
         "labels": {
           "title": "Заголовок",
           "content": "Содержание",

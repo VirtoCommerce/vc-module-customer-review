@@ -1,5 +1,6 @@
 {
   "customerReviews": {
+    "main-menu-title": "评分和评论",
     "blades": {
       "review-list": {
         "title": "产品评论",
@@ -21,6 +22,7 @@
         }
       },
       "review-detail": {
+        "title": "评论",
         "labels": {
           "title": "标题",
           "content": "内容",

@@ -1,5 +1,6 @@
 {
   "customerReviews": {
+    "main-menu-title": "Calificación y Reseñas",
     "blades": {
       "review-list": {
         "title": "Reseñas de productos",
@@ -21,6 +22,7 @@
         }
       },
       "review-detail": {
+        "title": "Reseña",
         "labels": {
           "title": "Título",
           "content": "Contenido",

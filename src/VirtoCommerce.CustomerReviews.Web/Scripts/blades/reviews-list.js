@@ -40,7 +40,7 @@ angular.module('VirtoCommerce.CustomerReviews')
                     id: 'reviewDetails',
                     currentEntityId: data.id,
                     currentEntity: angular.copy(data),
-                    title: 'Customer review',
+                    title: 'customerReviews.blades.review-detail.title',
                     controller: 'VirtoCommerce.CustomerReviews.reviewDetailController',
                     template: 'Modules/$(VirtoCommerce.CustomerReviews)/Scripts/blades/review-detail.tpl.html'
                 };
@@ -48,11 +48,12 @@ angular.module('VirtoCommerce.CustomerReviews')
             }    
             
             blade.headIcon = 'fa fa-comments';
-            blade.title = 'Rating and Reviews';
+            blade.title = 'customerReviews.main-menu-title';
 
             blade.toolbarCommands = [
                 {
-                    name: "platform.commands.refresh", icon: 'fa fa-refresh',
+                    name: 'platform.commands.refresh',
+                    icon: 'fa fa-refresh',
                     executeMethod: blade.refresh,
                     canExecuteMethod: function () {
                         return true;

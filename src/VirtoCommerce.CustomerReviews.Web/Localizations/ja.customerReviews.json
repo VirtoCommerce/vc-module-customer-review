@@ -1,5 +1,6 @@
 {
   "customerReviews": {
+    "main-menu-title": "評価とレビュー",
     "blades": {
       "review-list": {
         "title": "製品レビュー",
@@ -21,6 +22,7 @@
         }
       },
       "review-detail": {
+        "title": "レビュー",
         "labels": {
           "title": "タイトル",
           "content": "内容",

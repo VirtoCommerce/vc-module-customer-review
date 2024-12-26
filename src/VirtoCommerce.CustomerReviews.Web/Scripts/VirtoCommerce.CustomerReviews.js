@@ -37,7 +37,7 @@ angular.module(moduleTemplateName, [])
         var menuItemNewReviews = {
             path: 'browse/customerReviewsNew',
             icon: 'fa fa-comments',
-            title: 'Rating and Reviews',
+            title: 'customerReviews.main-menu-title',
             priority: 100,
             action: function () { $state.go('workspace.customerReviews') },
             permission: 'customerReviews:read'
