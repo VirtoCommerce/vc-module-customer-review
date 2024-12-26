@@ -9,6 +9,9 @@
           "rating": "Rating",
           "review": "Review",
           "modifiedDate": "Last updated",
+          "createdDate": "Created Date",
+          "createdBy": "Created By",
+          "status": "Status",
           "no-review": "No reviews found"
         },
         "placeholders": {

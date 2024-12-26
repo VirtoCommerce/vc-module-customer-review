@@ -9,6 +9,9 @@
           "rating": "Évaluation",
           "review": "Avis",
           "modifiedDate": "Dernière mise à jour",
+          "createdDate": "Date de création",
+          "createdBy": "Créé par",
+          "status": "Statut",
           "no-review": "Aucun avis trouvé"
         },
         "placeholders": {

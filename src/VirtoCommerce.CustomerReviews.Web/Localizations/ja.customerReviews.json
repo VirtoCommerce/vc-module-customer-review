@@ -9,6 +9,9 @@
           "rating": "評価",
           "review": "レビュー",
           "modifiedDate": "最終更新日",
+          "createdDate": "作成日",
+          "createdBy": "作成者",
+          "status": "ステータス",
           "no-review": "レビューが見つかりません"
         },
         "placeholders": {

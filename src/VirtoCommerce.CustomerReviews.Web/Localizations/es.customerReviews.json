@@ -9,6 +9,9 @@
           "rating": "Calificación",
           "review": "Reseña",
           "modifiedDate": "Última actualización",
+          "createdDate": "Fecha de creación",
+          "createdBy": "Creado por",
+          "status": "Estado",
           "no-review": "No se encontraron reseñas"
         },
         "placeholders": {

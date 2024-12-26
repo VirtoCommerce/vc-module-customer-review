@@ -9,6 +9,9 @@
           "rating": "Рейтинг",
           "review": "Отзыв",
           "modifiedDate": "Последнее обновление",
+          "createdDate": "Дата создания",
+          "createdBy": "Создано",
+          "status": "Статус",
           "no-review": "Отзывы не найдены"
         },
         "placeholders": {

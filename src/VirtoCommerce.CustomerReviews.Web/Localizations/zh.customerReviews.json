@@ -9,6 +9,9 @@
           "rating": "评分",
           "review": "评论",
           "modifiedDate": "最后更新",
+          "createdDate": "创建日期",
+          "createdBy": "创建者",
+          "status": "状态",
           "no-review": "未找到评论"
         },
         "placeholders": {
