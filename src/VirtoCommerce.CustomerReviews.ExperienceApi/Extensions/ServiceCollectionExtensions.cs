@@ -1,4 +1,5 @@
-using GraphQL.Server;
+using GraphQL;
+using GraphQL.MicrosoftDI;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,12 +18,14 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddExperienceApi(this IServiceCollection serviceCollection)
     {
-        var assemblyMarker = typeof(AssemblyMarker);
-        var graphQlBuilder = new CustomGraphQLBuilder(serviceCollection);
-        graphQlBuilder.AddGraphTypes(assemblyMarker);
-        serviceCollection.AddMediatR(assemblyMarker);
-        serviceCollection.AddAutoMapper(assemblyMarker);
-        serviceCollection.AddSchemaBuilders(assemblyMarker);
+        _ = new GraphQLBuilder(serviceCollection, builder =>
+        {
+            var assemblyMarker = typeof(AssemblyMarker);
+            builder.AddGraphTypes(assemblyMarker.Assembly);
+            serviceCollection.AddMediatR(assemblyMarker);
+            serviceCollection.AddAutoMapper(assemblyMarker);
+            serviceCollection.AddSchemaBuilders(assemblyMarker);
+        });
 
         serviceCollection.AddSingleton<ScopedSchemaFactory<AssemblyMarker>>();
 
