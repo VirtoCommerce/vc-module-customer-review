@@ -94,6 +94,59 @@ namespace VirtoCommerce.CustomerReviews.Data.SqlServer.Migrations
                     b.ToTable("CustomerReview", (string)null);
                 });
 
+            modelBuilder.Entity("VirtoCommerce.CustomerReviews.Data.Models.CustomerReviewImageEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerReviewId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("LanguageCode")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2083)
+                        .HasColumnType("nvarchar(2083)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerReviewId");
+
+                    b.ToTable("CustomerReviewImage", (string)null);
+                });
+
             modelBuilder.Entity("VirtoCommerce.CustomerReviews.Data.Models.RatingEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -179,6 +232,22 @@ namespace VirtoCommerce.CustomerReviews.Data.SqlServer.Migrations
                     b.HasIndex("StoreId", "EntityId", "EntityType", "UserId");
 
                     b.ToTable("RequestReview", (string)null);
+                });
+
+            modelBuilder.Entity("VirtoCommerce.CustomerReviews.Data.Models.CustomerReviewImageEntity", b =>
+                {
+                    b.HasOne("VirtoCommerce.CustomerReviews.Data.Models.CustomerReviewEntity", "CustomerReview")
+                        .WithMany("Images")
+                        .HasForeignKey("CustomerReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerReview");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.CustomerReviews.Data.Models.CustomerReviewEntity", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

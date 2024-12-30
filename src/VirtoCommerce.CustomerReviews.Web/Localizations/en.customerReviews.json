@@ -49,6 +49,9 @@
       },
       "product-rating": {
         "title": "Rating"
+      },
+      "review-image": {
+        "no-images": "No images"
       }
     },
     "dialogs": {

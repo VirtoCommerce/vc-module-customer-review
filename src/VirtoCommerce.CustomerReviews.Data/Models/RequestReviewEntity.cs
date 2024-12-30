@@ -39,8 +39,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
 
         public virtual void Patch(RequestReviewEntity target)
         {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
+            ArgumentNullException.ThrowIfNull(target);
 
             target.CreatedDate = CreatedDate;
             target.EntityId = EntityId;

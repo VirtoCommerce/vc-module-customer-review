@@ -1,5 +1,7 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
@@ -40,11 +42,13 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
         [Required]
         public int ReviewStatus { get; set; }
 
+        #region Navigation Properties
+        public virtual ObservableCollection<CustomerReviewImageEntity> Images { get; set; } = new NullCollection<CustomerReviewImageEntity>();
+        #endregion
 
         public virtual CustomerReview ToModel(CustomerReview model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             model.Id = Id;
             model.CreatedBy = CreatedBy;
@@ -65,13 +69,14 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
             model.EntityName = EntityName;
             model.StoreId = StoreId;
 
+            model.Images = Images.OrderBy(x => x.SortOrder).Select(x => x.ToModel(AbstractTypeFactory<CustomerReviewImage>.TryCreateInstance())).ToList();
+
             return model;
         }
 
         public virtual CustomerReviewEntity FromModel(CustomerReview model, PrimaryKeyResolvingMap pkMap)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             pkMap.AddPair(model, this);
 
@@ -94,13 +99,17 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
             EntityName = model.EntityName;
             StoreId = model.StoreId;
 
+            if (model.Images != null)
+            {
+                Images = new ObservableCollection<CustomerReviewImageEntity>(model.Images.Where(x => !x.IsInherited).Select(x => AbstractTypeFactory<CustomerReviewImageEntity>.TryCreateInstance().FromModel(x, pkMap)));
+            }
+
             return this;
         }
 
         public virtual void Patch(CustomerReviewEntity target)
         {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
+            ArgumentNullException.ThrowIfNull(target);
 
             target.UserId = UserId;
             target.UserName = UserName;
@@ -114,6 +123,11 @@ namespace VirtoCommerce.CustomerReviews.Data.Models
             target.EntityType = EntityType;
             target.EntityName = EntityName;
             target.StoreId = StoreId;
+
+            if (!Images.IsNullCollection())
+            {
+                Images.Patch(target.Images, (sourceImage, targetImage) => sourceImage.Patch(targetImage));
+            }
         }
     }
 }

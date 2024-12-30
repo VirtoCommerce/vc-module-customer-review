@@ -93,6 +93,59 @@ namespace VirtoCommerce.CustomerReviews.Data.PostgreSql.Migrations
                     b.ToTable("CustomerReview", (string)null);
                 });
 
+            modelBuilder.Entity("VirtoCommerce.CustomerReviews.Data.Models.CustomerReviewImageEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CustomerReviewId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<string>("LanguageCode")
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2083)
+                        .HasColumnType("character varying(2083)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerReviewId");
+
+                    b.ToTable("CustomerReviewImage", (string)null);
+                });
+
             modelBuilder.Entity("VirtoCommerce.CustomerReviews.Data.Models.RatingEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -177,6 +230,22 @@ namespace VirtoCommerce.CustomerReviews.Data.PostgreSql.Migrations
                     b.HasIndex("StoreId", "EntityId", "EntityType", "UserId");
 
                     b.ToTable("RequestReview", (string)null);
+                });
+
+            modelBuilder.Entity("VirtoCommerce.CustomerReviews.Data.Models.CustomerReviewImageEntity", b =>
+                {
+                    b.HasOne("VirtoCommerce.CustomerReviews.Data.Models.CustomerReviewEntity", "CustomerReview")
+                        .WithMany("Images")
+                        .HasForeignKey("CustomerReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerReview");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.CustomerReviews.Data.Models.CustomerReviewEntity", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

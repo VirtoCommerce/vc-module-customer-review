@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace VirtoCommerce.CustomerReviews.Core.Models
 {
@@ -20,6 +22,7 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
         public string UserName { get; set; }
         public string StoreName { get; set; }
         public DateTime CreatedDate { get; set; }
+        public IList<CustomerReviewListItemImage> Images { get; set; }
 
         public CustomerReviewListItem(CustomerReview review)
         {
@@ -34,6 +37,14 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
             EntityId = review.EntityId;
             EntityType = review.EntityType;
             EntityName = review.EntityName;
+            Images = review.Images?.OrderBy(x => x.SortOrder).Select(x => new CustomerReviewListItemImage
+            {
+                Id = x.Id,
+                Url = x.Url,
+                RelativeUrl = x.RelativeUrl,
+                Description = x.Description,
+                Name = x.Name
+            }).ToList();
         }
     }
 }

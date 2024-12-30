@@ -1,0 +1,11 @@
+<div class="gallery">
+  <div class="gridster-cnt" ng-click="openBlade()">
+    <div class="cnt-inner" ng-if="blade.currentEntities.length == 0">
+      <i class="gallery-ico fas fa-image"></i>
+      <div class="gallery-descr">{{ 'customerReviews.widgets.review-image.no-images' | translate }}</div>
+    </div>
+    <div class="gallery-img" ng-class="{'__main' : $first, '__solo' : blade.currentEntities.length == 1 }" ng-repeat="image in blade.currentEntities | orderBy: 'sortOrder' | limitTo : 5">
+      <img ng-src="{{image.url ? image.url : ''}}" />
+    </div>
+  </div>
+</div>

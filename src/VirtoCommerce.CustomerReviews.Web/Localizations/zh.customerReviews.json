@@ -49,6 +49,9 @@
       },
       "product-rating": {
         "title": "评分"
+      },
+      "review-image": {
+        "no-images": "无图片"
       }
     },
     "dialogs": {

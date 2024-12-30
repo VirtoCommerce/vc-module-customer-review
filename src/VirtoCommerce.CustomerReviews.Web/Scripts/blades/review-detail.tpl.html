@@ -10,9 +10,9 @@
                 </div>
 
                 <div class="form-group" ng-if="blade.entityObject.image">
-                    <div class="image-preview-small"
-                            style="background-image: url('{{ blade.entityObject.image }}'); background-size: cover;">
-                    </div>
+                  <div class="image-preview-small">
+                    <img ng-src="{{ blade.entityObject.image }}" />
+                  </div>
                 </div>
 
                 <va-metaform registered-inputs="blade.metaFields" blade="blade" column-count="2"></va-metaform>
@@ -84,6 +84,7 @@
                 </div>
 
             </form>
+            <va-widget-container group="reviewDetail" blade="blade" data="blade.item" gridster-opts="{columns: 4}" class="form-group"></va-widget-container>
         </div>
     </div>
 </div>

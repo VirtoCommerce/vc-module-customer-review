@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CustomerReviews.Core.Models
@@ -16,9 +18,38 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
         public string StoreId { get; set; }
         public CustomerReviewStatus ReviewStatus { get; set; }
 
+        #region IHasImages members
+        /// <summary>
+        /// Gets the default image.
+        /// </summary>
+        /// <value>
+        /// The image source URL.
+        /// </value>
+        public string ImgSrc
+        {
+            get
+            {
+                string result = null;
+                if (Images != null && Images.Any())
+                {
+                    result = Images.MinBy(x => x.SortOrder)?.Url;
+                }
+                return result;
+            }
+        }
+
+        public IList<CustomerReviewImage> Images { get; set; }
+        #endregion
+
+        #region ICloneable members
         public object Clone()
         {
-            return MemberwiseClone() as CustomerReview;
+            var result = (CustomerReview)MemberwiseClone();
+
+            result.Images = Images?.Select(x => x.CloneTyped()).ToList();
+
+            return result;
         }
+        #endregion
     }
 }

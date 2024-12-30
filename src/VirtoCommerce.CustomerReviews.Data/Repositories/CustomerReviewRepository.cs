@@ -19,10 +19,11 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         #region CustomerReviews
 
         public IQueryable<CustomerReviewEntity> CustomerReviews => DbContext.Set<CustomerReviewEntity>();
+        public IQueryable<CustomerReviewImageEntity> CustomerReviewImages => DbContext.Set<CustomerReviewImageEntity>();
 
         public async Task<IList<CustomerReviewEntity>> GetByIdsAsync(IList<string> ids)
         {
-            return await CustomerReviews.Where(x => ids.Contains(x.Id)).ToListAsync();
+            return await CustomerReviews.Include(x => x.Images).Where(x => ids.Contains(x.Id)).ToListAsync();
         }
 
         public async Task DeleteCustomerReviewsAsync(IList<string> ids)
@@ -58,21 +59,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
                     Rating = r.Rating,
                     CreatedDate = r.CreatedDate
                 })
-                .ToListAsync();
-        }
-
-        public async Task<IList<RequestReviewEntity>> GetReviewsWithEmptyAccessDate(DateTime maxModifiedDate, int maxRequests)
-        {
-            return await RequestReview
-                .Where(r =>
-                    r.AccessDate == null &&
-                    r.ModifiedDate < maxModifiedDate &&
-                    r.ReviewsRequest < maxRequests &&
-                    !CustomerReviews.Any(cr =>
-                        r.StoreId == cr.StoreId &&
-                        r.EntityId == cr.EntityId &&
-                        r.EntityType == ReviewEntityTypes.Product &&
-                        cr.UserId == r.UserId))
                 .ToListAsync();
         }
 
@@ -131,6 +117,21 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         public void Delete(RequestReviewEntity entity)
         {
             Remove(entity);
+        }
+
+        public async Task<IList<RequestReviewEntity>> GetReviewsWithEmptyAccessDate(DateTime maxModifiedDate, int maxRequests)
+        {
+            return await RequestReview
+                .Where(r =>
+                    r.AccessDate == null &&
+                    r.ModifiedDate < maxModifiedDate &&
+                    r.ReviewsRequest < maxRequests &&
+                    !CustomerReviews.Any(cr =>
+                        r.StoreId == cr.StoreId &&
+                        r.EntityId == cr.EntityId &&
+                        r.EntityType == ReviewEntityTypes.Product &&
+                        cr.UserId == r.UserId))
+                .ToListAsync();
         }
 
         #endregion
