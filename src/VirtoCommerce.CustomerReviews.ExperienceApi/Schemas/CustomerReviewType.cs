@@ -21,6 +21,6 @@ public class CustomerReviewType : ExtendableGraphType<CustomerReview>
         Field(x => x.Title, nullable: true);
         Field(x => x.Review);
         Field(x => x.Rating);
-        Field<CustomerReviewStatusType>("reviewStatus", resolve: context => context.Source.ReviewStatus);
+        Field<CustomerReviewStatusType>("reviewStatus").Resolve(context => context.Source.ReviewStatus);
     }
 }
