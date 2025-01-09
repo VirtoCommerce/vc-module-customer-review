@@ -103,6 +103,14 @@ namespace VirtoCommerce.CustomerReviews.Core
                     DefaultValue = "Average",
                 };
 
+                public static readonly SettingDescriptor ReviewMaximumImages = new SettingDescriptor
+                {
+                    Name = "CustomerReviews.ReviewMaximumImages",
+                    GroupName = "Product Reviews|Product Reviews",
+                    ValueType = SettingValueType.PositiveInteger,
+                    DefaultValue = 5
+                };
+
                 public static IEnumerable<SettingDescriptor> AllSettings
                 {
                     get
@@ -116,6 +124,7 @@ namespace VirtoCommerce.CustomerReviews.Core
                         yield return RequestReviewOrderInState;
                         yield return RequestReviewMaxRequests;
                         yield return CalculationMethod;
+                        yield return ReviewMaximumImages;
                     }
                 }
             }

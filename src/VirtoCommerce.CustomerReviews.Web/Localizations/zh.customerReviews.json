@@ -119,6 +119,10 @@
       "CustomerReviewsRequestReviewMaxRequests": {
         "title": "发送给客户的最大电子邮件数量",
         "description": "限制在指定时间内发送给客户的评论请求电子邮件的最大数量"
+      },
+      "ReviewMaximumImages": {
+        "title": "评论中的最大图片数量",
+        "description": "限制评论中的最大图片数量"
       }
     }
   }

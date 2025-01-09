@@ -119,6 +119,10 @@
       "CustomerReviewsRequestReviewMaxRequests": {
         "title": "Máximo de correos electrónicos enviados al cliente",
         "description": "Limitar el número máximo de correos electrónicos de solicitud de reseña enviados a un cliente dentro de un período de tiempo especificado"
+      },
+      "ReviewMaximumImages": {
+        "title": "Número máximo de imágenes en una reseña",
+        "description": "Limitar el número máximo de imágenes en una reseña"
       }
     }
   }

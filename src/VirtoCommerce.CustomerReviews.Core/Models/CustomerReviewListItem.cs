@@ -43,7 +43,8 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
                 Url = x.Url,
                 RelativeUrl = x.RelativeUrl,
                 Description = x.Description,
-                Name = x.Name
+                Name = x.Name,
+                SortOrder = x.SortOrder
             }).ToList();
         }
     }

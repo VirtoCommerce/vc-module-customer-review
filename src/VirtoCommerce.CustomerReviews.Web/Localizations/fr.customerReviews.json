@@ -119,6 +119,10 @@
       "CustomerReviewsRequestReviewMaxRequests": {
         "title": "Nombre maximum d'e-mails envoyés au client",
         "description": "Limiter le nombre maximum d'e-mails de demande d'avis envoyés à un client dans un délai spécifié"
+      },
+      "ReviewMaximumImages": {
+        "title": "Nombre maximum d'images dans un avis",
+        "description": "Limiter le nombre maximum d'images dans un avis"
       }
     }
   }

@@ -119,6 +119,10 @@
       "CustomerReviewsRequestReviewMaxRequests": {
         "title": "Maksymalna liczba e-maili wysyłanych do klienta",
         "description": "Ogranicz maksymalną liczbę e-maili z prośbą o recenzję wysyłanych do klienta w określonym czasie"
+      },
+      "ReviewMaximumImages": {
+        "title": "Maksymalna liczba obrazów w recenzji",
+        "description": "Ogranicz maksymalną liczbę obrazów w recenzji"
       }
     }
   }

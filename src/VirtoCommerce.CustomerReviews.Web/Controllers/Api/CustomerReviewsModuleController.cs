@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.StoreModule.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
@@ -20,17 +22,20 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         private readonly ICustomerReviewService _customerReviewService;
         private readonly IStoreService _storeService;
         private readonly IRequestReviewService _requestReviewService;
+        private readonly ISettingsManager _settingsManager;
 
         public CustomerReviewsModuleController(
             ICustomerReviewSearchService customerReviewSearchService,
             ICustomerReviewService customerReviewService,
             IStoreService storeService,
-            IRequestReviewService requestReviewService)
+            IRequestReviewService requestReviewService,
+            ISettingsManager settingsManager)
         {
             _customerReviewSearchService = customerReviewSearchService;
             _customerReviewService = customerReviewService;
             _storeService = storeService;
             _requestReviewService = requestReviewService;
+            _settingsManager = settingsManager;
         }
 
         /// <summary>
@@ -142,6 +147,12 @@ namespace VirtoCommerce.CustomerReviews.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Update([FromBody] CustomerReview[] customerReviews)
         {
+            var limit = _settingsManager.GetValue<int>(ModuleConstants.Settings.General.ReviewMaximumImages);
+            if (customerReviews.Any(x => x.Images.Count > limit))
+            {
+                return BadRequest($"The field Images must be an array type with a maximum length of '{limit}'.");
+            }
+
             await _customerReviewService.SaveChangesAsync(customerReviews);
             return NoContent();
         }
