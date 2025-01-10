@@ -12,5 +12,6 @@ public class CreateReviewCommandType : InputObjectGraphType<CreateReviewCommand>
         Field(x => x.EntityType);
         Field(x => x.Review);
         Field(x => x.Rating);
+        Field<ListGraphType<StringGraphType>>(nameof(CreateReviewCommand.ImageUrls));
     }
 }

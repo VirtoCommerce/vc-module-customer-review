@@ -10,6 +10,8 @@ namespace VirtoCommerce.CustomerReviews.Core
 
     public static class ModuleConstants
     {
+        public const string CustomerReviewImagesScope = "review-images";
+
         public static class Security
         {
             public static class Permissions

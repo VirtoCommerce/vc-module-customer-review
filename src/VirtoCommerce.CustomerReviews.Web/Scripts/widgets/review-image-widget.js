@@ -12,14 +12,6 @@ angular.module('VirtoCommerce.CustomerReviews')
                         };
                         dialogService.showGalleryDialog(dialog);
                     }
-//                    var blade = {
-//                        id: "itemImage",
-//                        item: $scope.blade.currentEntity,
-//                        folderPath: catalogImgHelper.getImagesFolderPath($scope.blade.currentEntity.catalogId, $scope.blade.currentEntity.code),
-//                        controller: 'virtoCommerce.catalogModule.imagesController',
-//                        template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/images.tpl.html'
-//                    };
-//                    bladeNavigationService.showBlade(blade, $scope.blade);
                 };
 
                 function setCurrentEntities(images) {

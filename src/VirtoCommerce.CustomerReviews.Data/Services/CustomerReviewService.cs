@@ -127,7 +127,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             foreach (var image in images.Where(x => !string.IsNullOrEmpty(x.Url)))
             {
                 image.RelativeUrl = !string.IsNullOrEmpty(image.RelativeUrl) ? image.RelativeUrl : image.Url;
-                image.Url = _blobUrlResolver.GetAbsoluteUrl(image.Url);
+                image.Url = image.Url.StartsWith("/api") ? image.Url : _blobUrlResolver.GetAbsoluteUrl(image.Url);
             }
         }
     }
