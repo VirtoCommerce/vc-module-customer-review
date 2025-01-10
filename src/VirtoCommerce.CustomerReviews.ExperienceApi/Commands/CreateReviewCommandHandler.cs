@@ -80,7 +80,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
             response.Id = review.Id;
             response.UserName = review.UserName;
 
-            if (files.Count > 0)
+            if (files?.Count > 0)
             {
                 foreach (var file in files)
                 {
