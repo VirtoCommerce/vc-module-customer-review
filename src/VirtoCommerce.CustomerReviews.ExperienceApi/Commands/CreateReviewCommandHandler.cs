@@ -69,20 +69,33 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
                 review.UserName = contact?.FullName ?? currentUser.UserName;
             }
 
+            IList<File> files = null;
+            if (!request.ImageUrls.IsNullOrEmpty())
+            {
+                files = await SaveImages(request, review);
+            }
+
             await _reviewService.SaveChangesAsync([review]);
 
             response.Id = review.Id;
             response.UserName = review.UserName;
 
-            await SaveImages(request, review);
+            if (files.Count > 0)
+            {
+                foreach (var file in files)
+                {
+                    file.OwnerEntityId = review.Id;
+                    file.OwnerEntityType = nameof(CustomerReview);
+                }
 
-            await _reviewService.SaveChangesAsync([review]);
+                await _fileUploadService.SaveChangesAsync(files);
+            }
         }
 
         return response;
     }
 
-    protected virtual async Task SaveImages(CreateReviewCommand request, CustomerReview review)
+    protected virtual async Task<IList<File>> SaveImages(CreateReviewCommand request, CustomerReview review)
     {
         var files = await GetFiles(request.ImageUrls);
         var filesByUrls = files
@@ -101,17 +114,11 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
             if (filesByUrls.TryGetValue(url, out var file))
             {
                 review.Images.Add(ConvertToReviewImage(file));
-
-                file.OwnerEntityId = review.Id;
-                file.OwnerEntityType = nameof(CustomerReview);
                 files.Add(file);
             }
         }
 
-        if (files.Count > 0)
-        {
-            await _fileUploadService.SaveChangesAsync(files);
-        }
+        return files;
     }
 
     protected virtual async Task<IList<File>> GetFiles(IEnumerable<string> urls)
