@@ -1,6 +1,5 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-// using VirtoCommerce.CatalogModule.Data.Model;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
