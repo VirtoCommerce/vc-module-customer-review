@@ -1,5 +1,6 @@
 {
   "customerReviews": {
+    "main-menu-title": "Avaliações e classificações",
     "blades": {
       "review-list": {
         "title": "Avaliações de produtos",
@@ -8,6 +9,9 @@
           "rating": "Classificação",
           "review": "Avaliação",
           "modifiedDate": "Última atualização",
+          "createdDate": "Data de criação",
+          "createdBy": "Criado por",
+          "status": "Status",
           "no-review": "Nenhuma avaliação encontrada"
         },
         "placeholders": {
@@ -21,6 +25,7 @@
         }
       },
       "review-detail": {
+        "title": "Avaliação",
         "labels": {
           "title": "Título",
           "content": "Conteúdo",
