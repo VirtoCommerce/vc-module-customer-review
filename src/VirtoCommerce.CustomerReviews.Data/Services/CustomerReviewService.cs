@@ -102,7 +102,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                     EntityType = customerReviewEntity.EntityType,
                     StoreId = customerReviewEntity.StoreId,
                     OldStatus = (CustomerReviewStatus)customerReviewEntity.ReviewStatus,
-                    NewStatus = status
+                    NewStatus = status,
                 });
                 customerReviewEntity.ReviewStatus = (byte)status;
             }

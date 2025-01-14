@@ -110,7 +110,7 @@ namespace VirtoCommerce.CustomerReviews.Core
                     Name = "CustomerReviews.ReviewMaximumImages",
                     GroupName = "Product Reviews|Product Reviews",
                     ValueType = SettingValueType.PositiveInteger,
-                    DefaultValue = 5
+                    DefaultValue = 5,
                 };
 
                 public static IEnumerable<SettingDescriptor> AllSettings
