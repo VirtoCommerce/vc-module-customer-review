@@ -98,14 +98,16 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
     protected virtual async Task<IList<File>> SaveImages(CreateReviewCommand request, CustomerReview review)
     {
         var files = await GetFiles(request.ImageUrls);
+
         var filesByUrls = files
             .Where(x => x.Scope == ModuleConstants.CustomerReviewImagesScope &&
                         (
-                            (string.IsNullOrEmpty(x.OwnerEntityId) && string.IsNullOrEmpty(x.OwnerEntityType))
-                            ||
-                            (x.OwnerEntityId == review.Id && x.OwnerEntityType == nameof(CustomerReview)))
+                            string.IsNullOrEmpty(x.OwnerEntityId) && string.IsNullOrEmpty(x.OwnerEntityType) ||
+                            x.OwnerEntityId == review.Id && x.OwnerEntityType == nameof(CustomerReview)
                         )
+            )
             .ToDictionary(x => GetFileUrl(x.Id), _ignoreCase);
+
         files = [];
         review.Images = [];
 

@@ -34,14 +34,12 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             _blobUrlResolver = blobUrlResolver;
         }
 
-        protected override Task<IList<CustomerReviewEntity>> LoadEntities(IRepository repository, IList<string> ids,
-            string responseGroup)
+        protected override Task<IList<CustomerReviewEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
         {
             return ((ICustomerReviewRepository)repository).GetByIdsAsync(ids);
         }
 
-        protected override IList<CustomerReview> ProcessModels(IList<CustomerReviewEntity> entities,
-            string responseGroup)
+        protected override IList<CustomerReview> ProcessModels(IList<CustomerReviewEntity> entities, string responseGroup)
         {
             var reviews = base.ProcessModels(entities, responseGroup);
 
