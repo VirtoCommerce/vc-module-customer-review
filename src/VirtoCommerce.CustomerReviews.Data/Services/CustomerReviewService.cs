@@ -90,32 +90,30 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
             var reviewStatusChanges = new List<ReviewStatusChangeData>();
 
-            using (var repository = _repositoryFactory())
+            using var repository = _repositoryFactory();
+            var reviews = await repository.GetByIdsAsync(ids);
+
+            foreach (var customerReviewEntity in reviews)
             {
-                var reviews = await repository.GetByIdsAsync(ids);
-
-                foreach (var customerReviewEntity in reviews)
+                reviewStatusChanges.Add(new ReviewStatusChangeData
                 {
-                    reviewStatusChanges.Add(new ReviewStatusChangeData
-                    {
-                        Id = customerReviewEntity.Id,
-                        EntityId = customerReviewEntity.EntityId,
-                        EntityType = customerReviewEntity.EntityType,
-                        StoreId = customerReviewEntity.StoreId,
-                        OldStatus = (CustomerReviewStatus)customerReviewEntity.ReviewStatus,
-                        NewStatus = status
-                    });
-                    customerReviewEntity.ReviewStatus = (byte)status;
-                }
-
-                await repository.UnitOfWork.CommitAsync();
-
-                GenericCachingRegion<CustomerReview>.ExpireRegion();
-                GenericSearchCachingRegion<CustomerReview>.ExpireRegion();
-
-                await _eventPublisher.Publish(new ReviewStatusChangedEvent(reviewStatusChanges.Select(x =>
-                    new GenericChangedEntry<ReviewStatusChangeData>(x, EntryState.Modified))));
+                    Id = customerReviewEntity.Id,
+                    EntityId = customerReviewEntity.EntityId,
+                    EntityType = customerReviewEntity.EntityType,
+                    StoreId = customerReviewEntity.StoreId,
+                    OldStatus = (CustomerReviewStatus)customerReviewEntity.ReviewStatus,
+                    NewStatus = status
+                });
+                customerReviewEntity.ReviewStatus = (byte)status;
             }
+
+            await repository.UnitOfWork.CommitAsync();
+
+            GenericCachingRegion<CustomerReview>.ExpireRegion();
+            GenericSearchCachingRegion<CustomerReview>.ExpireRegion();
+
+            await _eventPublisher.Publish(new ReviewStatusChangedEvent(reviewStatusChanges.Select(x =>
+                new GenericChangedEntry<ReviewStatusChangeData>(x, EntryState.Modified))));
         }
 
         private void ResolveImageUrls(IList<CustomerReview> reviews)
@@ -124,7 +122,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
 
             foreach (var image in images.Where(x => !string.IsNullOrEmpty(x.Url)))
             {
-                image.RelativeUrl = !string.IsNullOrEmpty(image.RelativeUrl) ? image.RelativeUrl : image.Url;
+                image.RelativeUrl = image.RelativeUrl?.EmptyToNull() ?? image.Url;
                 image.Url = image.Url.StartsWith("/api") ? image.Url : _blobUrlResolver.GetAbsoluteUrl(image.Url);
             }
         }

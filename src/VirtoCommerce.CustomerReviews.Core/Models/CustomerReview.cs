@@ -30,7 +30,7 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
             get
             {
                 string result = null;
-                if (Images != null && Images.Any())
+                if (Images?.Count > 0)
                 {
                     result = Images.MinBy(x => x.SortOrder)?.Url;
                 }

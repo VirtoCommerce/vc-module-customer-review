@@ -123,7 +123,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
         return files;
     }
 
-    protected virtual async Task<IList<File>> GetFiles(IEnumerable<string> urls)
+    protected virtual async Task<IList<File>> GetFiles(IList<string> urls)
     {
         var ids = urls
             .Select(GetFileId)

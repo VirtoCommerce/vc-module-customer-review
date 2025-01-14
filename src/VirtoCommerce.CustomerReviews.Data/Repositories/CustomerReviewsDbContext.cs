@@ -56,7 +56,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
             modelBuilder.Entity<CustomerReviewImageEntity>().ToTable("CustomerReviewImage").HasKey(x => x.Id);
             modelBuilder.Entity<CustomerReviewImageEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            modelBuilder.Entity<CustomerReviewImageEntity>().HasOne(m => m.CustomerReview).WithMany(x => x.Images)
+            modelBuilder.Entity<CustomerReviewImageEntity>().HasOne(x => x.CustomerReview).WithMany(x => x.Images)
                 .HasForeignKey(x => x.CustomerReviewId).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             #endregion CustomerReviewImage
@@ -66,7 +66,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
             // Allows configuration for an entity type for different database types.
             // Applies configuration from all <see cref="IEntityTypeConfiguration{TEntity}" in VirtoCommerce.CustomerReviews.Data.XXX project. /> 
-            switch (this.Database.ProviderName)
+            switch (Database.ProviderName)
             {
                 case "Pomelo.EntityFrameworkCore.MySql":
                     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("VirtoCommerce.CustomerReviews.Data.MySql"));
