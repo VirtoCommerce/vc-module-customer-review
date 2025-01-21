@@ -23,7 +23,12 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
         public async Task<IList<CustomerReviewEntity>> GetByIdsAsync(IList<string> ids)
         {
-            return await CustomerReviews.Include(x => x.Images).Where(x => ids.Contains(x.Id)).ToListAsync();
+            return await CustomerReviews.Where(x => ids.Contains(x.Id)).ToListAsync();
+        }
+
+        public Task LoadImagesByIdsAsync(IList<string> ids)
+        {
+            return CustomerReviewImages.Where(x => ids.Contains(x.CustomerReviewId)).LoadAsync();
         }
 
         public async Task DeleteCustomerReviewsAsync(IList<string> ids)

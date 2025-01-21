@@ -34,9 +34,11 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             _blobUrlResolver = blobUrlResolver;
         }
 
-        protected override Task<IList<CustomerReviewEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
+        protected override async Task<IList<CustomerReviewEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
         {
-            return ((ICustomerReviewRepository)repository).GetByIdsAsync(ids);
+            var reviews = await ((ICustomerReviewRepository)repository).GetByIdsAsync(ids);
+            await ((ICustomerReviewRepository)repository).LoadImagesByIdsAsync(ids);
+            return reviews;
         }
 
         protected override IList<CustomerReview> ProcessModels(IList<CustomerReviewEntity> entities, string responseGroup)

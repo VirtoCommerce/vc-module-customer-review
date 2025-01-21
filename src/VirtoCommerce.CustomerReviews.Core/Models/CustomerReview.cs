@@ -17,29 +17,7 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
         public string EntityName { get; set; }
         public string StoreId { get; set; }
         public CustomerReviewStatus ReviewStatus { get; set; }
-
-        #region IHasImages members
-        /// <summary>
-        /// Gets the default image.
-        /// </summary>
-        /// <value>
-        /// The image source URL.
-        /// </value>
-        public string ImgSrc
-        {
-            get
-            {
-                string result = null;
-                if (Images?.Count > 0)
-                {
-                    result = Images.MinBy(x => x.SortOrder)?.Url;
-                }
-                return result;
-            }
-        }
-
         public IList<CustomerReviewImage> Images { get; set; }
-        #endregion
 
         #region ICloneable members
         public object Clone()
