@@ -15,7 +15,7 @@ public class CustomerReviewImageEntity : AuditableEntity, IDataEntity<CustomerRe
     [StringLength(1024)]
     public string Name { get; set; }
 
-    [StringLength(5)]
+    [StringLength(64)]
     public string LanguageCode { get; set; }
 
     public int SortOrder { get; set; }

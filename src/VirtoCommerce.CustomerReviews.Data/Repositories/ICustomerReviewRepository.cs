@@ -20,8 +20,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         Task<IList<ReviewRatingCalculateDto>> GetCustomerReviewsByStoreProductAsync(string storeId, IList<string> entityIds, string entityType, IList<int> reviewStatuses);
         Task<IList<RequestReviewEntity>> GetReviewsWithEmptyAccessDate(DateTime maxModifiedDate, int maxRequests);
 
-        Task LoadImagesByIdsAsync(IList<string> ids);
-
         #endregion
 
         #region Rating

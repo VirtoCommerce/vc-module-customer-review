@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -18,7 +18,7 @@ namespace VirtoCommerce.CustomerReviews.Data.PostgreSql.Migrations
                     Id = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     Url = table.Column<string>(type: "character varying(2083)", maxLength: 2083, nullable: false),
                     Name = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
-                    LanguageCode = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
+                    LanguageCode = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     SortOrder = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
                     CustomerReviewId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
