@@ -24,15 +24,15 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         public async Task<IList<CustomerReviewEntity>> GetByIdsAsync(IList<string> ids)
         {
             var reviews = await CustomerReviews.Where(x => ids.Contains(x.Id)).ToListAsync();
-            var existIds = reviews.Select(x => x.Id).ToArray();
+            var reviewIds = reviews.Select(x => x.Id).ToArray();
 
-            if (existIds.Length == 1)
+            if (reviewIds.Length == 1)
             {
-                await CustomerReviewImages.Where(x => x.CustomerReviewId == existIds[0]).LoadAsync();
+                await CustomerReviewImages.Where(x => x.CustomerReviewId == reviewIds[0]).LoadAsync();
             }
-            else if (existIds.Length > 1)
+            else if (reviewIds.Length > 1)
             {
-                await CustomerReviewImages.Where(x => existIds.Contains(x.CustomerReviewId)).LoadAsync();
+                await CustomerReviewImages.Where(x => reviewIds.Contains(x.CustomerReviewId)).LoadAsync();
             }
 
             return reviews;
