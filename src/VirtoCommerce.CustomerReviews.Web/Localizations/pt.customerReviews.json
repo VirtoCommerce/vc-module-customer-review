@@ -54,6 +54,9 @@
       },
       "product-rating": {
         "title": "Classificação"
+      },
+      "review-image": {
+        "no-images": "Sem imagens"
       }
     },
     "dialogs": {
@@ -121,6 +124,10 @@
       "CustomerReviewsRequestReviewMaxRequests": {
         "title": "Número máximo de e-mails enviados ao cliente",
         "description": "Limitar o número máximo de e-mails de solicitação de avaliação enviados a um cliente dentro de um período de tempo especificado"
+      },
+      "ReviewMaximumImages": {
+        "title": "Número máximo de imagens em uma avaliação",
+        "description": "Limitar o número máximo de imagens em uma avaliação"
       }
     }
   }

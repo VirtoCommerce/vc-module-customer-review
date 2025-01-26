@@ -9,6 +9,7 @@ using VirtoCommerce.CustomerReviews.ExperienceApi.Models;
 using VirtoCommerce.OrdersModule.Core.Model.Search;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Settings;
 using static VirtoCommerce.OrdersModule.Core.ModuleConstants;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
@@ -20,11 +21,13 @@ public class ReviewValidator : AbstractValidator<CreateReviewCommand>
 
     private readonly ICustomerReviewSearchService _reviewSearchService;
     private readonly ICustomerOrderSearchService _orderSearchService;
+    private readonly ISettingsManager _settingsManager;
 
-    public ReviewValidator(ICustomerReviewSearchService reviewSearchService, ICustomerOrderSearchService orderSearchService)
+    public ReviewValidator(ICustomerReviewSearchService reviewSearchService, ICustomerOrderSearchService orderSearchService, ISettingsManager settingsManager)
     {
         _reviewSearchService = reviewSearchService;
         _orderSearchService = orderSearchService;
+        _settingsManager = settingsManager;
 
         RuleFor(x => x).CustomAsync(Validate);
     }
@@ -54,7 +57,7 @@ public class ReviewValidator : AbstractValidator<CreateReviewCommand>
 
         if (string.IsNullOrEmpty(command.Review) || string.IsNullOrWhiteSpace(command.Review))
         {
-            context.AddFailure(new ReviewValidationError(nameof(command.Rating),
+            context.AddFailure(new ReviewValidationError(nameof(command.Review),
                 $"Property '{nameof(command.Review)}' must be filled in.", "REVIEW_IS_EMPTY"));
         }
 
@@ -62,6 +65,13 @@ public class ReviewValidator : AbstractValidator<CreateReviewCommand>
         {
             context.AddFailure(new ReviewValidationError(nameof(command.Rating),
                 $"Rating should be in the range from {_minRatingValue} to {_maxRatingValue}.", "INVALID_RATING"));
+        }
+
+        var limit = _settingsManager.GetValue<int>(ModuleConstants.Settings.General.ReviewMaximumImages);
+        if (command.ImageUrls.Count > limit)
+        {
+            context.AddFailure(new ReviewValidationError(nameof(command.ImageUrls),
+                $"Property '{nameof(command.ImageUrls)}' must be an array type with a maximum length of '{limit}'.", "IMAGES_LIMIT"));
         }
     }
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Queries;
+using VirtoCommerce.FileExperienceApi.Core.Models;
 using VirtoCommerce.Platform.Core;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Security;
@@ -30,31 +31,34 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerReviewAuthorizationRequirement requirement)
     {
-        var result = context.User.IsInRole(PlatformConstants.Security.SystemRoles.Administrator);
+        var authorized = context.User.IsInRole(PlatformConstants.Security.SystemRoles.Administrator);
 
-        if (!result)
+        if (!authorized)
         {
             var isAuthenticated = context.User.Identity?.IsAuthenticated ?? false;
             var currentUserId = GetUserId(context);
 
             switch (context.Resource)
             {
+                case File:
+                    authorized = true;
+                    break;
                 case CreateCustomerReviewCommand command:
-                    result = isAuthenticated && command.UserId == currentUserId && await IsStoreAvailable(command.StoreId, currentUserId);
+                    authorized = isAuthenticated && command.UserId == currentUserId && await IsStoreAvailable(command.StoreId, currentUserId);
                     break;
                 case CustomerReviewsQuery:
-                    result = true;
+                    authorized = true;
                     break;
                 case CreateReviewCommand command:
-                    result = isAuthenticated && await IsStoreAvailable(command.StoreId, currentUserId);
+                    authorized = isAuthenticated && await IsStoreAvailable(command.StoreId, currentUserId);
                     break;
                 case CanLeaveFeedbackQuery query:
-                    result = isAuthenticated && await IsStoreAvailable(query.StoreId, currentUserId);
+                    authorized = isAuthenticated && await IsStoreAvailable(query.StoreId, currentUserId);
                     break;
             }
         }
 
-        if (result)
+        if (authorized)
         {
             context.Succeed(requirement);
         }

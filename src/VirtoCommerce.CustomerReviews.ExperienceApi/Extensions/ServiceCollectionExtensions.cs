@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Authorization;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
+using VirtoCommerce.FileExperienceApi.Core.Authorization;
 using VirtoCommerce.ProfileExperienceApiModule.Data.Aggregates.Vendor;
 using VirtoCommerce.Xapi.Core.Extensions;
 using VirtoCommerce.Xapi.Core.Infrastructure;
@@ -39,6 +40,7 @@ public static class ServiceCollectionExtensions
 
         serviceCollection.AddTransient<ReviewValidator>();
         serviceCollection.AddSingleton<IAuthorizationHandler, CustomerReviewAuthorizationHandler>();
+        serviceCollection.AddSingleton<IFileAuthorizationRequirementFactory, CustomerReviewImageAuthorizationRequirementFactory>();
 
         return serviceCollection;
     }

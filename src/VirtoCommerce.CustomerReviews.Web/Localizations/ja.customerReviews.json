@@ -54,6 +54,9 @@
       },
       "product-rating": {
         "title": "評価"
+      },
+      "review-image": {
+        "no-images": "画像なし"
       }
     },
     "dialogs": {
@@ -121,6 +124,10 @@
       "CustomerReviewsRequestReviewMaxRequests": {
         "title": "顧客に送信される最大メール数",
         "description": "指定された期間内に顧客に送信されるレビューリクエストメールの最大数を制限します"
+      },
+      "ReviewMaximumImages": {
+        "title": "レビュー内の画像の最大数",
+        "description": "レビュー内の画像の最大数を制限する"
       }
     }
   }

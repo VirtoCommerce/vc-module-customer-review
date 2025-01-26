@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Models;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 using VirtoCommerce.Xapi.Core.Infrastructure;
@@ -17,4 +18,6 @@ public class CreateReviewCommand : ICommand<CreateReviewResult>, ICreateReviewRe
     public string Review { get; set; }
 
     public int Rating { get; set; }
+
+    public IList<string> ImageUrls { get; set; } = [];
 }

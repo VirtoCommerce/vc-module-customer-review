@@ -12,6 +12,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         #region CustomerReviews
 
         IQueryable<CustomerReviewEntity> CustomerReviews { get; }
+        IQueryable<CustomerReviewImageEntity> CustomerReviewImages { get; }
 
         Task<IList<CustomerReviewEntity>> GetByIdsAsync(IList<string> ids);
         Task DeleteCustomerReviewsAsync(IList<string> ids);

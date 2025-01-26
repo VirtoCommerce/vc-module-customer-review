@@ -6,8 +6,10 @@
 
   <platformVersion>3.861.0</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.Catalog" version="3.822.0" />
+    <dependency id="VirtoCommerce.Assets" version="3.809.0" />
+    <dependency id="VirtoCommerce.Catalog" version="3.834.0" />
     <dependency id="VirtoCommerce.Customer" version="3.817.0" />
+    <dependency id="VirtoCommerce.FileExperienceApi" version="3.805.0" />
     <dependency id="VirtoCommerce.Notifications" version="3.809.0" />
     <dependency id="VirtoCommerce.Orders" version="3.832.0" />
     <dependency id="VirtoCommerce.ProfileExperienceApiModule" version="3.817.0" />
