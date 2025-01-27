@@ -52,6 +52,14 @@ angular.module(moduleTemplateName, [])
         };
         widgetService.registerWidget(itemReviewsWidget, 'itemDetail');
 
+        //Register image widget
+        var imageWidget = {
+            controller: 'VirtoCommerce.CustomerReviews.reviewImageWidgetController',
+            size: [2, 2],
+            template: 'Modules/$(VirtoCommerce.CustomerReviews)/Scripts/widgets/review-image-widget.tpl.html'
+        };
+        widgetService.registerWidget(imageWidget, 'reviewDetail');
+
         //Product entityType resolver
         entityTypesResolverService.registerType({
             entityType: 'Product',

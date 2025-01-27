@@ -54,6 +54,9 @@
       },
       "product-rating": {
         "title": "Rating"
+      },
+      "review-image": {
+        "no-images": "No images"
       }
     },
     "dialogs": {
@@ -121,6 +124,10 @@
       "CustomerReviewsRequestReviewMaxRequests": {
         "title": "Maximum e-mails sent to customer",
         "description": "Limit the maximum number of review request emails sent to a customer within a specified timeframe"
+      },
+      "ReviewMaximumImages": {
+        "title": "Maximum number of images in a review",
+        "description": "Limit the maximum number of images in a review"
       }
     }
   }

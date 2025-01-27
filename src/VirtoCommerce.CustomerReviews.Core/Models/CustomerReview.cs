@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CustomerReviews.Core.Models
@@ -15,10 +17,17 @@ namespace VirtoCommerce.CustomerReviews.Core.Models
         public string EntityName { get; set; }
         public string StoreId { get; set; }
         public CustomerReviewStatus ReviewStatus { get; set; }
+        public IList<CustomerReviewImage> Images { get; set; }
 
+        #region ICloneable members
         public object Clone()
         {
-            return MemberwiseClone() as CustomerReview;
+            var result = (CustomerReview)MemberwiseClone();
+
+            result.Images = Images?.Select(x => x.CloneTyped()).ToList();
+
+            return result;
         }
+        #endregion
     }
 }

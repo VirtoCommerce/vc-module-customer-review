@@ -22,8 +22,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
         {
             #region CustomerReview
 
-            modelBuilder.Entity<CustomerReviewEntity>().HasKey(x => x.Id);
-            modelBuilder.Entity<CustomerReviewEntity>().ToTable("CustomerReview");
+            modelBuilder.Entity<CustomerReviewEntity>().ToTable("CustomerReview").HasKey(x => x.Id);
             modelBuilder.Entity<CustomerReviewEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<CustomerReviewEntity>()
                 .HasIndex(x => new { x.StoreId, x.EntityId, x.EntityType, x.ReviewStatus })
@@ -36,9 +35,8 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
             #region Rating
 
-            modelBuilder.Entity<RatingEntity>().HasKey(x => x.Id);
+            modelBuilder.Entity<RatingEntity>().ToTable("Ratings").HasKey(x => x.Id);
             modelBuilder.Entity<RatingEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            modelBuilder.Entity<RatingEntity>().ToTable("Ratings");
             modelBuilder.Entity<RatingEntity>()
                 .HasIndex(x => new { x.StoreId, x.EntityId, x.EntityType })
                 .IsUnique();
@@ -47,20 +45,28 @@ namespace VirtoCommerce.CustomerReviews.Data.Repositories
 
             #region RequestReview
 
-            modelBuilder.Entity<RequestReviewEntity>().HasKey(x => x.Id);
+            modelBuilder.Entity<RequestReviewEntity>().ToTable("RequestReview").HasKey(x => x.Id);
             modelBuilder.Entity<RequestReviewEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            modelBuilder.Entity<RequestReviewEntity>().ToTable("RequestReview");
             modelBuilder.Entity<RequestReviewEntity>().
                 HasIndex(x => new { x.StoreId, x.EntityId, x.EntityType, x.UserId });
 
             #endregion
+
+            #region CustomerReviewImage
+
+            modelBuilder.Entity<CustomerReviewImageEntity>().ToTable("CustomerReviewImage").HasKey(x => x.Id);
+            modelBuilder.Entity<CustomerReviewImageEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
+            modelBuilder.Entity<CustomerReviewImageEntity>().HasOne(x => x.CustomerReview).WithMany(x => x.Images)
+                .HasForeignKey(x => x.CustomerReviewId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+
+            #endregion CustomerReviewImage
 
             base.OnModelCreating(modelBuilder);
 
 
             // Allows configuration for an entity type for different database types.
             // Applies configuration from all <see cref="IEntityTypeConfiguration{TEntity}" in VirtoCommerce.CustomerReviews.Data.XXX project. /> 
-            switch (this.Database.ProviderName)
+            switch (Database.ProviderName)
             {
                 case "Pomelo.EntityFrameworkCore.MySql":
                     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("VirtoCommerce.CustomerReviews.Data.MySql"));

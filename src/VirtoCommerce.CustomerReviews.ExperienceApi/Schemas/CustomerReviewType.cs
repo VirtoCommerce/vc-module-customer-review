@@ -1,3 +1,4 @@
+using GraphQL.Types;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.Xapi.Core.Schemas;
 
@@ -22,5 +23,6 @@ public class CustomerReviewType : ExtendableGraphType<CustomerReview>
         Field(x => x.Review);
         Field(x => x.Rating);
         Field<CustomerReviewStatusType>("reviewStatus").Resolve(context => context.Source.ReviewStatus);
+        ExtendableField<ListGraphType<CustomerReviewImageType>>(nameof(CustomerReview.Images), resolve: context => context.Source.Images);
     }
 }
