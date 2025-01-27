@@ -13,8 +13,8 @@ public class CreateReviewResultType : ExtendableGraphType<CreateReviewResult>
         Field(x => x.Id, nullable: true);
         Field(x => x.UserName, nullable: true);
 
-        Field<NonNullGraphType<ListGraphType<NonNullGraphType<ReviewValidationErrorType>>>>("validationErrors",
-            "A set of errors in case the review is invalid",
-            resolve: context => context.Source.ValidationErrors);
+        Field<NonNullGraphType<ListGraphType<NonNullGraphType<ReviewValidationErrorType>>>>("validationErrors")
+            .Description("A set of errors in case the review is invalid")
+            .Resolve(context => context.Source.ValidationErrors);
     }
 }

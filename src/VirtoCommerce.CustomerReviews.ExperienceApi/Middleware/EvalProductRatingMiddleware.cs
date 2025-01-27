@@ -8,7 +8,7 @@ using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Xapi.Core.Models;
 using VirtoCommerce.XCatalog.Core.Models;
-using VirtoCommerce.XDigitalCatalog.Queries;
+using VirtoCommerce.XCatalog.Core.Queries;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 
