@@ -1,8 +1,10 @@
+using System;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.Xapi.Core.Infrastructure;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
+[Obsolete("Use CreateReviewCommand instead.")]
 public class CreateCustomerReviewCommand : ICommand<CustomerReview>
 {
     public string StoreId { get; set; }
