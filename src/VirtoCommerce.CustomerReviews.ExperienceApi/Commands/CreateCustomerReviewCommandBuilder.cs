@@ -1,5 +1,7 @@
+using System;
 using System.Threading.Tasks;
 using GraphQL;
+using GraphQL.Types;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using VirtoCommerce.CustomerReviews.Core.Models;
@@ -9,6 +11,7 @@ using VirtoCommerce.Xapi.Core.BaseQueries;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
+[Obsolete("Use CreateReviewCommandBuilder instead.")]
 public class CreateCustomerReviewCommandBuilder : CommandBuilder<CreateCustomerReviewCommand, CustomerReview, CreateCustomerReviewCommandType, CustomerReviewType>
 {
     protected override string Name => "createCustomerReview";
@@ -22,5 +25,11 @@ public class CreateCustomerReviewCommandBuilder : CommandBuilder<CreateCustomerR
     {
         await base.BeforeMediatorSend(context, request);
         await Authorize(context, request, new CustomerReviewAuthorizationRequirement());
+    }
+
+    protected override void ConfigureArguments(FieldType builder)
+    {
+        base.ConfigureArguments(builder);
+        builder.DeprecationReason = "Use createReview mutation instead.";
     }
 }

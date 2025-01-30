@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,6 +8,7 @@ using VirtoCommerce.CustomerReviews.Core.Services;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
+[Obsolete("Use CreateReviewCommandHandler instead.")]
 public class CreateCustomerReviewCommandHandler : IRequestHandler<CreateCustomerReviewCommand, CustomerReview>
 {
     private readonly ICustomerReviewService _customerReviewService;

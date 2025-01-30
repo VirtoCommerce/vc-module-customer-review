@@ -38,6 +38,7 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
             var isAuthenticated = context.User.Identity?.IsAuthenticated ?? false;
             var currentUserId = GetUserId(context);
 
+#pragma warning disable CS0618 // Type or member is obsolete
             switch (context.Resource)
             {
                 case File:
@@ -56,6 +57,7 @@ public class CustomerReviewAuthorizationHandler : AuthorizationHandler<CustomerR
                     authorized = isAuthenticated && await IsStoreAvailable(query.StoreId, currentUserId);
                     break;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (authorized)

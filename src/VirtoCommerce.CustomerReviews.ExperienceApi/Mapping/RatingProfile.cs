@@ -28,7 +28,9 @@ public class RatingProfile : Profile
             return result;
         });
 
+#pragma warning disable CS0618 // Type or member is obsolete
         CreateMap<CreateCustomerReviewCommand, CustomerReview>();
+#pragma warning restore CS0618 // Type or member is obsolete
         CreateMap<CreateReviewCommand, CustomerReview>();
     }
 }

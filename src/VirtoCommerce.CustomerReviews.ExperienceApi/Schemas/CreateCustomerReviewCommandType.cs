@@ -1,8 +1,10 @@
+using System;
 using GraphQL.Types;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Schemas;
 
+[Obsolete("Use CreateReviewCommandType instead.")]
 public class CreateCustomerReviewCommandType : InputObjectGraphType<CreateCustomerReviewCommand>
 {
     public CreateCustomerReviewCommandType()
