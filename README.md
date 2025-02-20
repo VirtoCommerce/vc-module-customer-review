@@ -2,7 +2,7 @@
 
 [![CI status](https://github.com/VirtoCommerce/vc-module-customer-review/workflows/Module%20CI/badge.svg?branch=dev)](https://github.com/VirtoCommerce/vc-module-customer-review/actions?query=workflow%3A"Module+CI") [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=alert_status&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Reliability rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=reliability_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Security rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=security_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review) [![Sqale rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-customer-review&metric=sqale_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-customer-review)
 
-The Rating and Reviews module allows your users to add reviews and ratings to entities in your system.
+The Rating and Reviews (or Customer review) module allows your users to add reviews and ratings to entities in your system.
  
 To manage user ratings and reviews, moderate content, and collect information before publishing it live, you can use Admin Portal.
  
@@ -21,17 +21,21 @@ One can leverage rating information for sorting and filtering review objects. Ra
 
 
 ## Documentation
-* [Rating and Reviews Module Documentation](https://virtocommerce.com/docs/latest/modules/customer-review/)
-* [View on GitHub](docs/index.md)
+
+* [Rating and Reviews module user documentation](https://docs.virtocommerce.org/platform/user-guide/rating-reviews/overview/)
+* [GraphQL API documentation](https://docs.virtocommerce.org/platform/developer-guide/GraphQL-Storefront-API-Reference-xAPI/Reviews/overview/)
+* [REST API](https://virtostart-demo-admin.govirto.com/docs/index.html?urls.primaryName=VirtoCommerce.CustomerReviews)
+* [Reviewing products on Frontend](https://docs.virtocommerce.org/storefront/user-guide/account/review-products)
+* [View on GitHub](https://github.com/VirtoCommerce/vc-module-customer-review)
 
 
 ## References
 
-* Deploy: https://virtocommerce.com/docs/latest/developer-guide/deploy-module-from-source-code/
-* Installation: https://www.virtocommerce.com/docs/latest/user-guide/modules/
-* Home: https://virtocommerce.com
-* Community: https://www.virtocommerce.org
-* [Download Latest Release](https://github.com/VirtoCommerce/vc-module-customer-review/releases/latest)
+* [Deployment](https://docs.virtocommerce.org/platform/developer-guide/Tutorials-and-How-tos/Tutorials/deploy-module-from-source-code/)
+* [Installation](https://docs.virtocommerce.org/platform/user-guide/modules-installation/)
+* [Home](https://virtocommerce.com)
+* [Community](https://www.virtocommerce.org)
+* [Download latest release](https://github.com/VirtoCommerce/vc-module-customer-review/releases/latest)
 
 ## License
 
