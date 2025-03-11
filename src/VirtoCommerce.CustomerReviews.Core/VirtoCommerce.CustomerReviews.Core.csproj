@@ -14,10 +14,10 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.CatalogModule.Core" Version="3.834.0" />
+    <PackageReference Include="VirtoCommerce.CatalogModule.Core" Version="3.847.0-alpha.2304-vcst-2821" />
     <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.817.0" />
     <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.809.0" />
     <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.832.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.861.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.877.0" />
   </ItemGroup>
 </Project>

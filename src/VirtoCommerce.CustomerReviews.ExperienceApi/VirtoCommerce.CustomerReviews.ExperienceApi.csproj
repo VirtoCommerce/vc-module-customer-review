@@ -12,9 +12,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="VirtoCommerce.FileExperienceApi.Data" Version="3.903.0" />
-    <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.904.0" />
-    <PackageReference Include="VirtoCommerce.Xapi.Core" Version="3.904.0" />
-    <PackageReference Include="VirtoCommerce.XCatalog.Core" Version="3.905.0" />
+    <PackageReference Include="VirtoCommerce.ProfileExperienceApiModule.Data" Version="3.906.0-alpha.262-vcst-2821" />
+    <PackageReference Include="VirtoCommerce.Xapi.Core" Version="3.906.0-alpha.75-vcst-2821" />
+    <PackageReference Include="VirtoCommerce.XCatalog.Core" Version="3.906.0-alpha.76-vcst-2821" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.CustomerReviews.Core\VirtoCommerce.CustomerReviews.Core.csproj" />
