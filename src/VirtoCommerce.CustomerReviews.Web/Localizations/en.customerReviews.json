@@ -90,16 +90,16 @@
   "settings": {
     "CustomerReviews": {
       "CustomerReviewsEnabled": {
-        "title": "Product reviews activation",
-        "description": "Enable/ disable to allow/prohibit customers to provide feedback and reviews for products"
+        "title": "Product reviews",
+        "description": "Enable or disable the option for customers to provide feedback and reviews for products"
       },
       "CustomerReviewsEnabledForAnonymous": {
         "title": "Anonymous product reviews",
-        "description": "Enable/ disable the ability for non-registered users to submit product reviews"
+        "description": "Allow/ prohibit submitting product reviews to non-registered users"
       },
       "CanSubmitReviewWhenHasOrder": {
         "title": "Only buyers of the product can create new reviews",
-        "description": "Enable to restrict review submissions to customers who have bought the product"
+        "description": "Allow/ prohibit submitting reviews only by customers who purchased the product"
       },
       "Calculation.Method": {
         "title": "Rating calculation method",
