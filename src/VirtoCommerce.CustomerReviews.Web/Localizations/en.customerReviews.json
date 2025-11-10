@@ -9,8 +9,8 @@
           "rating": "Rating",
           "review": "Review",
           "modifiedDate": "Last updated",
-          "createdDate": "Created Date",
-          "createdBy": "Created By",
+          "createdDate": "Created date",
+          "createdBy": "Created by",
           "status": "Status",
           "no-review": "No reviews found"
         },
@@ -32,8 +32,8 @@
           "rating": "Review rating",
           "productName": "Product",
           "storeName": "Store",
-          "createdBy": "Created By",
-          "createdDate": "Created Date",
+          "createdBy": "Created by",
+          "createdDate": "Created date",
           "review": "Review",
           "status": "Status",
           "average-rating": "Average rating"
@@ -95,11 +95,11 @@
       },
       "CustomerReviewsEnabledForAnonymous": {
         "title": "Anonymous product reviews",
-        "description": "Allow/ prohibit submitting product reviews to non-registered users"
+        "description": "Allow/prohibit submitting product reviews to non-registered users"
       },
       "CanSubmitReviewWhenHasOrder": {
         "title": "Only buyers of the product can create new reviews",
-        "description": "Allow/ prohibit submitting reviews only by customers who purchased the product"
+        "description": "Allow/prohibit submitting reviews only by customers who purchased the product"
       },
       "Calculation.Method": {
         "title": "Rating calculation method",
@@ -107,7 +107,7 @@
       },
       "CustomerReviewsEnabledRequestReviewJob": {
         "title": "Automatic activation of review request emails",
-        "description": "Enable/ disable job that sends review request emails to customers after their order remains in a specific state for a defined number of days"
+        "description": "Enable/disable job that sends review request emails to customers after their order remains in a specific state for a defined number of days"
       },
       "CustomerReviewsRequestReviewCronJob": {
         "title": "Cron expression for email job execution",

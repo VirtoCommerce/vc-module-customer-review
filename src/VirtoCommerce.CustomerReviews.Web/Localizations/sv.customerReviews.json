@@ -1,0 +1,134 @@
+{
+  "customerReviews": {
+    "main-menu-title": "Betyg och recensioner",
+    "blades": {
+      "review-list": {
+        "title": "Produktrecensioner",
+        "labels": {
+          "title": "Titel",
+          "rating": "Betyg",
+          "review": "Recension",
+          "modifiedDate": "Senast uppdaterad",
+          "createdDate": "Skapad datum",
+          "createdBy": "Skapad av",
+          "status": "Status",
+          "no-review": "Inga recensioner hittades"
+        },
+        "placeholders": {
+          "select-review-Status": "Välj recensionsstatus",
+          "select-entity-type": "Välj entitetstyp"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Beräkna produktbetyg"
+        }
+      },
+      "review-detail": {
+        "title": "Recension",
+        "labels": {
+          "title": "Titel",
+          "content": "Innehåll",
+          "rating": "Recensionsbetyg",
+          "productName": "Produkt",
+          "storeName": "Butik",
+          "createdBy": "Skapad av",
+          "createdDate": "Skapad datum",
+          "review": "Recension",
+          "status": "Status",
+          "average-rating": "Genomsnittligt betyg"
+        },
+        "commands": {
+          "approve": "Godkänn recension",
+          "reject": "Avvisa recension",
+          "resetReviewStatus": "Återställ recensionsstatus"
+        }
+      },
+      "product-detail": {
+        "description": "Produktdetaljer"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Recensioner"
+      },
+      "product-rating": {
+        "title": "Betyg"
+      },
+      "review-image": {
+        "no-images": "Inga bilder"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Spara ändringar",
+        "message": "Recensionen har ändrats. Vill du spara ändringarna?"
+      },
+      "unknown-entity-type": {
+        "title": "Fel vid identifiering av entitetstyp",
+        "message": "Kan inte lösa okänd typ: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Radera recension",
+        "message": "Denna åtgärd kan påverka betyget. Är du säker på att du vill radera recensionen?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Öppna produktrecensioner",
+    "customerReviews:update": "Godkänna, avvisa och återställa recensionsstatus",
+    "customerReviews:delete": "Radera kundrecensionsrelaterad data",
+    "customerReviews:ratingRead": "Läs betyg",
+    "customerReviews:ratingRecalc": "Omberäkna betyg"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Begäran om produktrecension vid order",
+      "description": "Kunden får ett e-postmeddelande med begäran om att lämna produktrecension när ordern är slutförd och kunden inte har lämnat någon feedback"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Produktrecensioner",
+        "description": "Aktivera eller inaktivera möjligheten för kunder att lämna feedback och recensioner på produkter"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Anonyma produktrecensioner",
+        "description": "Tillåt/förbjuda icke-registrerade användare att lämna produktrecensioner"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Endast köpare av produkten kan skapa nya recensioner",
+        "description": "Tillåt/förbjuda endast kunder som har köpt produkten att lämna recensioner"
+      },
+      "Calculation.Method": {
+        "title": "Betygsberäkningsmetod",
+        "description": "Välj metod för att beräkna betyg"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Automatisk aktivering av recensionsförfrågningar",
+        "description": "Aktivera/inaktivera jobb som skickar e-post med recensionsförfrågan när en order har varit i ett specifikt tillstånd under ett angivet antal dagar"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Cron-uttryck för e-postjobb",
+        "description": "Ange schema för automatisk sändning av recensionsförfrågningar. Exempel:\n- Kör var X:e minut: \"0/X * * * *\"\n- Kör var X:e timme vid minut 00: \"0 */X * * *\"\n- Ange minuter: \"15 */X * * *\"\n- Kör var X:e dag vid midnatt: \"0 0 */X * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Dagar innan ändring av orderstatus",
+        "description": "Ange antal dagar en order måste vara i ett tillstånd innan en övergång utlöses"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "Orderstatus för recensionsförfrågan",
+        "description": "Ange orderstatus som utlöser automatisk sändning av recensionsförfrågan till kunden"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Maximalt antal e-postmeddelanden till kunden",
+        "description": "Begränsa maximalt antal recensionsförfrågningar som skickas till en kund inom en given tidsperiod"
+      },
+      "ReviewMaximumImages": {
+        "title": "Maximalt antal bilder i en recension",
+        "description": "Begränsa maximalt antal bilder i en recension"
+      }
+    }
+  }
+}
