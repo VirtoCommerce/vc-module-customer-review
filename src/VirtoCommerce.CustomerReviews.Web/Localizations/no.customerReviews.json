@@ -1,0 +1,134 @@
+{
+  "customerReviews": {
+    "main-menu-title": "Vurderinger og anmeldelser",
+    "blades": {
+      "review-list": {
+        "title": "Produktanmeldelser",
+        "labels": {
+          "title": "Tittel",
+          "rating": "Vurdering",
+          "review": "Anmeldelse",
+          "modifiedDate": "Sist oppdatert",
+          "createdDate": "Opprettet dato",
+          "createdBy": "Opprettet av",
+          "status": "Status",
+          "no-review": "Ingen anmeldelser funnet"
+        },
+        "placeholders": {
+          "select-review-Status": "Velg anmeldelsesstatus",
+          "select-entity-type": "Velg enhetstype"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Beregn produktvurdering"
+        }
+      },
+      "review-detail": {
+        "title": "Anmeldelse",
+        "labels": {
+          "title": "Tittel",
+          "content": "Innhold",
+          "rating": "Anmeldelsesvurdering",
+          "productName": "Produkt",
+          "storeName": "Butikk",
+          "createdBy": "Opprettet av",
+          "createdDate": "Opprettet dato",
+          "review": "Anmeldelse",
+          "status": "Status",
+          "average-rating": "Gjennomsnittlig vurdering"
+        },
+        "commands": {
+          "approve": "Godkjenn anmeldelse",
+          "reject": "Avvis anmeldelse",
+          "resetReviewStatus": "Tilbakestill anmeldelsesstatus"
+        }
+      },
+      "product-detail": {
+        "description": "Produktdetaljer"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Anmeldelser"
+      },
+      "product-rating": {
+        "title": "Vurdering"
+      },
+      "review-image": {
+        "no-images": "Ingen bilder"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Lagre endringer",
+        "message": "Anmeldelsen er endret. Vil du lagre endringene?"
+      },
+      "unknown-entity-type": {
+        "title": "Feil ved løsning av enhetstype",
+        "message": "Kan ikke løse ukjent type: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Slett anmeldelse",
+        "message": "Denne handlingen kan føre til endring i vurderingen. Er du sikker på at du vil slette anmeldelsen?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Åpne produktanmeldelser",
+    "customerReviews:update": "Godkjenne, avvise og tilbakestille anmeldelsesstatus",
+    "customerReviews:delete": "Slette kundeanmeldelsesrelaterte data",
+    "customerReviews:ratingRead": "Les vurdering",
+    "customerReviews:ratingRecalc": "Gjenberegne vurdering"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Anmeldelsesforespørsel ved ordre",
+      "description": "Kunden mottar en e-post med forespørsel om å gi produktanmeldelse når ordren er fullført og kunden ikke har gitt noen tilbakemelding"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Produktanmeldelser",
+        "description": "Aktiver eller deaktiver muligheten for kunder å gi tilbakemeldinger og anmeldelser på produkter"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Anonyme produktanmeldelser",
+        "description": "Tillat/forby anonyme brukere å sende inn produktanmeldelser"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Kun kjøpere av produktet kan opprette nye anmeldelser",
+        "description": "Tillat/forby kun kunder som har kjøpt produktet å sende inn anmeldelser"
+      },
+      "Calculation.Method": {
+        "title": "Beregningsmetode for vurdering",
+        "description": "Velg metode for å beregne vurderinger"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Automatisk aktivering av anmeldelsesforespørsler",
+        "description": "Aktiver/deaktiver jobb som sender e-post med forespørsel om anmeldelse når en ordre har vært i en bestemt status i et definert antall dager"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Cron-uttrykk for e-postjobb",
+        "description": "Angi tidsplan for automatisk sending av anmeldelsesforespørsler. Eksempler:\n- Kjør hver X minutt: \"0/X * * * *\"\n- Kjør hver X time på minutt 00: \"0 */X * * *\"\n- Angi minutter: \"15 */X * * *\"\n- Kjør hver X dag ved midnatt: \"0 0 */X * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Dager før endring av ordrestatus",
+        "description": "Angi antall dager en ordre må være i en status før en overgang utløses"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "Ordrestatus for anmeldelsesforespørsel",
+        "description": "Angi ordrestatus som utløser automatisk sending av anmeldelsesforespørsel til kunden"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Maksimalt antall e-poster til kunden",
+        "description": "Begrens maksimalt antall forespørsler om anmeldelse sendt til en kunde innenfor en gitt tidsperiode"
+      },
+      "ReviewMaximumImages": {
+        "title": "Maksimalt antall bilder i en anmeldelse",
+        "description": "Begrens maksimalt antall bilder i en anmeldelse"
+      }
+    }
+  }
+}

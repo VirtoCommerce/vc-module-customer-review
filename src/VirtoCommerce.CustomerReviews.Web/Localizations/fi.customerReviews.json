@@ -1,0 +1,134 @@
+{
+  "customerReviews": {
+    "main-menu-title": "Arvostelut ja palaute",
+    "blades": {
+      "review-list": {
+        "title": "Tuotearvostelut",
+        "labels": {
+          "title": "Otsikko",
+          "rating": "Arvosana",
+          "review": "Arvostelu",
+          "modifiedDate": "Viimeksi päivitetty",
+          "createdDate": "Luontipäivä",
+          "createdBy": "Luonut",
+          "status": "Tila",
+          "no-review": "Arvosteluja ei löytynyt"
+        },
+        "placeholders": {
+          "select-review-Status": "Valitse arvostelun tila",
+          "select-entity-type": "Valitse yksikkötyyppi"
+        }
+      },
+      "store": {
+        "calculate-btn": {
+          "title": "Laske tuotteen arvosana"
+        }
+      },
+      "review-detail": {
+        "title": "Arvostelu",
+        "labels": {
+          "title": "Otsikko",
+          "content": "Sisältö",
+          "rating": "Arvostelun arvosana",
+          "productName": "Tuote",
+          "storeName": "Kauppa",
+          "createdBy": "Luonut",
+          "createdDate": "Luontipäivä",
+          "review": "Arvostelu",
+          "status": "Tila",
+          "average-rating": "Keskiarvo"
+        },
+        "commands": {
+          "approve": "Hyväksy arvostelu",
+          "reject": "Hylkää arvostelu",
+          "resetReviewStatus": "Palauta arvostelun tila"
+        }
+      },
+      "product-detail": {
+        "description": "Tuotteen tiedot"
+      }
+    },
+    "widgets": {
+      "item-detail": {
+        "title": "Arvostelut"
+      },
+      "product-rating": {
+        "title": "Arvosana"
+      },
+      "review-image": {
+        "no-images": "Ei kuvia"
+      }
+    },
+    "dialogs": {
+      "customerReview-save": {
+        "title": "Tallenna muutokset",
+        "message": "Arvostelua on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "unknown-entity-type": {
+        "title": "Virhe yksikkötyypin tunnistamisessa",
+        "message": "Ei voida tunnistaa tuntematonta tyyppiä: '{{entityType}}'"
+      },
+      "review-delete": {
+        "title": "Poista arvostelu",
+        "message": "Tämä toiminto voi muuttaa arvosanaa. Haluatko varmasti poistaa arvostelun?"
+      }
+    }
+  },
+  "permissions": {
+    "customerReviews:read": "Avaa tuotearvostelut",
+    "customerReviews:update": "Hyväksy, hylkää ja palauta arvostelun tila",
+    "customerReviews:delete": "Poista asiakasarvosteluihin liittyvät tiedot",
+    "customerReviews:ratingRead": "Lue arvosana",
+    "customerReviews:ratingRecalc": "Laske arvosana uudelleen"
+  },
+  "notificationTypes": {
+    "CustomerReviewEmailNotification": {
+      "displayName": "Arvostelupyyntö tilauksen jälkeen",
+      "description": "Asiakas saa sähköpostiviestin, jossa pyydetään tuotearvostelua, kun tilaus on valmis eikä asiakas ole vielä antanut palautetta"
+    }
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "Tuotearvostelut",
+        "description": "Ota käyttöön tai poista käytöstä asiakkaiden mahdollisuus antaa palautetta ja arvosteluja tuotteista"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "Anonyymit tuotearvostelut",
+        "description": "Salli/estä rekisteröitymättömät käyttäjät lähettämästä tuotearvosteluja"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "Vain tuotteen ostajat voivat luoda arvosteluja",
+        "description": "Salli/estä vain tuotteen ostaneet asiakkaat lähettämästä arvosteluja"
+      },
+      "Calculation.Method": {
+        "title": "Arvosanan laskentatapa",
+        "description": "Valitse menetelmä arvosanan laskemiseen"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "Automaattiset arvostelupyynnöt",
+        "description": "Ota käyttöön/poista käytöstä tehtävä, joka lähettää arvostelupyyntöjä, kun tilaus on ollut tietyssä tilassa määritetyn ajan"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "Cron-lauseke arvostelupyyntöjen ajastukseen",
+        "description": "Määritä arvostelupyyntöjen lähetysaika. Esimerkkejä:\n- Suorita joka X minuutti: \"0/X * * * *\"\n- Suorita joka X tunti minuutilla 00: \"0 */X * * *\"\n- Määritä minuutit: \"15 */X * * *\"\n- Suorita joka X päivä keskiyöllä: \"0 0 */X * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "Päivät ennen tilan vaihtoa",
+        "description": "Määritä, kuinka monta päivää tilauksen on oltava tilassa ennen tilan vaihtoa"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "Tila, joka laukaisee arvostelupyynnön",
+        "description": "Määritä tilauksen tila, joka käynnistää automaattisen arvostelupyynnön asiakkaalle"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "Enimmäismäärä sähköposteja asiakkaalle",
+        "description": "Rajoita lähetettävien arvostelupyyntöjen enimmäismäärä asiakkaalle tietyn ajan kuluessa"
+      },
+      "ReviewMaximumImages": {
+        "title": "Enimmäismäärä kuvia arvostelussa",
+        "description": "Rajoita kuvien enimmäismäärä yhdessä arvostelussa"
+      }
+    }
+  }
+}
