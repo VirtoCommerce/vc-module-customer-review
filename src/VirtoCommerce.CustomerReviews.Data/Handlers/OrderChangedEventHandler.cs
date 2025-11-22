@@ -58,7 +58,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Handlers
 
         protected virtual bool IsOrderInState(GenericChangedEntry<CustomerOrder> changedEntry, string state)
         {
-            var result = changedEntry.OldEntry.Status != changedEntry.NewEntry.Status && changedEntry.NewEntry.Status.EqualsInvariant(state);
+            var result = changedEntry.OldEntry.Status != changedEntry.NewEntry.Status && changedEntry.NewEntry.Status.EqualsIgnoreCase(state);
             return result;
         }
 
