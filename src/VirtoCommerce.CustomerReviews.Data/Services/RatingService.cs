@@ -116,21 +116,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
             }
         }
 
-        public async Task<RatingProductDto[]> GetForStoreAsync(string storeId, string[] productIds)
-        {
-            using (var repository = _repositoryFactory())
-            {
-                var ratings = await repository.GetAsync(storeId, productIds, ReviewEntityTypes.Product);
-
-                return ratings.Select(x => new RatingProductDto
-                {
-                    Value = x.Value,
-                    ProductId = x.EntityId,
-                    ReviewCount = x.ReviewCount,
-                }).ToArray();
-            }
-        }
-
         public async Task<RatingEntityDto[]> GetForStoreAsync(string storeId, string[] entityIds, string entityType)
         {
             using (var repository = _repositoryFactory())
@@ -145,43 +130,6 @@ namespace VirtoCommerce.CustomerReviews.Data.Services
                     ReviewCount = x.ReviewCount,
                 }).ToArray();
             }
-        }
-
-        public async Task<RatingStoreDto[]> GetForCatalogAsync(string catalogId, string[] productIds)
-        {
-            var storeSearchCriteria = AbstractTypeFactory<StoreSearchCriteria>.TryCreateInstance();
-            storeSearchCriteria.Take = int.MaxValue;
-
-            var storeSearchResult = await _storeSearchService.SearchNoCloneAsync(storeSearchCriteria);
-
-            var result = new List<RatingStoreDto>();
-
-            using (var repository = _repositoryFactory())
-            {
-                var stores = storeSearchResult.Results;
-                if (!string.IsNullOrEmpty(catalogId))
-                {
-                    stores = stores.Where(s => s.Catalog == catalogId).ToList();
-                }
-
-                foreach (var store in stores)
-                {
-                    var ratings = await repository.GetAsync(store.Id, productIds, ReviewEntityTypes.Product);
-                    if (ratings.Any())
-                    {
-                        result.AddRange(ratings.Select(x => new RatingStoreDto
-                        {
-                            StoreId = store.Id,
-                            StoreName = store.Name,
-                            ProductId = x.EntityId,
-                            Value = x.Value,
-                            ReviewCount = x.ReviewCount,
-                        }));
-                    }
-                }
-            }
-
-            return result.ToArray();
         }
 
         public async Task<RatingEntityStoreDto[]> GetRatingsAsync(string[] entityIds, string entityType)
