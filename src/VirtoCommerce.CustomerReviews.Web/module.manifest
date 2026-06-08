@@ -30,7 +30,7 @@
     <owner>Virto Commerce</owner>
   </owners>
   <projectUrl>https://github.com/VirtoCommerce/vc-module-customer-review</projectUrl>
-  <iconUrl>Modules/$(VirtoCommerce.CustomerReviews)/Content/logo.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.CustomerReviews)/Content/logo.svg</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <copyright>Copyright © 2011-2026 Virto Commerce. All rights reserved</copyright>
   <tags>customer review</tags>

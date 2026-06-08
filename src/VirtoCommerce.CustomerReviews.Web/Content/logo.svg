@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Customer Reviews">
+  <title>Customer Reviews</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="92%" y2="100%">
+      <stop offset="0%" stop-color="#F87FAC"/>
+      <stop offset="100%" stop-color="#DB3E78"/>
+    </linearGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#7A1A40" flood-opacity="0.30"/>
+    </filter>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <g transform="translate(64,62)" filter="url(#lift)">
+    <!-- Review bubble -->
+    <rect x="-44" y="-42" width="88" height="62" rx="12" fill="#ffffff"/>
+    <polygon points="-26,16 -6,16 -22,36" fill="#ffffff"/>
+
+    <!-- Star rating -->
+    <g>
+      <path d="M0,-10 L2.94,-4.05 L9.51,-3.09 L4.76,1.55 L5.88,8.09 L0,5 L-5.88,8.09 L-4.76,1.55 L-9.51,-3.09 L-2.94,-4.05 Z" transform="translate(-32,-22) scale(0.82)" fill="#FFC24D"/>
+      <path d="M0,-10 L2.94,-4.05 L9.51,-3.09 L4.76,1.55 L5.88,8.09 L0,5 L-5.88,8.09 L-4.76,1.55 L-9.51,-3.09 L-2.94,-4.05 Z" transform="translate(-16,-22) scale(0.82)" fill="#FFC24D"/>
+      <path d="M0,-10 L2.94,-4.05 L9.51,-3.09 L4.76,1.55 L5.88,8.09 L0,5 L-5.88,8.09 L-4.76,1.55 L-9.51,-3.09 L-2.94,-4.05 Z" transform="translate(0,-22) scale(0.82)" fill="#FFC24D"/>
+      <path d="M0,-10 L2.94,-4.05 L9.51,-3.09 L4.76,1.55 L5.88,8.09 L0,5 L-5.88,8.09 L-4.76,1.55 L-9.51,-3.09 L-2.94,-4.05 Z" transform="translate(16,-22) scale(0.82)" fill="#FFC24D"/>
+      <path d="M0,-10 L2.94,-4.05 L9.51,-3.09 L4.76,1.55 L5.88,8.09 L0,5 L-5.88,8.09 L-4.76,1.55 L-9.51,-3.09 L-2.94,-4.05 Z" transform="translate(32,-22) scale(0.82)" fill="#E7CBD6"/>
+    </g>
+
+    <!-- Review text -->
+    <line x1="-32" y1="2" x2="30" y2="2" stroke="#CBD8E6" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="-32" y1="12" x2="8" y2="12" stroke="#CBD8E6" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>
