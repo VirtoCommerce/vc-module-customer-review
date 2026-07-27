@@ -1,3 +1,4 @@
+using System;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using VirtoCommerce.CustomerReviews.Core.Models;
@@ -10,7 +11,12 @@ public class CustomerReviewQueryBuilder : SearchQueryBuilder<CustomerReviewsQuer
 {
     protected override string Name => "customerReviews";
 
-    public CustomerReviewQueryBuilder(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)
+    public CustomerReviewQueryBuilder(IAuthorizationService authorizationService) : base(authorizationService)
+    {
+    }
+
+    [Obsolete("Use the constructor without IMediator. The mediator is resolved from context.RequestServices per request.", DiagnosticId = "VC0015", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public CustomerReviewQueryBuilder(IMediator mediator, IAuthorizationService authorizationService) : this(authorizationService)
     {
     }
 }
