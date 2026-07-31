@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using VirtoCommerce.CatalogModule.Core.Model;
@@ -8,7 +9,6 @@ using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
-using VirtoCommerce.ProfileExperienceApiModule.Data;
 using VirtoCommerce.ProfileExperienceApiModule.Data.Aggregates.Vendor;
 using VirtoCommerce.Xapi.Core.Models;
 using VirtoCommerce.XCatalog.Core.Models;
@@ -20,6 +20,9 @@ namespace VirtoCommerce.CustomerReviews.Test
     [Trait("Category", "UnitTest")]
     public class RatingMappingTests
     {
+        private static readonly string[] _vendorIds = ["V1"];
+        private static readonly string[] _productIds = ["P1"];
+
         [Fact]
         public void Maps_RatingEntityDto_To_ExpRating()
         {
@@ -100,7 +103,7 @@ namespace VirtoCommerce.CustomerReviews.Test
 
             var ratingServiceMock = new Mock<IRatingService>();
             ratingServiceMock
-                .Setup(x => x.GetRatingsAsync(new[] { "V1" }, "Vendor"))
+                .Setup(x => x.GetRatingsAsync(_vendorIds, "Vendor"))
                 .ReturnsAsync(ratings);
 
             var middleware = new EvalVendorRatingMiddleware(ratingServiceMock.Object);
@@ -108,8 +111,7 @@ namespace VirtoCommerce.CustomerReviews.Test
             await middleware.Run(vendorAggregate, _ => Task.CompletedTask);
 
             Assert.NotNull(vendorAggregate.Ratings);
-            var mapped = Assert.IsAssignableFrom<System.Collections.Generic.IEnumerable<ExpVendorRating>>(vendorAggregate.Ratings);
-            var mappedArray = System.Linq.Enumerable.ToArray(mapped);
+            var mappedArray = vendorAggregate.Ratings.ToArray();
             Assert.Equal(2, mappedArray.Length);
             Assert.Contains(mappedArray, r => r.StoreId == "Store1" && r.Value == 4.0m && r.ReviewCount == 3);
             Assert.Contains(mappedArray, r => r.StoreId == "Store2" && r.Value == 5.0m && r.ReviewCount == 1);
@@ -128,7 +130,7 @@ namespace VirtoCommerce.CustomerReviews.Test
 
             var ratingServiceMock = new Mock<IRatingService>();
             ratingServiceMock
-                .Setup(x => x.GetForStoreAsync("Store1", new[] { "P1" }, ReviewEntityTypes.Product))
+                .Setup(x => x.GetForStoreAsync("Store1", _productIds, ReviewEntityTypes.Product))
                 .ReturnsAsync([new RatingEntityDto { EntityId = "P1", EntityType = ReviewEntityTypes.Product, Value = 4.2m, ReviewCount = 8 }]);
 
             var middleware = new EvalProductRatingMiddleware(ratingServiceMock.Object);
@@ -154,7 +156,7 @@ namespace VirtoCommerce.CustomerReviews.Test
 
             var ratingServiceMock = new Mock<IRatingService>();
             ratingServiceMock
-                .Setup(x => x.GetForStoreAsync("Store1", new[] { "V1" }, "Vendor"))
+                .Setup(x => x.GetForStoreAsync("Store1", _vendorIds, "Vendor"))
                 .ReturnsAsync([new RatingEntityDto { EntityId = "V1", EntityType = "Vendor", Value = 3.9m, ReviewCount = 2 }]);
 
             var middleware = new EvalProductVendorRatingMiddleware(ratingServiceMock.Object);
