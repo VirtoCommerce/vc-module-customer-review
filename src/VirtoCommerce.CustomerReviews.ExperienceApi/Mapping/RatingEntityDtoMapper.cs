@@ -4,9 +4,9 @@ using VirtoCommerce.Xapi.Core.Models;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 
-public static class RatingEntityDtoExtensions
+public class RatingEntityDtoMapper : IRatingEntityDtoMapper
 {
-    public static ExpRating ToExpRating(this RatingEntityDto source)
+    public ExpRating ToExpRating(RatingEntityDto source)
     {
         var result = AbstractTypeFactory<ExpRating>.TryCreateInstance();
         result.Value = source.Value;

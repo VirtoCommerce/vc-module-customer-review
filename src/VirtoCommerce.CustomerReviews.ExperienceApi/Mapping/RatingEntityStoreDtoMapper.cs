@@ -4,9 +4,9 @@ using VirtoCommerce.ProfileExperienceApiModule.Data;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 
-public static class RatingEntityStoreDtoExtensions
+public class RatingEntityStoreDtoMapper : IRatingEntityStoreDtoMapper
 {
-    public static ExpVendorRating ToExpVendorRating(this RatingEntityStoreDto source)
+    public ExpVendorRating ToExpVendorRating(RatingEntityStoreDto source)
     {
         var result = AbstractTypeFactory<ExpVendorRating>.TryCreateInstance();
         result.StoreId = source.StoreId;

@@ -34,7 +34,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 ReviewCount = 10,
             };
 
-            var result = source.ToExpRating();
+            var result = new RatingEntityDtoMapper().ToExpRating(source);
 
             Assert.NotNull(result);
             Assert.Equal(source.Value, result.Value);
@@ -54,7 +54,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 ReviewCount = 7,
             };
 
-            var result = source.ToExpVendorRating();
+            var result = new RatingEntityStoreDtoMapper().ToExpVendorRating(source);
 
             Assert.NotNull(result);
             Assert.Equal(source.StoreId, result.StoreId);
@@ -76,7 +76,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 ImageUrls = ["/api/files/img1"],
             };
 
-            var result = source.ToCustomerReview();
+            var result = new CreateReviewCommandMapper().ToCustomerReview(source);
 
             Assert.NotNull(result);
             Assert.Equal(source.StoreId, result.StoreId);
@@ -106,7 +106,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 .Setup(x => x.GetRatingsAsync(_vendorIds, "Vendor"))
                 .ReturnsAsync(ratings);
 
-            var middleware = new EvalVendorRatingMiddleware(ratingServiceMock.Object);
+            var middleware = new EvalVendorRatingMiddleware(ratingServiceMock.Object, new RatingEntityStoreDtoMapper());
 
             await middleware.Run(vendorAggregate, _ => Task.CompletedTask);
 
@@ -133,7 +133,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 .Setup(x => x.GetForStoreAsync("Store1", _productIds, ReviewEntityTypes.Product))
                 .ReturnsAsync([new RatingEntityDto { EntityId = "P1", EntityType = ReviewEntityTypes.Product, Value = 4.2m, ReviewCount = 8 }]);
 
-            var middleware = new EvalProductRatingMiddleware(ratingServiceMock.Object);
+            var middleware = new EvalProductRatingMiddleware(ratingServiceMock.Object, new RatingEntityDtoMapper());
 
             await middleware.Run(response, _ => Task.CompletedTask);
 
@@ -159,7 +159,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 .Setup(x => x.GetForStoreAsync("Store1", _vendorIds, "Vendor"))
                 .ReturnsAsync([new RatingEntityDto { EntityId = "V1", EntityType = "Vendor", Value = 3.9m, ReviewCount = 2 }]);
 
-            var middleware = new EvalProductVendorRatingMiddleware(ratingServiceMock.Object);
+            var middleware = new EvalProductVendorRatingMiddleware(ratingServiceMock.Object, new RatingEntityDtoMapper());
 
             await middleware.Run(response, _ => Task.CompletedTask);
 

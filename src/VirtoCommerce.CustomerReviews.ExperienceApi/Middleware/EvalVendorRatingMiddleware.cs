@@ -11,10 +11,12 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 public class EvalVendorRatingMiddleware : IAsyncMiddleware<VendorAggregate>
 {
     private readonly IRatingService _ratingService;
+    private readonly IRatingEntityStoreDtoMapper _mapper;
 
-    public EvalVendorRatingMiddleware(IRatingService ratingService)
+    public EvalVendorRatingMiddleware(IRatingService ratingService, IRatingEntityStoreDtoMapper mapper)
     {
         _ratingService = ratingService;
+        _mapper = mapper;
     }
 
     public virtual async Task Run(VendorAggregate parameter, Func<VendorAggregate, Task> next)
@@ -22,7 +24,7 @@ public class EvalVendorRatingMiddleware : IAsyncMiddleware<VendorAggregate>
         ArgumentNullException.ThrowIfNull(parameter);
 
         var ratings = await _ratingService.GetRatingsAsync(new[] { parameter.Member.Id }, parameter.Member.MemberType);
-        parameter.Ratings = ratings.Select(rating => rating.ToExpVendorRating()).ToArray();
+        parameter.Ratings = ratings.Select(_mapper.ToExpVendorRating).ToArray();
 
         await next(parameter);
     }

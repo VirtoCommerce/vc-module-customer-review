@@ -4,9 +4,9 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 
-public static class CreateReviewCommandExtensions
+public class CreateReviewCommandMapper : ICreateReviewCommandMapper
 {
-    public static CustomerReview ToCustomerReview(this CreateReviewCommand source)
+    public CustomerReview ToCustomerReview(CreateReviewCommand source)
     {
         var result = AbstractTypeFactory<CustomerReview>.TryCreateInstance();
         result.StoreId = source.StoreId;

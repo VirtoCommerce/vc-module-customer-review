@@ -14,10 +14,12 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 public class EvalProductRatingMiddleware : IAsyncMiddleware<SearchProductResponse>
 {
     private readonly IRatingService _ratingService;
+    private readonly IRatingEntityDtoMapper _mapper;
 
-    public EvalProductRatingMiddleware(IRatingService ratingService)
+    public EvalProductRatingMiddleware(IRatingService ratingService, IRatingEntityDtoMapper mapper)
     {
         _ratingService = ratingService;
+        _mapper = mapper;
     }
 
     public virtual async Task Run(SearchProductResponse parameter, Func<SearchProductResponse, Task> next)
@@ -58,7 +60,7 @@ public class EvalProductRatingMiddleware : IAsyncMiddleware<SearchProductRespons
                 {
                     if (ratingByIds.TryGetValue(product.Id, out var rating))
                     {
-                        product.Rating = rating.ToExpRating();
+                        product.Rating = _mapper.ToExpRating(rating);
                     }
                 });
         }
