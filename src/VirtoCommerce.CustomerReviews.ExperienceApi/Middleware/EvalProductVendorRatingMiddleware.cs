@@ -14,13 +14,13 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 
 public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductResponse>
 {
-    private readonly IRatingService _ratingService;
     private readonly ICustomerReviewMapper _mapper;
+    private readonly IRatingService _ratingService;
 
-    public EvalProductVendorRatingMiddleware(IRatingService ratingService, ICustomerReviewMapper mapper)
+    public EvalProductVendorRatingMiddleware(ICustomerReviewMapper mapper, IRatingService ratingService)
     {
-        _ratingService = ratingService;
         _mapper = mapper;
+        _ratingService = ratingService;
     }
 
     public virtual async Task Run(SearchProductResponse parameter, Func<SearchProductResponse, Task> next)

@@ -10,13 +10,13 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 
 public class EvalVendorRatingMiddleware : IAsyncMiddleware<VendorAggregate>
 {
-    private readonly IRatingService _ratingService;
     private readonly ICustomerReviewMapper _mapper;
+    private readonly IRatingService _ratingService;
 
-    public EvalVendorRatingMiddleware(IRatingService ratingService, ICustomerReviewMapper mapper)
+    public EvalVendorRatingMiddleware(ICustomerReviewMapper mapper, IRatingService ratingService)
     {
-        _ratingService = ratingService;
         _mapper = mapper;
+        _ratingService = ratingService;
     }
 
     public virtual async Task Run(VendorAggregate parameter, Func<VendorAggregate, Task> next)

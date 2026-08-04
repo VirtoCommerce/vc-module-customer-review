@@ -24,28 +24,28 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
 {
     private readonly IMemberService _memberService;
     private readonly ICustomerReviewService _reviewService;
+    private readonly ICustomerReviewMapper _mapper;
     private readonly IFileUploadService _fileUploadService;
     private readonly Func<UserManager<ApplicationUser>> _userManagerFactory;
     private readonly ReviewValidator _reviewValidator;
-    private readonly ICustomerReviewMapper _mapper;
 
     private const string _attachmentsUrlPrefix = "/api/files/";
     private readonly StringComparer _ignoreCase = StringComparer.OrdinalIgnoreCase;
 
     public CreateReviewCommandHandler(
         ICustomerReviewService reviewService,
+        ICustomerReviewMapper mapper,
         IMemberService memberService,
         IFileUploadService fileUploadService,
         Func<UserManager<ApplicationUser>> userManagerFactory,
-        ReviewValidator reviewValidator,
-        ICustomerReviewMapper mapper)
+        ReviewValidator reviewValidator)
     {
         _reviewService = reviewService;
+        _mapper = mapper;
         _memberService = memberService;
         _fileUploadService = fileUploadService;
         _userManagerFactory = userManagerFactory;
         _reviewValidator = reviewValidator;
-        _mapper = mapper;
     }
 
     public async Task<CreateReviewResult> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
