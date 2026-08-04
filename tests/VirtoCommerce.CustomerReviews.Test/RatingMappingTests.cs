@@ -122,9 +122,11 @@ namespace VirtoCommerce.CustomerReviews.Test
             var services = new ServiceCollection();
             services.AddExperienceApi();
 
-            var mapper = services.BuildServiceProvider().GetRequiredService<ICustomerReviewMapper>();
+            var descriptor = services.SingleOrDefault(x => x.ServiceType == typeof(ICustomerReviewMapper));
 
-            Assert.IsType<CustomerReviewMapper>(mapper);
+            Assert.True(descriptor != null, "ICustomerReviewMapper is not registered in AddExperienceApi()");
+            Assert.Equal(typeof(CustomerReviewMapper), descriptor.ImplementationType);
+            Assert.Equal(ServiceLifetime.Singleton, descriptor.Lifetime);
         }
 
         [Fact]
