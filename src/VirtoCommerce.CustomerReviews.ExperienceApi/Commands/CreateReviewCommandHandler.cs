@@ -27,7 +27,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
     private readonly IFileUploadService _fileUploadService;
     private readonly Func<UserManager<ApplicationUser>> _userManagerFactory;
     private readonly ReviewValidator _reviewValidator;
-    private readonly ICreateReviewCommandMapper _mapper;
+    private readonly ICustomerReviewMapper _mapper;
 
     private const string _attachmentsUrlPrefix = "/api/files/";
     private readonly StringComparer _ignoreCase = StringComparer.OrdinalIgnoreCase;
@@ -38,7 +38,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
         IFileUploadService fileUploadService,
         Func<UserManager<ApplicationUser>> userManagerFactory,
         ReviewValidator reviewValidator,
-        ICreateReviewCommandMapper mapper)
+        ICustomerReviewMapper mapper)
     {
         _reviewService = reviewService;
         _memberService = memberService;

@@ -11,9 +11,9 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 public class EvalVendorRatingMiddleware : IAsyncMiddleware<VendorAggregate>
 {
     private readonly IRatingService _ratingService;
-    private readonly IRatingEntityStoreDtoMapper _mapper;
+    private readonly ICustomerReviewMapper _mapper;
 
-    public EvalVendorRatingMiddleware(IRatingService ratingService, IRatingEntityStoreDtoMapper mapper)
+    public EvalVendorRatingMiddleware(IRatingService ratingService, ICustomerReviewMapper mapper)
     {
         _ratingService = ratingService;
         _mapper = mapper;

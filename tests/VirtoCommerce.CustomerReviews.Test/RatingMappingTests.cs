@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CustomerModule.Core.Model;
@@ -34,11 +35,19 @@ namespace VirtoCommerce.CustomerReviews.Test
                 ReviewCount = 10,
             };
 
-            var result = new RatingEntityDtoMapper().ToExpRating(source);
+            var result = new CustomerReviewMapper().ToExpRating(source);
 
             Assert.NotNull(result);
             Assert.Equal(source.Value, result.Value);
             Assert.Equal(source.ReviewCount, result.ReviewCount);
+        }
+
+        [Fact]
+        public void Maps_Null_RatingEntityDto_To_Null()
+        {
+            var result = new CustomerReviewMapper().ToExpRating(null);
+
+            Assert.Null(result);
         }
 
         [Fact]
@@ -54,12 +63,20 @@ namespace VirtoCommerce.CustomerReviews.Test
                 ReviewCount = 7,
             };
 
-            var result = new RatingEntityStoreDtoMapper().ToExpVendorRating(source);
+            var result = new CustomerReviewMapper().ToExpVendorRating(source);
 
             Assert.NotNull(result);
             Assert.Equal(source.StoreId, result.StoreId);
             Assert.Equal(source.Value, result.Value);
             Assert.Equal(source.ReviewCount, result.ReviewCount);
+        }
+
+        [Fact]
+        public void Maps_Null_RatingEntityStoreDto_To_Null()
+        {
+            var result = new CustomerReviewMapper().ToExpVendorRating(null);
+
+            Assert.Null(result);
         }
 
         [Fact]
@@ -76,7 +93,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 ImageUrls = ["/api/files/img1"],
             };
 
-            var result = new CreateReviewCommandMapper().ToCustomerReview(source);
+            var result = new CustomerReviewMapper().ToCustomerReview(source);
 
             Assert.NotNull(result);
             Assert.Equal(source.StoreId, result.StoreId);
@@ -85,6 +102,28 @@ namespace VirtoCommerce.CustomerReviews.Test
             Assert.Equal(source.UserId, result.UserId);
             Assert.Equal(source.Review, result.Review);
             Assert.Equal(source.Rating, result.Rating);
+            // ImageUrls is intentionally not mapped here: CreateReviewCommandHandler populates
+            // review.Images separately (via SaveImages), after resolving the uploaded files.
+            Assert.Null(result.Images);
+        }
+
+        [Fact]
+        public void Maps_Null_CreateReviewCommand_To_Null()
+        {
+            var result = new CustomerReviewMapper().ToCustomerReview(null);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void CustomerReviewMapper_Is_Resolvable_From_DI()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<ICustomerReviewMapper, CustomerReviewMapper>();
+
+            var mapper = services.BuildServiceProvider().GetRequiredService<ICustomerReviewMapper>();
+
+            Assert.IsType<CustomerReviewMapper>(mapper);
         }
 
         [Fact]
@@ -106,7 +145,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 .Setup(x => x.GetRatingsAsync(_vendorIds, "Vendor"))
                 .ReturnsAsync(ratings);
 
-            var middleware = new EvalVendorRatingMiddleware(ratingServiceMock.Object, new RatingEntityStoreDtoMapper());
+            var middleware = new EvalVendorRatingMiddleware(ratingServiceMock.Object, new CustomerReviewMapper());
 
             await middleware.Run(vendorAggregate, _ => Task.CompletedTask);
 
@@ -133,7 +172,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 .Setup(x => x.GetForStoreAsync("Store1", _productIds, ReviewEntityTypes.Product))
                 .ReturnsAsync([new RatingEntityDto { EntityId = "P1", EntityType = ReviewEntityTypes.Product, Value = 4.2m, ReviewCount = 8 }]);
 
-            var middleware = new EvalProductRatingMiddleware(ratingServiceMock.Object, new RatingEntityDtoMapper());
+            var middleware = new EvalProductRatingMiddleware(ratingServiceMock.Object, new CustomerReviewMapper());
 
             await middleware.Run(response, _ => Task.CompletedTask);
 
@@ -159,7 +198,7 @@ namespace VirtoCommerce.CustomerReviews.Test
                 .Setup(x => x.GetForStoreAsync("Store1", _vendorIds, "Vendor"))
                 .ReturnsAsync([new RatingEntityDto { EntityId = "V1", EntityType = "Vendor", Value = 3.9m, ReviewCount = 2 }]);
 
-            var middleware = new EvalProductVendorRatingMiddleware(ratingServiceMock.Object, new RatingEntityDtoMapper());
+            var middleware = new EvalProductVendorRatingMiddleware(ratingServiceMock.Object, new CustomerReviewMapper());
 
             await middleware.Run(response, _ => Task.CompletedTask);
 

@@ -39,9 +39,7 @@ public static class ServiceCollectionExtensions
 
         serviceCollection.AddTransient<ReviewValidator>();
 
-        serviceCollection.AddTransient<IRatingEntityDtoMapper, RatingEntityDtoMapper>();
-        serviceCollection.AddTransient<IRatingEntityStoreDtoMapper, RatingEntityStoreDtoMapper>();
-        serviceCollection.AddTransient<ICreateReviewCommandMapper, CreateReviewCommandMapper>();
+        serviceCollection.AddSingleton<ICustomerReviewMapper, CustomerReviewMapper>();
 
         serviceCollection.AddSingleton<IAuthorizationHandler, CustomerReviewAuthorizationHandler>();
         serviceCollection.AddSingleton<IFileAuthorizationRequirementFactory, CustomerReviewImageAuthorizationRequirementFactory>();
