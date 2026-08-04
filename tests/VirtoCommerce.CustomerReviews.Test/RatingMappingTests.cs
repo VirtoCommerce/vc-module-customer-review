@@ -8,6 +8,7 @@ using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Commands;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Extensions;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 using VirtoCommerce.ProfileExperienceApiModule.Data.Aggregates.Vendor;
@@ -116,10 +117,10 @@ namespace VirtoCommerce.CustomerReviews.Test
         }
 
         [Fact]
-        public void CustomerReviewMapper_Is_Resolvable_From_DI()
+        public void AddExperienceApi_Registers_CustomerReviewMapper()
         {
             var services = new ServiceCollection();
-            services.AddSingleton<ICustomerReviewMapper, CustomerReviewMapper>();
+            services.AddExperienceApi();
 
             var mapper = services.BuildServiceProvider().GetRequiredService<ICustomerReviewMapper>();
 
