@@ -3,6 +3,7 @@ using GraphQL.MicrosoftDI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Authorization;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 using VirtoCommerce.FileExperienceApi.Core.Authorization;
@@ -37,6 +38,9 @@ public static class ServiceCollectionExtensions
         });
 
         serviceCollection.AddTransient<ReviewValidator>();
+
+        serviceCollection.AddSingleton<ICustomerReviewMapper, CustomerReviewMapper>();
+
         serviceCollection.AddSingleton<IAuthorizationHandler, CustomerReviewAuthorizationHandler>();
         serviceCollection.AddSingleton<IFileAuthorizationRequirementFactory, CustomerReviewImageAuthorizationRequirementFactory>();
 

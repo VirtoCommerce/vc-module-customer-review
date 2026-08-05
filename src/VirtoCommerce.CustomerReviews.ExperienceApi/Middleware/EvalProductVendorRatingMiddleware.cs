@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using PipelineNet.Middleware;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Xapi.Core.Models;
 using VirtoCommerce.XCatalog.Core.Models;
 using VirtoCommerce.XCatalog.Core.Queries;
 
@@ -15,10 +14,10 @@ namespace VirtoCommerce.CustomerReviews.ExperienceApi.Middleware;
 
 public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductResponse>
 {
-    private readonly IMapper _mapper;
+    private readonly ICustomerReviewMapper _mapper;
     private readonly IRatingService _ratingService;
 
-    public EvalProductVendorRatingMiddleware(IMapper mapper, IRatingService ratingService)
+    public EvalProductVendorRatingMiddleware(ICustomerReviewMapper mapper, IRatingService ratingService)
     {
         _mapper = mapper;
         _ratingService = ratingService;
@@ -74,7 +73,7 @@ public class EvalProductVendorRatingMiddleware : IAsyncMiddleware<SearchProductR
                 {
                     if (ratingByIds.TryGetValue((product.Vendor.Id, product.Vendor.Type), out var rating))
                     {
-                        product.Vendor.Rating = _mapper.Map<ExpRating>(rating);
+                        product.Vendor.Rating = _mapper.ToExpRating(rating);
                     }
                 });
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using VirtoCommerce.CustomerModule.Core.Model;
@@ -11,6 +10,7 @@ using VirtoCommerce.CustomerModule.Core.Services;
 using VirtoCommerce.CustomerReviews.Core;
 using VirtoCommerce.CustomerReviews.Core.Models;
 using VirtoCommerce.CustomerReviews.Core.Services;
+using VirtoCommerce.CustomerReviews.ExperienceApi.Mapping;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Models;
 using VirtoCommerce.CustomerReviews.ExperienceApi.Validators;
 using VirtoCommerce.FileExperienceApi.Core.Models;
@@ -24,7 +24,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
 {
     private readonly IMemberService _memberService;
     private readonly ICustomerReviewService _reviewService;
-    private readonly IMapper _mapper;
+    private readonly ICustomerReviewMapper _mapper;
     private readonly IFileUploadService _fileUploadService;
     private readonly Func<UserManager<ApplicationUser>> _userManagerFactory;
     private readonly ReviewValidator _reviewValidator;
@@ -34,7 +34,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
 
     public CreateReviewCommandHandler(
         ICustomerReviewService reviewService,
-        IMapper mapper,
+        ICustomerReviewMapper mapper,
         IMemberService memberService,
         IFileUploadService fileUploadService,
         Func<UserManager<ApplicationUser>> userManagerFactory,
@@ -59,7 +59,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, C
         }
         else
         {
-            var review = _mapper.Map<CustomerReview>(request);
+            var review = _mapper.ToCustomerReview(request);
             var userManager = _userManagerFactory();
             var currentUser = await userManager.FindByIdAsync(request.UserId);
 
