@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using VirtoCommerce.CustomerReviews.Core;
+using VirtoCommerce.CustomerReviews.Data.BackgroundJobs;
 using VirtoCommerce.CustomerReviews.Data.Models;
 using VirtoCommerce.CustomerReviews.Data.Repositories;
 using VirtoCommerce.OrdersModule.Core.Events;
@@ -11,6 +11,7 @@ using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Settings;
 using ReviewSettings = VirtoCommerce.CustomerReviews.Core.ModuleConstants.Settings.General;
 
@@ -39,7 +40,12 @@ namespace VirtoCommerce.CustomerReviews.Data.Handlers
                 var jobArguments = message.ChangedEntries.SelectMany(GetJobArgumentsForChangedEntry).ToArray();
                 if (jobArguments.Any())
                 {
-                    BackgroundJob.Enqueue(() => TryToSendOrderNotificationsAsync(jobArguments));
+                    var payload = AbstractTypeFactory<CreateReviewRequestsJobPayload>.TryCreateInstance();
+                    payload.JobArguments = jobArguments;
+
+                    // The static facade, not an injected IBackgroundJob: RegisterEventHandler resolves this handler once from
+                    // the root provider and holds it for the process lifetime, so it must not capture a Scoped dependency.
+                    await BackgroundJob.Enqueue<CreateReviewRequestsJobHandler>(payload);
                 }
             }
         }
@@ -62,6 +68,7 @@ namespace VirtoCommerce.CustomerReviews.Data.Handlers
             return result;
         }
 
+        // Also the target of jobs Hangfire queued before the move to the Platform.Core job API: keep the signature.
         public virtual async Task TryToSendOrderNotificationsAsync(OrderRequestReviewJobArgument[] jobArguments)
         {
             var ordersByIdDict = (await _orderService.GetAsync(jobArguments.Select(x => x.CustomerOrderId).Distinct().ToList()))

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using Microsoft.Extensions.Logging;
 using VirtoCommerce.CatalogModule.Core.Model;
 using VirtoCommerce.CatalogModule.Core.Services;
@@ -56,7 +55,6 @@ namespace VirtoCommerce.CustomerReviews.Data.BackgroundJobs
             _memberResolver = memberResolver;
         }
 
-        [DisableConcurrentExecution(10)]
         public async Task Process()
         {
             _log.LogTrace($"Start processing {nameof(RequestCustomerReviewJob)} job");
