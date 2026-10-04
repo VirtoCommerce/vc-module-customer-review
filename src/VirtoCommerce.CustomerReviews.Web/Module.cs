@@ -22,6 +22,7 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -29,7 +30,6 @@ using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
-using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.Xapi.Core.Extensions;
 using VirtoCommerce.Xapi.Core.Infrastructure;
@@ -81,6 +81,17 @@ namespace VirtoCommerce.CustomerReviews.Web
 
             serviceCollection.AddTransient<ReviewStatusChangedEventHandler>();
             serviceCollection.AddTransient<OrderChangedEventHandler>();
+            serviceCollection.AddBackgroundJob<CreateReviewRequestsJobHandler, CreateReviewRequestsJobPayload>(triggerable: false);
+
+            // The id is the one Hangfire generated for the old WatchJobSetting schedule, so on the Hangfire engine this
+            // replaces the old recurring entry instead of leaving it to call a method that no longer runs as a Hangfire
+            // job. The handler wraps the unchanged job class in a distributed lock.
+            serviceCollection.AddTransient<RequestCustomerReviewJob>();
+            serviceCollection.AddRecurringJob<RequestCustomerReviewJobHandler, RequestCustomerReviewJobPayload>(schedule => schedule
+                .WithId($"{nameof(RequestCustomerReviewJob)}.{nameof(RequestCustomerReviewJob.Process)}")
+                .FromSettings(
+                    ReviewSettings.General.RequestReviewEnableJob,
+                    ReviewSettings.General.RequestReviewCronJob));
 
             // GraphQL
             serviceCollection.AddExperienceApi();
@@ -111,14 +122,6 @@ namespace VirtoCommerce.CustomerReviews.Web
 
             appBuilder.RegisterEventHandler<ReviewStatusChangedEvent, ReviewStatusChangedEventHandler>();
             appBuilder.RegisterEventHandler<OrderChangedEvent, OrderChangedEventHandler>();
-
-            var recurringJobService = appBuilder.ApplicationServices.GetService<IRecurringJobService>();
-            recurringJobService.WatchJobSetting(
-               new SettingCronJobBuilder()
-                   .SetEnablerSetting(ReviewSettings.General.RequestReviewEnableJob)
-                   .SetCronSetting(ReviewSettings.General.RequestReviewCronJob)
-                   .ToJob<RequestCustomerReviewJob>(x => x.Process())
-                   .Build());
 
             using var serviceScope = appBuilder.ApplicationServices.CreateScope();
             var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
