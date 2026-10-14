@@ -1,0 +1,18 @@
+{
+  // Rating and reviews admin UI for the Admin Shell host (Module Federation remote), plus the rating widget on the
+  // product blade. The AngularJS menu item (top level, "browse/customerReviewsNew") had no seed entry, so nothing is replaced.
+  "remote": { "name": "customerreviews_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "customerReviews",
+        "sectionId": "marketing",
+        "title": "Rating and reviews",
+        "icon": "lucide-messages-square",
+        "route": "/customer-reviews",
+        "permission": "customerReviews:read",
+        "priority": 50
+      }
+    ]
+  }
+}
