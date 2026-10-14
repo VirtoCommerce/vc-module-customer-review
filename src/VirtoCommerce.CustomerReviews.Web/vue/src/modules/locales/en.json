@@ -1,10 +1,10 @@
 {
   "CUSTOMER_REVIEWS": {
     "MENU": {
-      "TITLE": "Rating and reviews"
+      "TITLE": "Ratings & Reviews"
     },
     "LIST": {
-      "TITLE": "Rating and reviews",
+      "TITLE": "Ratings & Reviews",
       "TITLE_ENTITY": "Reviews: {name}",
       "SEARCH": "Search in review text",
       "EMPTY": "No reviews found"
