@@ -5,7 +5,7 @@
       {
         "id": "customerReviews",
         "sectionId": "marketing",
-        "title": "Rating and reviews",
+        "title": "Ratings & Reviews",
         "icon": "lucide-messages-square",
         "route": "/customer-reviews",
         "permission": "customerReviews:read",
