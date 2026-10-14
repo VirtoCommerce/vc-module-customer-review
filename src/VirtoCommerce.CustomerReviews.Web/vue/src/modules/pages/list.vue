@@ -137,7 +137,7 @@ const stateKey = computed(() => (entityFilter.value ? "CUSTOMER_REVIEWS_ENTITY" 
 const title = computed(() =>
   entityFilter.value
     ? t("CUSTOMER_REVIEWS.LIST.TITLE_ENTITY", { name: entityFilter.value.entityName ?? "" })
-    : t("CUSTOMER_REVIEWS.LIST.TITLE"),
+    : t("CUSTOMER_REVIEWS.MENU.TITLE"),
 );
 
 const PAGE_SIZE = 20;

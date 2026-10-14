@@ -4,7 +4,6 @@
       "TITLE": "Ratings & Reviews"
     },
     "LIST": {
-      "TITLE": "Ratings & Reviews",
       "TITLE_ENTITY": "Reviews: {name}",
       "SEARCH": "Search in review text",
       "EMPTY": "No reviews found"
