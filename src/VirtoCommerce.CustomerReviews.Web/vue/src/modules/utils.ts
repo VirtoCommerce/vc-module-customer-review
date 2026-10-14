@@ -3,7 +3,9 @@ export const ENTITY_TYPES = ["Product"];
 
 // VcStatus variant of a review status (CustomerReviewStatus: New, Approved, Rejected)
 export function statusVariant(status?: string): "success" | "warning" | "danger" | "info" {
-  return status === "Approved" ? "success" : status === "Rejected" ? "danger" : status === "New" ? "warning" : "info";
+  if (status === "Approved") return "success";
+  if (status === "Rejected") return "danger";
+  return status === "New" ? "warning" : "info";
 }
 
 // locale key of a review status label
