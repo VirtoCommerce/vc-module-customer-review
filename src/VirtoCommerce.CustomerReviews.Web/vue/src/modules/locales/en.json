@@ -1,7 +1,8 @@
 {
   "CUSTOMER_REVIEWS": {
     "MENU": {
-      "TITLE": "Ratings & Reviews"
+      "TITLE": "Ratings & Reviews",
+      "COUNTER": "{count} reviews to moderate"
     },
     "LIST": {
       "TITLE_ENTITY": "Reviews: {name}",
