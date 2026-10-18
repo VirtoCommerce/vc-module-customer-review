@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Évaluations et avis",
+      "COUNTER": "{count} avis à modérer"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Avis : {name}",
+      "SEARCH": "Rechercher dans le texte des avis",
+      "EMPTY": "Aucun avis trouvé"
+    },
+    "DETAILS": {
+      "TITLE": "Avis",
+      "AVERAGE": "Évaluation moyenne",
+      "IMAGES": "Images",
+      "NO_IMAGES": "Aucune image"
+    },
+    "FIELDS": {
+      "TITLE": "Titre",
+      "ENTITY": "Produit",
+      "ENTITY_TYPE": "Type d'entité",
+      "RATING": "Évaluation",
+      "CREATED_DATE": "Date de création",
+      "CREATED_BY": "Créé par",
+      "STATUS": "Statut",
+      "STORE": "Magasin",
+      "REVIEW": "Avis"
+    },
+    "STATUS": {
+      "New": "Nouveau",
+      "Approved": "Approuvé",
+      "Rejected": "Rejeté"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualiser",
+      "APPROVE": "Approuver",
+      "REJECT": "Rejeter",
+      "RESET": "Réinitialiser le statut",
+      "DELETE": "Supprimer"
+    },
+    "WIDGETS": {
+      "RATING": "Évaluation {rating} / 5",
+      "NO_RATING": "Avis"
+    },
+    "ALERTS": {
+      "DELETE": "Cette action peut modifier l'évaluation. Voulez-vous vraiment supprimer l'avis ?",
+      "UNKNOWN_ENTITY_TYPE": "Impossible d'ouvrir une entité de type inconnu : '{type}'"
+    }
+  }
+}

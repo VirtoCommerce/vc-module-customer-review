@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Arvosanat ja arvostelut",
+      "COUNTER": "{count} arvostelua moderoitavana"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Arvostelut: {name}",
+      "SEARCH": "Hae arvostelun tekstistä",
+      "EMPTY": "Arvosteluja ei löytynyt"
+    },
+    "DETAILS": {
+      "TITLE": "Arvostelu",
+      "AVERAGE": "Keskiarvo",
+      "IMAGES": "Kuvat",
+      "NO_IMAGES": "Ei kuvia"
+    },
+    "FIELDS": {
+      "TITLE": "Otsikko",
+      "ENTITY": "Tuote",
+      "ENTITY_TYPE": "Entiteetin tyyppi",
+      "RATING": "Arvosana",
+      "CREATED_DATE": "Luontipäivä",
+      "CREATED_BY": "Luonut",
+      "STATUS": "Tila",
+      "STORE": "Kauppa",
+      "REVIEW": "Arvostelu"
+    },
+    "STATUS": {
+      "New": "Uusi",
+      "Approved": "Hyväksytty",
+      "Rejected": "Hylätty"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Päivitä",
+      "APPROVE": "Hyväksy",
+      "REJECT": "Hylkää",
+      "RESET": "Palauta tila",
+      "DELETE": "Poista"
+    },
+    "WIDGETS": {
+      "RATING": "Arvosana {rating} / 5",
+      "NO_RATING": "Arvostelut"
+    },
+    "ALERTS": {
+      "DELETE": "Tämä toiminto voi muuttaa arvosanaa. Haluatko varmasti poistaa arvostelun?",
+      "UNKNOWN_ENTITY_TYPE": "Tuntemattoman tyypin entiteettiä ei voi avata: '{type}'"
+    }
+  }
+}

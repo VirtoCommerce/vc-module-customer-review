@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Ratings & Reviews",
+      "COUNTER": "{count} reviews to moderate"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Reviews: {name}",
+      "SEARCH": "Search in review text",
+      "EMPTY": "No reviews found"
+    },
+    "DETAILS": {
+      "TITLE": "Review",
+      "AVERAGE": "Average rating",
+      "IMAGES": "Images",
+      "NO_IMAGES": "No images"
+    },
+    "FIELDS": {
+      "TITLE": "Title",
+      "ENTITY": "Product",
+      "ENTITY_TYPE": "Entity type",
+      "RATING": "Rating",
+      "CREATED_DATE": "Created date",
+      "CREATED_BY": "Created by",
+      "STATUS": "Status",
+      "STORE": "Store",
+      "REVIEW": "Review"
+    },
+    "STATUS": {
+      "New": "New",
+      "Approved": "Approved",
+      "Rejected": "Rejected"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Refresh",
+      "APPROVE": "Approve",
+      "REJECT": "Reject",
+      "RESET": "Reset status",
+      "DELETE": "Delete"
+    },
+    "WIDGETS": {
+      "RATING": "Rating {rating} / 5",
+      "NO_RATING": "Reviews"
+    },
+    "ALERTS": {
+      "DELETE": "This action may result in a rating change. Are you sure you want to delete the review?",
+      "UNKNOWN_ENTITY_TYPE": "Cannot open an entity of an unknown type: '{type}'"
+    }
+  }
+}

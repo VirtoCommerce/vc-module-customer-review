@@ -1,0 +1,53 @@
+{
+  "permissions": {
+    "customerReviews:read": "פתיחת ביקורות המוצרים",
+    "customerReviews:update": "אישור, דחייה ואיפוס של סטטוס הביקורת",
+    "customerReviews:delete": "מחיקת נתונים הקשורים לביקורות לקוחות",
+    "customerReviews:ratingRead": "קריאת הדירוג",
+    "customerReviews:ratingRecalc": "חישוב מחדש של הדירוג"
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "ביקורות מוצרים",
+        "description": "הפעלה או השבתה של האפשרות של לקוחות לתת משוב ולכתוב ביקורות על מוצרים"
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "ביקורות מוצרים אנונימיות",
+        "description": "התרה/מניעה של שליחת ביקורות מוצרים על ידי משתמשים לא רשומים"
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "רק מי שקנה את המוצר יכול ליצור ביקורות חדשות",
+        "description": "התרה/מניעה של שליחת ביקורות רק על ידי לקוחות שרכשו את המוצר"
+      },
+      "Calculation.Method": {
+        "title": "שיטת חישוב הדירוג",
+        "description": "יש לבחור את השיטה לקביעת הדירוגים"
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "הפעלה אוטומטית של הודעות דוא״ל לבקשת ביקורת",
+        "description": "הפעלה/השבתה של המשימה ששולחת ללקוחות הודעות דוא״ל לבקשת ביקורת לאחר שהזמנתם נשארת במצב מסוים מספר ימים מוגדר"
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "ביטוי Cron להרצת משימת הדוא״ל",
+        "description": "יש להגדיר כדי לתזמן את משימת הודעות הדוא״ל לבקשת ביקורת. דוגמאות:\n- הרצת המשימה כל X דקות: \"0/x * * * *\"\n- הרצתה כל X שעות בדקה 00: \"0 */X * * *\"\n- ציון הדקות: \"15 */x * * *\"\n- הרצתה כל X ימים בחצות: \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "ימים לפני מעבר מצב ההזמנה",
+        "description": "יש לציין את מספר הימים שהזמנה נשארת במצב מסוים לפני שמופעל מעבר"
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "מצב ההזמנה לבקשת ביקורת",
+        "description": "יש לציין את מצב ההזמנה שמפעיל שליחה אוטומטית של הודעות דוא״ל לבקשת ביקורת ללקוחות"
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "מספר מרבי של הודעות דוא״ל ללקוח",
+        "description": "הגבלת המספר המרבי של הודעות דוא״ל לבקשת ביקורת שנשלחות ללקוח בפרק זמן מוגדר"
+      },
+      "ReviewMaximumImages": {
+        "title": "מספר מרבי של תמונות בביקורת",
+        "description": "הגבלת המספר המרבי של תמונות בביקורת"
+      }
+    }
+  }
+}

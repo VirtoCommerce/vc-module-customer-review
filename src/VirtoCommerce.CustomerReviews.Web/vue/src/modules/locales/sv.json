@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Betyg och recensioner",
+      "COUNTER": "{count} recensioner att moderera"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Recensioner: {name}",
+      "SEARCH": "Sök i recensionstext",
+      "EMPTY": "Inga recensioner hittades"
+    },
+    "DETAILS": {
+      "TITLE": "Recension",
+      "AVERAGE": "Genomsnittligt betyg",
+      "IMAGES": "Bilder",
+      "NO_IMAGES": "Inga bilder"
+    },
+    "FIELDS": {
+      "TITLE": "Titel",
+      "ENTITY": "Produkt",
+      "ENTITY_TYPE": "Entitetstyp",
+      "RATING": "Betyg",
+      "CREATED_DATE": "Skapad datum",
+      "CREATED_BY": "Skapad av",
+      "STATUS": "Status",
+      "STORE": "Butik",
+      "REVIEW": "Recension"
+    },
+    "STATUS": {
+      "New": "Ny",
+      "Approved": "Godkänd",
+      "Rejected": "Avvisad"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Uppdatera",
+      "APPROVE": "Godkänn",
+      "REJECT": "Avvisa",
+      "RESET": "Återställ status",
+      "DELETE": "Ta bort"
+    },
+    "WIDGETS": {
+      "RATING": "Betyg {rating} / 5",
+      "NO_RATING": "Recensioner"
+    },
+    "ALERTS": {
+      "DELETE": "Den här åtgärden kan ändra betyget. Är du säker på att du vill ta bort recensionen?",
+      "UNKNOWN_ENTITY_TYPE": "Det går inte att öppna en entitet av okänd typ: '{type}'"
+    }
+  }
+}

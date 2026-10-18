@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Bewertungen und Rezensionen",
+      "COUNTER": "{count} Rezensionen zu moderieren"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Rezensionen: {name}",
+      "SEARCH": "Im Rezensionstext suchen",
+      "EMPTY": "Keine Rezensionen gefunden"
+    },
+    "DETAILS": {
+      "TITLE": "Rezension",
+      "AVERAGE": "Durchschnittliche Bewertung",
+      "IMAGES": "Bilder",
+      "NO_IMAGES": "Keine Bilder"
+    },
+    "FIELDS": {
+      "TITLE": "Titel",
+      "ENTITY": "Produkt",
+      "ENTITY_TYPE": "Entitätstyp",
+      "RATING": "Bewertung",
+      "CREATED_DATE": "Erstellungsdatum",
+      "CREATED_BY": "Erstellt von",
+      "STATUS": "Status",
+      "STORE": "Shop",
+      "REVIEW": "Rezension"
+    },
+    "STATUS": {
+      "New": "Neu",
+      "Approved": "Genehmigt",
+      "Rejected": "Abgelehnt"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Aktualisieren",
+      "APPROVE": "Genehmigen",
+      "REJECT": "Ablehnen",
+      "RESET": "Status zurücksetzen",
+      "DELETE": "Löschen"
+    },
+    "WIDGETS": {
+      "RATING": "Bewertung {rating} / 5",
+      "NO_RATING": "Rezensionen"
+    },
+    "ALERTS": {
+      "DELETE": "Diese Aktion kann die Bewertung verändern. Möchten Sie die Rezension wirklich löschen?",
+      "UNKNOWN_ENTITY_TYPE": "Eine Entität unbekannten Typs kann nicht geöffnet werden: '{type}'"
+    }
+  }
+}

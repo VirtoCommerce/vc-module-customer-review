@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "评分和评论",
+      "COUNTER": "{count} 条评论待审核"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "评论：{name}",
+      "SEARCH": "在评论文本中搜索",
+      "EMPTY": "未找到评论"
+    },
+    "DETAILS": {
+      "TITLE": "评论",
+      "AVERAGE": "平均评分",
+      "IMAGES": "图片",
+      "NO_IMAGES": "无图片"
+    },
+    "FIELDS": {
+      "TITLE": "标题",
+      "ENTITY": "产品",
+      "ENTITY_TYPE": "实体类型",
+      "RATING": "评分",
+      "CREATED_DATE": "创建日期",
+      "CREATED_BY": "创建者",
+      "STATUS": "状态",
+      "STORE": "商店",
+      "REVIEW": "评论"
+    },
+    "STATUS": {
+      "New": "新建",
+      "Approved": "已批准",
+      "Rejected": "已拒绝"
+    },
+    "TOOLBAR": {
+      "REFRESH": "刷新",
+      "APPROVE": "批准",
+      "REJECT": "拒绝",
+      "RESET": "重置状态",
+      "DELETE": "删除"
+    },
+    "WIDGETS": {
+      "RATING": "评分 {rating} / 5",
+      "NO_RATING": "评论"
+    },
+    "ALERTS": {
+      "DELETE": "此操作可能会导致评分变化。确定要删除该评论吗？",
+      "UNKNOWN_ENTITY_TYPE": "无法打开未知类型的实体：'{type}'"
+    }
+  }
+}

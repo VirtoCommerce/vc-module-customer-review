@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "التقييمات والمراجعات",
+      "COUNTER": "مراجعات بانتظار الإشراف: {count}"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "المراجعات: {name}",
+      "SEARCH": "البحث في نص المراجعة",
+      "EMPTY": "لم يتم العثور على مراجعات"
+    },
+    "DETAILS": {
+      "TITLE": "المراجعة",
+      "AVERAGE": "متوسط التقييم",
+      "IMAGES": "الصور",
+      "NO_IMAGES": "لا توجد صور"
+    },
+    "FIELDS": {
+      "TITLE": "العنوان",
+      "ENTITY": "المنتج",
+      "ENTITY_TYPE": "نوع الكيان",
+      "RATING": "التقييم",
+      "CREATED_DATE": "تاريخ الإنشاء",
+      "CREATED_BY": "تم الإنشاء بواسطة",
+      "STATUS": "الحالة",
+      "STORE": "المتجر",
+      "REVIEW": "المراجعة"
+    },
+    "STATUS": {
+      "New": "جديدة",
+      "Approved": "معتمدة",
+      "Rejected": "مرفوضة"
+    },
+    "TOOLBAR": {
+      "REFRESH": "تحديث",
+      "APPROVE": "اعتماد",
+      "REJECT": "رفض",
+      "RESET": "إعادة تعيين الحالة",
+      "DELETE": "حذف"
+    },
+    "WIDGETS": {
+      "RATING": "التقييم: {rating} / 5",
+      "NO_RATING": "المراجعات"
+    },
+    "ALERTS": {
+      "DELETE": "قد يؤدي هذا الإجراء إلى تغيير التقييم. هل تريد بالتأكيد حذف المراجعة؟",
+      "UNKNOWN_ENTITY_TYPE": "تعذّر فتح كيان من نوع غير معروف: «{type}»"
+    }
+  }
+}
