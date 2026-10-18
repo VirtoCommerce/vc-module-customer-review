@@ -1,0 +1,53 @@
+{
+  "permissions": {
+    "customerReviews:read": "فتح مراجعات المنتجات",
+    "customerReviews:update": "اعتماد المراجعات ورفضها وإعادة تعيين حالتها",
+    "customerReviews:delete": "حذف البيانات المتعلقة بمراجعات العملاء",
+    "customerReviews:ratingRead": "عرض التقييم",
+    "customerReviews:ratingRecalc": "إعادة حساب التقييم"
+  },
+  "settings": {
+    "CustomerReviews": {
+      "CustomerReviewsEnabled": {
+        "title": "مراجعات المنتجات",
+        "description": "تفعيل أو تعطيل إمكانية تقديم العملاء ملاحظاتهم ومراجعاتهم على المنتجات."
+      },
+      "CustomerReviewsEnabledForAnonymous": {
+        "title": "مراجعات المنتجات من المستخدمين المجهولين",
+        "description": "السماح للمستخدمين غير المسجلين بإرسال مراجعات المنتجات أو منعهم من ذلك."
+      },
+      "CanSubmitReviewWhenHasOrder": {
+        "title": "إنشاء المراجعات الجديدة لمشتري المنتج فقط",
+        "description": "قصر إرسال المراجعات على العملاء الذين اشتروا المنتج أو إلغاء هذا القيد."
+      },
+      "Calculation.Method": {
+        "title": "طريقة حساب التقييم",
+        "description": "اختر طريقة تحديد التقييمات."
+      },
+      "CustomerReviewsEnabledRequestReviewJob": {
+        "title": "التفعيل التلقائي لرسائل طلب المراجعة",
+        "description": "تفعيل أو تعطيل المهمة التي ترسل إلى العملاء رسائل بريد إلكتروني لطلب المراجعة بعد بقاء طلبهم في حالة معيّنة لعدد محدد من الأيام."
+      },
+      "CustomerReviewsRequestReviewCronJob": {
+        "title": "تعبير Cron لتنفيذ مهمة البريد الإلكتروني",
+        "description": "اضبطه لجدولة مهمة رسائل طلب المراجعة. أمثلة:\n- تشغيل المهمة كل X دقيقة: \"0/x * * * *\"\n- تشغيلها كل X ساعة عند الدقيقة 00: \"0 */X * * *\"\n- تحديد الدقائق: \"15 */x * * *\"\n- تشغيلها كل X يوم عند منتصف الليل: \"0 0 */x * *\""
+      },
+      "CustomerReviewsRequestReviewDaysInState": {
+        "title": "عدد الأيام قبل انتقال حالة الطلب",
+        "description": "حدد عدد الأيام التي يبقى فيها الطلب في حالة ما قبل بدء الانتقال."
+      },
+      "CustomerReviewsRequestReviewOrderInState": {
+        "title": "حالة الطلب لطلب المراجعة",
+        "description": "حدد حالة الطلب التي تؤدي إلى إرسال رسائل طلب المراجعة إلى العملاء تلقائيًا."
+      },
+      "CustomerReviewsRequestReviewMaxRequests": {
+        "title": "الحد الأقصى لرسائل البريد الإلكتروني المرسلة إلى العميل",
+        "description": "حدد الحد الأقصى لعدد رسائل طلب المراجعة المرسلة إلى العميل خلال فترة زمنية محددة."
+      },
+      "ReviewMaximumImages": {
+        "title": "الحد الأقصى لعدد الصور في المراجعة",
+        "description": "حدد الحد الأقصى لعدد الصور في المراجعة الواحدة."
+      }
+    }
+  }
+}
