@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Valutazioni e recensioni",
+      "COUNTER": "{count} recensioni da moderare"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Recensioni: {name}",
+      "SEARCH": "Cerca nel testo delle recensioni",
+      "EMPTY": "Nessuna recensione trovata"
+    },
+    "DETAILS": {
+      "TITLE": "Recensione",
+      "AVERAGE": "Valutazione media",
+      "IMAGES": "Immagini",
+      "NO_IMAGES": "Nessuna immagine"
+    },
+    "FIELDS": {
+      "TITLE": "Titolo",
+      "ENTITY": "Prodotto",
+      "ENTITY_TYPE": "Tipo di entità",
+      "RATING": "Valutazione",
+      "CREATED_DATE": "Data di creazione",
+      "CREATED_BY": "Creato da",
+      "STATUS": "Stato",
+      "STORE": "Negozio",
+      "REVIEW": "Recensione"
+    },
+    "STATUS": {
+      "New": "Nuova",
+      "Approved": "Approvata",
+      "Rejected": "Rifiutata"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Aggiorna",
+      "APPROVE": "Approva",
+      "REJECT": "Rifiuta",
+      "RESET": "Reimposta stato",
+      "DELETE": "Elimina"
+    },
+    "WIDGETS": {
+      "RATING": "Valutazione {rating} / 5",
+      "NO_RATING": "Recensioni"
+    },
+    "ALERTS": {
+      "DELETE": "Questa azione può modificare la valutazione. Eliminare la recensione?",
+      "UNKNOWN_ENTITY_TYPE": "Impossibile aprire un'entità di tipo sconosciuto: '{type}'"
+    }
+  }
+}

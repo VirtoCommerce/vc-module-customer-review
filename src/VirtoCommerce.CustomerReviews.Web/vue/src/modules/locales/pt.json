@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Classificações e avaliações",
+      "COUNTER": "{count} avaliações para moderar"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Avaliações: {name}",
+      "SEARCH": "Pesquisar no texto da avaliação",
+      "EMPTY": "Nenhuma avaliação encontrada"
+    },
+    "DETAILS": {
+      "TITLE": "Avaliação",
+      "AVERAGE": "Classificação média",
+      "IMAGES": "Imagens",
+      "NO_IMAGES": "Sem imagens"
+    },
+    "FIELDS": {
+      "TITLE": "Título",
+      "ENTITY": "Produto",
+      "ENTITY_TYPE": "Tipo de entidade",
+      "RATING": "Classificação",
+      "CREATED_DATE": "Data de criação",
+      "CREATED_BY": "Criado por",
+      "STATUS": "Status",
+      "STORE": "Loja",
+      "REVIEW": "Avaliação"
+    },
+    "STATUS": {
+      "New": "Nova",
+      "Approved": "Aprovada",
+      "Rejected": "Rejeitada"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Atualizar",
+      "APPROVE": "Aprovar",
+      "REJECT": "Rejeitar",
+      "RESET": "Redefinir status",
+      "DELETE": "Eliminar"
+    },
+    "WIDGETS": {
+      "RATING": "Classificação {rating} / 5",
+      "NO_RATING": "Avaliações"
+    },
+    "ALERTS": {
+      "DELETE": "Esta ação pode alterar a classificação. Tem certeza de que deseja eliminar a avaliação?",
+      "UNKNOWN_ENTITY_TYPE": "Não é possível abrir uma entidade de tipo desconhecido: '{type}'"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Calificaciones y reseñas",
+      "COUNTER": "{count} reseñas por moderar"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Reseñas: {name}",
+      "SEARCH": "Buscar en el texto de la reseña",
+      "EMPTY": "No se encontraron reseñas"
+    },
+    "DETAILS": {
+      "TITLE": "Reseña",
+      "AVERAGE": "Calificación promedio",
+      "IMAGES": "Imágenes",
+      "NO_IMAGES": "No hay imágenes"
+    },
+    "FIELDS": {
+      "TITLE": "Título",
+      "ENTITY": "Producto",
+      "ENTITY_TYPE": "Tipo de entidad",
+      "RATING": "Calificación",
+      "CREATED_DATE": "Fecha de creación",
+      "CREATED_BY": "Creado por",
+      "STATUS": "Estado",
+      "STORE": "Tienda",
+      "REVIEW": "Reseña"
+    },
+    "STATUS": {
+      "New": "Nueva",
+      "Approved": "Aprobada",
+      "Rejected": "Rechazada"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualizar",
+      "APPROVE": "Aprobar",
+      "REJECT": "Rechazar",
+      "RESET": "Restablecer estado",
+      "DELETE": "Eliminar"
+    },
+    "WIDGETS": {
+      "RATING": "Calificación {rating} / 5",
+      "NO_RATING": "Reseñas"
+    },
+    "ALERTS": {
+      "DELETE": "Esta acción puede cambiar la calificación. ¿Está seguro de que desea eliminar la reseña?",
+      "UNKNOWN_ENTITY_TYPE": "No se puede abrir una entidad de tipo desconocido: '{type}'"
+    }
+  }
+}

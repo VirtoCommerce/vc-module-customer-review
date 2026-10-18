@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "評価とレビュー",
+      "COUNTER": "モデレート待ちのレビュー {count} 件"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "レビュー: {name}",
+      "SEARCH": "レビュー本文を検索",
+      "EMPTY": "レビューが見つかりません"
+    },
+    "DETAILS": {
+      "TITLE": "レビュー",
+      "AVERAGE": "平均評価",
+      "IMAGES": "画像",
+      "NO_IMAGES": "画像なし"
+    },
+    "FIELDS": {
+      "TITLE": "タイトル",
+      "ENTITY": "製品",
+      "ENTITY_TYPE": "エンティティタイプ",
+      "RATING": "評価",
+      "CREATED_DATE": "作成日",
+      "CREATED_BY": "作成者",
+      "STATUS": "ステータス",
+      "STORE": "ストア",
+      "REVIEW": "レビュー"
+    },
+    "STATUS": {
+      "New": "新規",
+      "Approved": "承認済み",
+      "Rejected": "拒否済み"
+    },
+    "TOOLBAR": {
+      "REFRESH": "更新",
+      "APPROVE": "承認",
+      "REJECT": "拒否",
+      "RESET": "ステータスをリセット",
+      "DELETE": "削除"
+    },
+    "WIDGETS": {
+      "RATING": "評価 {rating} / 5",
+      "NO_RATING": "レビュー"
+    },
+    "ALERTS": {
+      "DELETE": "この操作により評価が変わる可能性があります。レビューを削除してもよろしいですか？",
+      "UNKNOWN_ENTITY_TYPE": "不明なタイプのエンティティは開けません: '{type}'"
+    }
+  }
+}
