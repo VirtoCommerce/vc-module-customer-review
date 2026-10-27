@@ -1,0 +1,16 @@
+{
+  "remote": { "name": "customerreviews_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "customerReviews",
+        "sectionId": "marketing",
+        "title": "Ratings & Reviews",
+        "icon": "lucide-messages-square",
+        "route": "/customer-reviews",
+        "permission": "customerReviews:read",
+        "priority": 50
+      }
+    ]
+  }
+}

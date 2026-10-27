@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "דירוגים וביקורות",
+      "COUNTER": "ביקורות הממתינות לבדיקה: {count}"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "ביקורות: {name}",
+      "SEARCH": "חיפוש בטקסט הביקורת",
+      "EMPTY": "לא נמצאו ביקורות"
+    },
+    "DETAILS": {
+      "TITLE": "ביקורת",
+      "AVERAGE": "דירוג ממוצע",
+      "IMAGES": "תמונות",
+      "NO_IMAGES": "אין תמונות"
+    },
+    "FIELDS": {
+      "TITLE": "כותרת",
+      "ENTITY": "מוצר",
+      "ENTITY_TYPE": "סוג ישות",
+      "RATING": "דירוג",
+      "CREATED_DATE": "תאריך יצירה",
+      "CREATED_BY": "נוצר על ידי",
+      "STATUS": "סטטוס",
+      "STORE": "חנות",
+      "REVIEW": "ביקורת"
+    },
+    "STATUS": {
+      "New": "חדשה",
+      "Approved": "אושרה",
+      "Rejected": "נדחתה"
+    },
+    "TOOLBAR": {
+      "REFRESH": "רענון",
+      "APPROVE": "אישור",
+      "REJECT": "דחייה",
+      "RESET": "איפוס סטטוס",
+      "DELETE": "מחיקה"
+    },
+    "WIDGETS": {
+      "RATING": "דירוג {rating} / 5",
+      "NO_RATING": "ביקורות"
+    },
+    "ALERTS": {
+      "DELETE": "פעולה זו עשויה לשנות את הדירוג. האם למחוק את הביקורת?",
+      "UNKNOWN_ENTITY_TYPE": "לא ניתן לפתוח ישות מסוג לא ידוע: '{type}'"
+    }
+  }
+}

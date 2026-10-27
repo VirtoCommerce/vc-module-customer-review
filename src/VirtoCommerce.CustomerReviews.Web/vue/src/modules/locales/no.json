@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Vurderinger og anmeldelser",
+      "COUNTER": "{count} anmeldelser til moderering"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Anmeldelser: {name}",
+      "SEARCH": "Søk i anmeldelsestekst",
+      "EMPTY": "Ingen anmeldelser funnet"
+    },
+    "DETAILS": {
+      "TITLE": "Anmeldelse",
+      "AVERAGE": "Gjennomsnittlig vurdering",
+      "IMAGES": "Bilder",
+      "NO_IMAGES": "Ingen bilder"
+    },
+    "FIELDS": {
+      "TITLE": "Tittel",
+      "ENTITY": "Produkt",
+      "ENTITY_TYPE": "Enhetstype",
+      "RATING": "Vurdering",
+      "CREATED_DATE": "Opprettet dato",
+      "CREATED_BY": "Opprettet av",
+      "STATUS": "Status",
+      "STORE": "Butikk",
+      "REVIEW": "Anmeldelse"
+    },
+    "STATUS": {
+      "New": "Ny",
+      "Approved": "Godkjent",
+      "Rejected": "Avvist"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Oppdater",
+      "APPROVE": "Godkjenn",
+      "REJECT": "Avvis",
+      "RESET": "Tilbakestill status",
+      "DELETE": "Slett"
+    },
+    "WIDGETS": {
+      "RATING": "Vurdering {rating} / 5",
+      "NO_RATING": "Anmeldelser"
+    },
+    "ALERTS": {
+      "DELETE": "Denne handlingen kan endre vurderingen. Er du sikker på at du vil slette anmeldelsen?",
+      "UNKNOWN_ENTITY_TYPE": "Kan ikke åpne en enhet av ukjent type: '{type}'"
+    }
+  }
+}

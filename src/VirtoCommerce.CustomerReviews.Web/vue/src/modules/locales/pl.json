@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_REVIEWS": {
+    "MENU": {
+      "TITLE": "Oceny i recenzje",
+      "COUNTER": "Recenzje do moderacji: {count}"
+    },
+    "LIST": {
+      "TITLE_ENTITY": "Recenzje: {name}",
+      "SEARCH": "Szukaj w treści recenzji",
+      "EMPTY": "Nie znaleziono recenzji"
+    },
+    "DETAILS": {
+      "TITLE": "Recenzja",
+      "AVERAGE": "Średnia ocena",
+      "IMAGES": "Obrazy",
+      "NO_IMAGES": "Brak obrazów"
+    },
+    "FIELDS": {
+      "TITLE": "Tytuł",
+      "ENTITY": "Produkt",
+      "ENTITY_TYPE": "Typ encji",
+      "RATING": "Ocena",
+      "CREATED_DATE": "Data utworzenia",
+      "CREATED_BY": "Utworzone przez",
+      "STATUS": "Status",
+      "STORE": "Sklep",
+      "REVIEW": "Recenzja"
+    },
+    "STATUS": {
+      "New": "Nowa",
+      "Approved": "Zatwierdzona",
+      "Rejected": "Odrzucona"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Odśwież",
+      "APPROVE": "Zatwierdź",
+      "REJECT": "Odrzuć",
+      "RESET": "Resetuj status",
+      "DELETE": "Usuń"
+    },
+    "WIDGETS": {
+      "RATING": "Ocena {rating} / 5",
+      "NO_RATING": "Recenzje"
+    },
+    "ALERTS": {
+      "DELETE": "Ta operacja może zmienić ocenę. Czy na pewno chcesz usunąć recenzję?",
+      "UNKNOWN_ENTITY_TYPE": "Nie można otworzyć encji nieznanego typu: '{type}'"
+    }
+  }
+}
