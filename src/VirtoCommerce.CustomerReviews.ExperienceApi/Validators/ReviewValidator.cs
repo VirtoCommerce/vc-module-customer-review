@@ -43,7 +43,12 @@ public class ReviewValidator : AbstractValidator<CreateReviewCommand>
                 $"Reviews can only be left for products (EntityType={ReviewEntityTypes.Product}).", "INVALID_ENTITY_TYPE"));
         }
 
-        if (!await OrderExists(command))
+        if (string.IsNullOrWhiteSpace(command.EntityId))
+        {
+            context.AddFailure(new ReviewValidationError(nameof(command.EntityId),
+                $"Property '{nameof(command.EntityId)}' must be filled in.", "ENTITY_ID_IS_EMPTY"));
+        }
+        else if (!await OrderExists(command))
         {
             context.AddFailure(new ReviewValidationError(nameof(CustomerReview),
                 "Only users who have purchased the product can leave a review.", "PRODUCT_MUST_BE_PURCHASED"));
@@ -97,6 +102,12 @@ public class ReviewValidator : AbstractValidator<CreateReviewCommand>
 
     public async Task<bool> OrderExists(ICreateReviewRequest request)
     {
+        // An empty product id is ignored by the order search, so any completed order would match
+        if (string.IsNullOrWhiteSpace(request.EntityId))
+        {
+            return false;
+        }
+
         var criteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
 
         criteria.Status = CustomerOrderStatus.Completed;
