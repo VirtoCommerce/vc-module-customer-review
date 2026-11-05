@@ -35,31 +35,37 @@ public class CustomerReviewsQueryHandler : IQueryHandler<CustomerReviewsQuery, C
     protected virtual CustomerReviewSearchCriteria GetSearchCriteria(CustomerReviewsQuery request)
     {
         var criteria = request.GetSearchCriteria<CustomerReviewSearchCriteria>();
+
+        if (!string.IsNullOrEmpty(request.Filter))
+        {
+            ApplyFilter(criteria, request.Filter);
+        }
+
         criteria.StoreId = request.StoreId;
         criteria.EntityIds = [request.EntityId];
         criteria.EntityType = request.EntityType;
         // XAPI only operates with approved reviews
         criteria.ReviewStatus = [CustomerReviewStatus.Approved];
 
-        if (!string.IsNullOrEmpty(request.Filter))
+        return criteria;
+    }
+
+    protected virtual void ApplyFilter(CustomerReviewSearchCriteria criteria, string filter)
+    {
+        var parseResult = _phraseParser.Parse(filter);
+
+        criteria.Keyword = parseResult.Keyword;
+
+        // Term filters
+        foreach (var term in parseResult.Filters.OfType<TermFilter>())
         {
-            var parseResult = _phraseParser.Parse(request.Filter);
-
-            criteria.Keyword = parseResult.Keyword;
-
-            // Term filters
-            foreach (var term in parseResult.Filters.OfType<TermFilter>())
-            {
-                term.MapTo(criteria);
-            }
-
-            // Custom ModifiedDate filter
-            parseResult.Filters.Get<RangeFilter>("ModifiedDate").MapTo(x => criteria.StartDate = x, x => criteria.EndDate = x);
-
-            // Custom Rating filter
-            parseResult.Filters.Get<RangeFilter>("Rating").MapTo(x => criteria.StartRating = x, x => criteria.EndRating = x);
+            term.MapTo(criteria);
         }
 
-        return criteria;
+        // Custom ModifiedDate filter
+        parseResult.Filters.Get<RangeFilter>("ModifiedDate").MapTo(x => criteria.StartDate = x, x => criteria.EndDate = x);
+
+        // Custom Rating filter
+        parseResult.Filters.Get<RangeFilter>("Rating").MapTo(x => criteria.StartRating = x, x => criteria.EndRating = x);
     }
 }
