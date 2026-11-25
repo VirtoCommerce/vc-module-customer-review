@@ -7,7 +7,8 @@
     "LIST": {
       "TITLE_ENTITY": "Anmeldelser: {name}",
       "SEARCH": "Søk i anmeldelsestekst",
-      "EMPTY": "Ingen anmeldelser funnet"
+      "EMPTY": "Ingen anmeldelser funnet",
+      "TO_MODERATE": "Til moderering"
     },
     "DETAILS": {
       "TITLE": "Anmeldelse",
@@ -18,7 +19,6 @@
     "FIELDS": {
       "TITLE": "Tittel",
       "ENTITY": "Produkt",
-      "ENTITY_TYPE": "Enhetstype",
       "RATING": "Vurdering",
       "CREATED_DATE": "Opprettet dato",
       "CREATED_BY": "Opprettet av",

@@ -7,7 +7,8 @@
     "LIST": {
       "TITLE_ENTITY": "评论：{name}",
       "SEARCH": "在评论文本中搜索",
-      "EMPTY": "未找到评论"
+      "EMPTY": "未找到评论",
+      "TO_MODERATE": "待审核"
     },
     "DETAILS": {
       "TITLE": "评论",
@@ -18,7 +19,6 @@
     "FIELDS": {
       "TITLE": "标题",
       "ENTITY": "产品",
-      "ENTITY_TYPE": "实体类型",
       "RATING": "评分",
       "CREATED_DATE": "创建日期",
       "CREATED_BY": "创建者",

@@ -1,6 +1,3 @@
-// Entity types the reviews can be about (legacy entityTypesResolverService registered only "Product")
-export const ENTITY_TYPES = ["Product"];
-
 // VcStatus variant of a review status (CustomerReviewStatus: New, Approved, Rejected)
 export function statusVariant(status?: string): "success" | "warning" | "danger" | "info" {
   if (status === "Approved") return "success";

@@ -7,7 +7,8 @@
     "LIST": {
       "TITLE_ENTITY": "レビュー: {name}",
       "SEARCH": "レビュー本文を検索",
-      "EMPTY": "レビューが見つかりません"
+      "EMPTY": "レビューが見つかりません",
+      "TO_MODERATE": "承認待ち"
     },
     "DETAILS": {
       "TITLE": "レビュー",
@@ -18,7 +19,6 @@
     "FIELDS": {
       "TITLE": "タイトル",
       "ENTITY": "製品",
-      "ENTITY_TYPE": "エンティティタイプ",
       "RATING": "評価",
       "CREATED_DATE": "作成日",
       "CREATED_BY": "作成者",

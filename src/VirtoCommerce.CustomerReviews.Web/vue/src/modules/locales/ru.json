@@ -7,7 +7,8 @@
     "LIST": {
       "TITLE_ENTITY": "Отзывы: {name}",
       "SEARCH": "Поиск по тексту отзыва",
-      "EMPTY": "Отзывы не найдены"
+      "EMPTY": "Отзывы не найдены",
+      "TO_MODERATE": "На модерации"
     },
     "DETAILS": {
       "TITLE": "Отзыв",
@@ -18,7 +19,6 @@
     "FIELDS": {
       "TITLE": "Заголовок",
       "ENTITY": "Продукт",
-      "ENTITY_TYPE": "Тип сущности",
       "RATING": "Рейтинг",
       "CREATED_DATE": "Дата создания",
       "CREATED_BY": "Создано",
