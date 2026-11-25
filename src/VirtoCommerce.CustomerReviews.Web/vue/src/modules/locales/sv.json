@@ -7,7 +7,8 @@
     "LIST": {
       "TITLE_ENTITY": "Recensioner: {name}",
       "SEARCH": "Sök i recensionstext",
-      "EMPTY": "Inga recensioner hittades"
+      "EMPTY": "Inga recensioner hittades",
+      "TO_MODERATE": "Att moderera"
     },
     "DETAILS": {
       "TITLE": "Recension",
@@ -18,7 +19,6 @@
     "FIELDS": {
       "TITLE": "Titel",
       "ENTITY": "Produkt",
-      "ENTITY_TYPE": "Entitetstyp",
       "RATING": "Betyg",
       "CREATED_DATE": "Skapad datum",
       "CREATED_BY": "Skapad av",

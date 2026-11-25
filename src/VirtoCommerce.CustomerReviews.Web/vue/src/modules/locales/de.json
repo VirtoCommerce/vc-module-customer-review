@@ -7,7 +7,8 @@
     "LIST": {
       "TITLE_ENTITY": "Rezensionen: {name}",
       "SEARCH": "Im Rezensionstext suchen",
-      "EMPTY": "Keine Rezensionen gefunden"
+      "EMPTY": "Keine Rezensionen gefunden",
+      "TO_MODERATE": "Zu moderieren"
     },
     "DETAILS": {
       "TITLE": "Rezension",
@@ -18,7 +19,6 @@
     "FIELDS": {
       "TITLE": "Titel",
       "ENTITY": "Produkt",
-      "ENTITY_TYPE": "Entitätstyp",
       "RATING": "Bewertung",
       "CREATED_DATE": "Erstellungsdatum",
       "CREATED_BY": "Erstellt von",

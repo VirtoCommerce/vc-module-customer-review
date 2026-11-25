@@ -7,7 +7,8 @@
     "LIST": {
       "TITLE_ENTITY": "Avaliações: {name}",
       "SEARCH": "Pesquisar no texto da avaliação",
-      "EMPTY": "Nenhuma avaliação encontrada"
+      "EMPTY": "Nenhuma avaliação encontrada",
+      "TO_MODERATE": "Para moderar"
     },
     "DETAILS": {
       "TITLE": "Avaliação",
@@ -18,7 +19,6 @@
     "FIELDS": {
       "TITLE": "Título",
       "ENTITY": "Produto",
-      "ENTITY_TYPE": "Tipo de entidade",
       "RATING": "Classificação",
       "CREATED_DATE": "Data de criação",
       "CREATED_BY": "Criado por",

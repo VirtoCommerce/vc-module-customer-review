@@ -7,7 +7,8 @@
     "LIST": {
       "TITLE_ENTITY": "Arvostelut: {name}",
       "SEARCH": "Hae arvostelun tekstistä",
-      "EMPTY": "Arvosteluja ei löytynyt"
+      "EMPTY": "Arvosteluja ei löytynyt",
+      "TO_MODERATE": "Moderoitavat"
     },
     "DETAILS": {
       "TITLE": "Arvostelu",
@@ -18,7 +19,6 @@
     "FIELDS": {
       "TITLE": "Otsikko",
       "ENTITY": "Tuote",
-      "ENTITY_TYPE": "Entiteetin tyyppi",
       "RATING": "Arvosana",
       "CREATED_DATE": "Luontipäivä",
       "CREATED_BY": "Luonut",

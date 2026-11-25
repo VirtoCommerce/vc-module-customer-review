@@ -13,11 +13,13 @@
       :total-count="totalCount"
       :pagination="pagination"
       :searchable="true"
+      search-bar
       :search-placeholder="$t('CUSTOMER_REVIEWS.LIST.SEARCH')"
       :state-key="stateKey"
       :active-item-id="activeChildParam"
       :show-all-columns="!activeChildParam && !entityFilter"
       :global-filters="globalFilters"
+      :search-views="searchViews"
       :empty-state="{ icon: 'lucide-messages-square', title: $t('CUSTOMER_REVIEWS.LIST.EMPTY') }"
       @row-click="(e: { data: CustomerReviewListItem }) => openDetails(e.data)"
       @pagination-click="pagination.goToPage"
@@ -93,7 +95,9 @@ import {
   useLatestRequest,
   usePermissions,
   useTableSearch,
+  type GlobalFilterConfig,
   type IBladeToolbar,
+  type SearchBarView,
 } from "@vc-shell/framework";
 import { VcBlade, VcColumn, VcDataTable, VcRating, VcStatus } from "@vc-shell/framework/ui";
 import { computed, ref, watch } from "vue";
@@ -103,7 +107,7 @@ import {
   CustomerReviewStatus,
   type CustomerReviewListItem,
 } from "../../api_client/virtocommerce.customerreviews";
-import { ENTITY_TYPES, getJson, statusKey, statusVariant } from "../utils";
+import { getJson, statusKey, statusVariant } from "../utils";
 
 defineBlade({
   url: "/customer-reviews",
@@ -143,7 +147,7 @@ const title = computed(() =>
 const PAGE_SIZE = 20;
 const items = ref<CustomerReviewListItem[]>([]);
 const totalCount = ref(0);
-const filters = ref<{ reviewStatus?: CustomerReviewStatus[]; entityType?: string }>({});
+const filters = ref<{ reviewStatus?: CustomerReviewStatus[] }>({});
 
 const { sortField, sortOrder, sortExpression } = useDataTableSort({
   stateKey: stateKey.value,
@@ -164,7 +168,7 @@ const { loading, action: load } = useAsync(async () => {
       take: PAGE_SIZE,
       ...filters.value,
       entityIds: entityFilter.value?.entityIds,
-      entityType: entityFilter.value?.entityType ?? filters.value.entityType,
+      entityType: entityFilter.value?.entityType,
     }),
   );
   if (!result) return;
@@ -172,38 +176,38 @@ const { loading, action: load } = useAsync(async () => {
   totalCount.value = result.totalCount ?? 0;
 });
 
-const globalFilters = computed(() => [
+// the API takes a list of statuses (reviewStatus); reviews can only be about products, so there is no entity type filter
+const globalFilters = computed<GlobalFilterConfig[]>(() => [
   {
     id: "reviewStatus",
     label: t("CUSTOMER_REVIEWS.FIELDS.STATUS"),
-    filter: { options: Object.values(CustomerReviewStatus).map((s) => ({ value: s, label: t(statusKey(s)) })) },
+    filter: {
+      options: Object.values(CustomerReviewStatus).map((s) => ({ value: s, label: t(statusKey(s)) })),
+      multiple: true,
+    },
   },
-  ...(entityFilter.value
-    ? []
-    : [
-        {
-          id: "entityType",
-          label: t("CUSTOMER_REVIEWS.FIELDS.ENTITY_TYPE"),
-          filter: { options: ENTITY_TYPES.map((x) => ({ value: x, label: x })) },
-        },
-      ]),
+]);
+
+// the moderator's daily queue: new reviews nobody has approved or rejected yet (the menu counter counts them)
+const searchViews = computed<SearchBarView[]>(() => [
+  {
+    id: "toModerate",
+    name: t("CUSTOMER_REVIEWS.LIST.TO_MODERATE"),
+    values: { reviewStatus: [CustomerReviewStatus.New] },
+  },
 ]);
 
 function onFilter(event: { filters: Record<string, unknown> }) {
-  const status = event.filters.reviewStatus as CustomerReviewStatus | CustomerReviewStatus[] | undefined;
-  const entityType = event.filters.entityType as string | string[] | undefined;
-  filters.value = {
-    reviewStatus: status ? ([] as CustomerReviewStatus[]).concat(status) : undefined,
-    entityType: Array.isArray(entityType) ? entityType[0] : entityType || undefined,
-  };
-  // a page change loads through the watcher below
-  if (pagination.skip) pagination.setPage(1);
-  else load();
+  const status = ([] as CustomerReviewStatus[]).concat(
+    (event.filters.reviewStatus as CustomerReviewStatus | CustomerReviewStatus[] | undefined) ?? [],
+  );
+  filters.value = { reviewStatus: status.length ? status : undefined };
 }
 
-load();
-watch(searchValue, () => pagination.setPage(1));
-watch([sortExpression, searchValue, () => pagination.skip], debounce(load, 300));
+// The search bar applies its saved filters when it mounts: the debounce makes that and the first load one request.
+// A new search or filter starts from page 1 (from page 2 setPage(1) changes skip, which loads).
+watch([searchValue, filters], () => pagination.setPage(1));
+watch([sortExpression, searchValue, filters, () => pagination.skip], debounce(load, 300), { immediate: true });
 
 const bladeToolbar = ref<IBladeToolbar[]>([
   { id: "refresh", title: t("CUSTOMER_REVIEWS.TOOLBAR.REFRESH"), icon: "lucide-refresh-cw", clickHandler: () => load() },
